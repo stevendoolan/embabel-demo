@@ -1,14 +1,14 @@
-package com.embabel.template;
+package com.embabel.demo;
 
-import com.embabel.template.injected.InjectedDemo;
+import com.embabel.demo.service.AnimalInventor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
-record DemoShell(InjectedDemo injectedDemo) {
+public record DemoShell(AnimalInventor animalInventor) {
 
     @ShellMethod("Invent an animal")
     String animal() {
-        return injectedDemo.inventAnimal().toString();
+        return animalInventor.inventAnimal().toString();
     }
 }

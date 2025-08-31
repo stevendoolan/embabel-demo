@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.template.agent;
+package com.embabel.demo.agent;
 
 import com.embabel.agent.api.annotation.AchievesGoal;
 import com.embabel.agent.api.annotation.Action;
@@ -21,73 +21,17 @@ import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.agent.domain.library.HasContent;
-import com.embabel.agent.prompt.persona.Persona;
-import com.embabel.agent.prompt.persona.RoleGoalBackstory;
 import com.embabel.common.ai.model.LlmOptions;
-import com.embabel.common.core.types.Timestamped;
+import com.embabel.demo.model.ReviewedStory;
+import com.embabel.demo.model.Story;
+import com.embabel.demo.persona.Personas;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.lang.NonNull;
-
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
-abstract class Personas {
-    static final RoleGoalBackstory WRITER = RoleGoalBackstory
-            .withRole("Creative Storyteller")
-            .andGoal("Write engaging and imaginative stories")
-            .andBackstory("Has a PhD in French literature; used to work in a circus");
-
-    static final Persona REVIEWER = Persona.create(
-            "Media Book Review",
-            "New York Times Book Reviewer",
-            "Professional and insightful",
-            "Help guide readers toward good stories"
-    );
-}
-
-record Story(String text) {
-}
-
-record ReviewedStory(
-        Story story,
-        String review,
-        Persona reviewer
-) implements HasContent, Timestamped {
-
-    @Override
-    @NonNull
-    public Instant getTimestamp() {
-        return Instant.now();
-    }
-
-    @Override
-    @NonNull
-    public String getContent() {
-        return String.format("""
-                        # Story
-                        %s
-                        
-                        # Review
-                        %s
-                        
-                        # Reviewer
-                        %s, %s
-                        """,
-                story.text(),
-                review,
-                reviewer.getName(),
-                getTimestamp().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy"))
-        ).trim();
-    }
-}
 
 @Agent(description = "Generate a story based on user input and review it")
 @Profile("!test")
-class WriteAndReviewAgent {
+public class WriteAndReviewAgent {
 
     private final int storyWordCount;
     private final int reviewWordCount;
@@ -109,22 +53,28 @@ class WriteAndReviewAgent {
                 .ai()
                 .withAutoLlm()
                 .withPromptContributor(Personas.REVIEWER)
-                .generateText(String.format("""
-                                You will be given a short story to review.
-                                Review it in %d words or less.
-                                Consider whether or not the story is engaging, imaginative, and well-written.
-                                Also consider whether the story is appropriate given the original user input.
-                                
-                                # Story
-                                %s
-                                
-                                # User input that inspired the story
-                                %s
-                                """,
-                        reviewWordCount,
-                        story.text(),
-                        userInput.getContent()
-                ).trim());
+                .withTemplate("prompt-templates/review-story-template.jinja")
+                .createObject(String.class,
+                        Map.of(
+                                "story", story.text(),
+                                "userInput", userInput.getContent()
+                        ));
+//                .generateText(String.format("""
+//                                You will be given a short story to review.
+//                                Review it in %d words or less.
+//                                Consider whether or not the story is engaging, imaginative, and well-written.
+//                                Also consider whether the story is appropriate given the original user input.
+//
+//                                # Story
+//                                %s
+//
+//                                # User input that inspired the story
+//                                %s
+//                                """,
+//                        reviewWordCount,
+//                        story.text(),
+//                        userInput.getContent()
+//                ).trim());
 
         return new ReviewedStory(
                 story,

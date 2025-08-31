@@ -1,4 +1,4 @@
-package com.embabel.template.injected;
+package com.embabel.demo.service;
 
 import com.embabel.agent.api.common.Ai;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @param ai Embabel AI helper, injected by Spring
  */
 @Component
-public record InjectedDemo(Ai ai) {
+public record AnimalInventor(Ai ai) {
 
     public record Animal(String name, String species) {
     }

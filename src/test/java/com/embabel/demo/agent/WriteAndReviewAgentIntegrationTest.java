@@ -1,8 +1,11 @@
-package com.embabel.template.agent;
+package com.embabel.demo.agent;
 
 import com.embabel.agent.api.common.autonomy.AgentInvocation;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.agent.testing.integration.EmbabelMockitoIntegrationTest;
+import com.embabel.demo.model.ReviewedStory;
+import com.embabel.demo.model.Story;
+import com.embabel.demo.persona.Personas;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
