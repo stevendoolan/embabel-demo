@@ -44,6 +44,20 @@ public class WriteAndReviewAgent {
         this.reviewWordCount = reviewWordCount;
     }
 
+    @Action
+    Story craftStory(UserInput userInput, OperationContext context) {
+        return context.ai()
+                // Higher temperature for more creative output
+                .withLlm(LlmOptions.withAutoLlm().withTemperature(.7))
+                .withPromptContributor(Personas.WRITER)
+                .withTemplate("craft-story-template.jinja")
+                .createObject(Story.class,
+                        Map.of(
+                                "storyWordCount", storyWordCount,
+                                "userInput", userInput.getContent()
+                        ));
+    }
+
     @AchievesGoal(
             description = "The story has been crafted and reviewed by a book reviewer",
             export = @Export(remote = true, name = "writeAndReviewStory"))
@@ -53,53 +67,17 @@ public class WriteAndReviewAgent {
                 .ai()
                 .withAutoLlm()
                 .withPromptContributor(Personas.REVIEWER)
-                .withTemplate("prompt-templates/review-story-template.jinja")
+                .withTemplate("review-story-template.jinja")
                 .createObject(String.class,
                         Map.of(
                                 "story", story.text(),
                                 "userInput", userInput.getContent()
                         ));
-//                .generateText(String.format("""
-//                                You will be given a short story to review.
-//                                Review it in %d words or less.
-//                                Consider whether or not the story is engaging, imaginative, and well-written.
-//                                Also consider whether the story is appropriate given the original user input.
-//
-//                                # Story
-//                                %s
-//
-//                                # User input that inspired the story
-//                                %s
-//                                """,
-//                        reviewWordCount,
-//                        story.text(),
-//                        userInput.getContent()
-//                ).trim());
 
         return new ReviewedStory(
                 story,
                 review,
                 Personas.REVIEWER
         );
-    }
-
-    @Action
-    Story craftStory(UserInput userInput, OperationContext context) {
-        return context.ai()
-                // Higher temperature for more creative output
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(.7))
-                .withPromptContributor(Personas.WRITER)
-                .createObject(String.format("""
-                                Craft a short story in %d words or less.
-                                The story should be engaging and imaginative.
-                                Use the user's input as inspiration if possible.
-                                If the user has provided a name, include it in the story.
-                                
-                                # User input
-                                %s
-                                """,
-                        storyWordCount,
-                        userInput.getContent()
-                ).trim(), Story.class);
     }
 }
