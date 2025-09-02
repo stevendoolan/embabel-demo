@@ -36,7 +36,7 @@ public class WriteAndReviewAgent {
     private final int storyWordCount;
     private final int reviewWordCount;
 
-    WriteAndReviewAgent(
+    public WriteAndReviewAgent(
             @Value("${storyWordCount:100}") int storyWordCount,
             @Value("${reviewWordCount:100}") int reviewWordCount
     ) {
@@ -45,7 +45,7 @@ public class WriteAndReviewAgent {
     }
 
     @Action
-    Story craftStory(UserInput userInput, OperationContext context) {
+    public Story craftStory(UserInput userInput, OperationContext context) {
         return context.ai()
                 // Higher temperature for more creative output
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(.7))
@@ -62,7 +62,7 @@ public class WriteAndReviewAgent {
             description = "The story has been crafted and reviewed by a book reviewer",
             export = @Export(remote = true, name = "writeAndReviewStory"))
     @Action
-    ReviewedStory reviewStory(UserInput userInput, Story story, OperationContext context) {
+    public ReviewedStory reviewStory(UserInput userInput, Story story, OperationContext context) {
         var review = context
                 .ai()
                 .withAutoLlm()
