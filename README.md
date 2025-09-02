@@ -19,6 +19,10 @@ required a bean of type 'io.modelcontextprotocol.server.McpSyncServer'
 that could not be found.
 ```
 
+I think it was the refactor where I changed the base package from `com.embabel.template` to `com.embabel.demo`.
+
+I took a fresh template and less refactors. Please see https://github.com/stevendoolan/embabel-demo2
+
 
 ---
 
