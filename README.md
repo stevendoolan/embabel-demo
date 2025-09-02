@@ -1,3 +1,27 @@
+# Steven's Update: I broke it and I don't know how! :(
+
+My first error was:
+```
+Web application could not be started as there was no
+org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+```
+
+I fixed this by adding into [application.properties](src/main/resources/application.properties):
+```
+spring.main.web-application-type=none
+```
+
+Now it won't start, with a new error:
+```
+Parameter 1 of constructor in 
+com.embabel.agent.mcpserver.support.PerGoalMcpToolExportCallbackPublisher 
+required a bean of type 'io.modelcontextprotocol.server.McpSyncServer' 
+that could not be found.
+```
+
+
+---
+
 ![Build](https://github.com/embabel/embabel-agent/actions/workflows/maven.yml/badge.svg)
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
