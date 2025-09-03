@@ -1,4 +1,21 @@
-# Steven's Update: I broke it and I don't know how! :(
+# Updates 
+## Steven's Update 3 SEP 2025: Jasper Blues fixed it!
+Thanks very much Jasper Blues for fixing my broken repo!
+
+The problem was the test dependency using 0.1.2-SNAPSHOT.  Removing this fixed the problems listed below.
+```xml
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-test</artifactId>
+            <!-- This is later than agent version, but will come back in sync in future -->
+            <version>0.1.2-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+```
+See Rod Johnson's original commit to fix java-agent-template:
+https://github.com/embabel/java-agent-template/commit/488f088f914066b6c3f452d1c69a59e7ceeb89d5
+
+## Steven's Update 2 SEP 2025: I broke it and I don't know how! :(
 
 My first error was:
 ```
