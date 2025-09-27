@@ -1,4 +1,28 @@
 # Updates 
+## Update 27 SEP 2025: Connects to Private OpenAI
+
+I have got this working with a private OpenAI instance.  I set the following environment variables:
+```bash
+export OPENAI_BASE_URL=https://<your-private-openai-domain>
+export OPENAI_API_KEY=<your-api-key>
+```
+
+My API Key only has access to gpt-4o and gpt-4o-lite.
+These aren't provided out-of-the-box by Embabel, so I had to implement them myself in
+[ModelConfiguration.java](src/main/java/com/embabel/demo/config/ModelConfiguration.java).
+Is there a better way of doing this?
+
+Start the service with OpenAI:
+```bash
+mvn spring-boot:run -Popenai
+```
+
+Start the service with Ollama:
+```bash
+mvn spring-boot:run -Pollama
+```
+
+
 ## Steven's Update 3 SEP 2025: Jasper Blues fixed it!
 Thanks very much Jasper Blues for fixing my broken repo!
 
