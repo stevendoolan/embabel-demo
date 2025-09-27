@@ -17,20 +17,18 @@ package com.embabel.demo;
 
 import com.embabel.agent.config.annotation.EnableAgentShell;
 import com.embabel.agent.config.annotation.EnableAgents;
-import com.embabel.agent.config.annotation.LocalModels;
 import com.embabel.agent.config.annotation.LoggingThemes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 @SpringBootApplication
 @EnableAgentShell
 @EnableAgents(
-        localModels = {LocalModels.OLLAMA},
         loggingTheme = LoggingThemes.STAR_WARS
 )
-public class DemoApplication {
+public class DemoOpenAIApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        System.setProperty("spring.profiles.active", "openai");
+        SpringApplication.run(DemoOpenAIApplication.class, args);
     }
 }

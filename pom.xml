@@ -19,6 +19,7 @@
     <properties>
         <java.version>21</java.version>
         <embabel-agent.version>0.1.1</embabel-agent.version>
+        <spring.boot.mainClass>com.embabel.demo.DemoLocalApplication</spring.boot.mainClass>
     </properties>
 
     <dependencies>
@@ -29,7 +30,6 @@
             <artifactId>embabel-agent-starter</artifactId>
             <version>${embabel-agent.version}</version>
         </dependency>
-
 
         <!-- Unit and Integration Testing -->
         <dependency>
@@ -45,6 +45,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${spring.boot.mainClass}</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -68,5 +71,22 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <spring.profiles.active>local</spring.profiles.active>
+                <spring.boot.mainClass>com.embabel.demo.DemoLocalApplication</spring.boot.mainClass>
+            </properties>
+        </profile>
+        <profile>
+            <id>openai</id>
+            <properties>
+                <spring.profiles.active>openai</spring.profiles.active>
+                <spring.boot.mainClass>com.embabel.demo.DemoOpenAIApplication</spring.boot.mainClass>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
