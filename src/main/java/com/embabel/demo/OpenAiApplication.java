@@ -24,9 +24,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAgents(
         loggingTheme = LoggingThemes.STAR_WARS
 )
-public class OpenAIApplication {
+public class OpenAiApplication {
     public static void main(String[] args) {
         System.setProperty("spring.profiles.active", "openai");
-        SpringApplication.run(OpenAIApplication.class, args);
+        SpringApplication.run(OpenAiApplication.class, args);
     }
 }
