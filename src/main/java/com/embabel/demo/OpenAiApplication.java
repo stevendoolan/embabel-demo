@@ -16,7 +16,7 @@
 package com.embabel.demo;
 
 import com.embabel.agent.config.annotation.EnableAgents;
-import com.embabel.agent.config.annotation.LoggingThemes;
+import com.embabel.demo.config.ProxyConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -25,13 +25,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/OpenAiApplication.java">embabel-demo</a>
  */
 @SpringBootApplication
-@EnableAgents(
-        loggingTheme = LoggingThemes.STAR_WARS
-)
+@EnableAgents
 public class OpenAiApplication {
 
     public static void main(String[] args) {
         System.setProperty("spring.profiles.active", "openai");
+        ProxyConfigurer.configureProxy();
         SpringApplication.run(OpenAiApplication.class, args);
     }
 }

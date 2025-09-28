@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="spring-boot:run [ollama]" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="spring-boot:run [openai, shell]" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -18,7 +18,8 @@
           <option name="pomFileName" />
           <option name="profilesMap">
             <map>
-              <entry key="ollama" value="true" />
+              <entry key="openai" value="true" />
+              <entry key="shell" value="true" />
             </map>
           </option>
           <option name="projectsCmdOptionValues">

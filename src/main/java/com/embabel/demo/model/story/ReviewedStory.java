@@ -1,4 +1,4 @@
-package com.embabel.demo.model;
+package com.embabel.demo.model.story;
 
 import com.embabel.agent.domain.library.HasContent;
 import com.embabel.agent.prompt.persona.Persona;

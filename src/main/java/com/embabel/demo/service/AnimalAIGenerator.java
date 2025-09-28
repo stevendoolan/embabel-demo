@@ -1,7 +1,7 @@
 package com.embabel.demo.service;
 
 import com.embabel.agent.api.common.Ai;
-import com.embabel.demo.model.Animal;
+import com.embabel.demo.model.animal.Animal;
 import org.springframework.stereotype.Component;
 
 /**

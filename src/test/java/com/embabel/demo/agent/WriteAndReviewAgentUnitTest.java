@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.agent.testing.unit.FakeOperationContext;
 import com.embabel.agent.testing.unit.FakePromptRunner;
-import com.embabel.demo.model.Story;
+import com.embabel.demo.model.story.Story;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 

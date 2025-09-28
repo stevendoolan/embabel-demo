@@ -12,7 +12,71 @@ Please keep this project up to date as java-agent-template is updated.
 
 https://github.com/embabel/java-agent-template
 
-# Updates 
+
+
+# How to use this project
+## Prerequisites
+- Java 21+
+- Maven 3.9+
+- Git
+
+## Choose a Model Provider
+### OpenAI
+> **Do not use the public OpenAI as this is not secure!**
+
+To use the OpenAI provider, set the following environment variables:
+```bash
+export OPENAI_API_KEY=<your-api-key>
+```
+
+On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables
+
+### Private OpenAI
+To use the Private OpenAI provider, set the following environment variables:
+```bash
+export OPENAI_BASE_URL=https://<your-private-openai-domain>
+export OPENAI_API_KEY=<your-api-key>
+```
+
+On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables
+
+## Set the System Proxy (if required)
+If you are behind a corporate proxy, you may need to set the system proxy for Java.
+You can do this by setting the following environment variables:
+```bash
+export HTTP_PROXY=http://<proxy-host>:<proxy-port>
+export HTTPS_PROXY=http://<proxy-host>:<proxy-port>
+export NO_PROXY=localhost,*.example.com
+```
+
+On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables.
+
+The [ProxyConfigurer](src/main/java/com/embabel/demo/config/ProxyConfigurer.java) class will read these environment variables
+and set the system properties for Java and Spring Boot.
+
+### Ollama
+Use Ollama to run local models on your machine.  This is free, and the models do work, but they are really slow!
+
+Download Ollama from [ollama.com](https://ollama.com/) and install the gpt-oss model with this command:
+```shell
+ollama run gpt-oss
+ollama run qwen3:0.6b
+```
+
+## Build and Run the Service
+By default, the service uses OpenAI.
+
+```shell
+mvn spring-boot:run
+```
+
+To use Ollama instead of Private OpenAI, start Ollama on your laptop and run:
+```shell
+mvn spring-boot:run -Pollama
+```
+
+---
+# Updates
 ## Update 27 SEP 2025: Connects to Private OpenAI
 
 I have got this working with a private OpenAI instance.  I set the following environment variables:
@@ -21,7 +85,7 @@ export OPENAI_BASE_URL=https://<your-private-openai-domain>
 export OPENAI_API_KEY=<your-api-key>
 ```
 
-My API Key only has access to gpt-4o and gpt-4o-lite. 
+My API Key only has access to gpt-4o and gpt-4o-lite.
 These aren't provided out-of-the-box by Embabel, so I had to implement them myself in
 [LegacyOpenAiModels.java](src/main/java/com/embabel/demo/LegacyOpenAiModels.java).
 Is there a better way of doing this?
@@ -35,6 +99,7 @@ Start the service with Ollama:
 ```bash
 mvn spring-boot:run -Pollama
 ```
+
 
 
 ## Steven's Update 3 SEP 2025: Jasper Blues fixed it!

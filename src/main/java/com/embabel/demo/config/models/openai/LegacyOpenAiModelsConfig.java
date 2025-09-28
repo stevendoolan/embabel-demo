@@ -3,6 +3,7 @@ package com.embabel.demo.config.models.openai;
 import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O;
 import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O_MINI;
 
+import com.embabel.agent.config.models.OpenAiCompatibleModelFactory;
 import com.embabel.agent.config.models.OpenAiModels;
 import com.embabel.agent.config.models.openai.OpenAiModelsConfig;
 import com.embabel.agent.config.models.openai.OpenAiProperties;
@@ -10,9 +11,11 @@ import com.embabel.common.ai.model.Llm;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.common.ai.model.OptionsConverter;
 import com.embabel.common.ai.model.PerTokenPricingModel;
+import io.micrometer.observation.ObservationRegistry;
 import java.time.LocalDate;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +23,8 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * Configures extra Open AI models that are not provided out-of-the-box by Embabel.
- * Based on {@link OpenAiModelsConfig}.
+ * Based on {@link OpenAiModelsConfig}
+ * and <a href="https://docs.embabel.com/embabel-agent/guide/0.1.3-SNAPSHOT/#adding-llms">embabel-agent docs for adding llms</a>
  * <p>
  * Based on LegacyOpenAiModelsConfig in
  * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/config/models/openai/LegacyOpenAiModelsConfig.java">embabel-demo</a>.
@@ -28,16 +32,23 @@ import org.springframework.context.annotation.Profile;
 @Configuration(proxyBeanMethods = false)
 @Profile("openai")
 @ConditionalOnProperty("OPENAI_API_KEY")
-public class LegacyOpenAiModelsConfig {
+public class LegacyOpenAiModelsConfig extends OpenAiCompatibleModelFactory {
 
-    private final OpenAiModelsConfig openAiModelsConfig;
-    private final OpenAiProperties properties;
+    private final OpenAiProperties openAiProperties;
 
     public LegacyOpenAiModelsConfig(
-            OpenAiModelsConfig openAiModelsConfig,
-            OpenAiProperties properties) {
-        this.openAiModelsConfig = openAiModelsConfig;
-        this.properties = properties;
+            @Value("${OPENAI_BASE_URL:#{null}}")
+            String baseUrl,
+            @Value("${OPENAI_API_KEY}")
+            String apiKey,
+            @Value("${OPENAI_COMPLETIONS_PATH:#{null}}")
+            String completionsPath,
+            @Value("${OPENAI_EMBEDDINGS_PATH:#{null}}")
+            String embeddingsPath,
+            ObservationRegistry observationRegistry,
+            OpenAiProperties openAiProperties) {
+        super(baseUrl, apiKey, completionsPath, embeddingsPath, observationRegistry);
+        this.openAiProperties = openAiProperties;
     }
 
     /**
@@ -48,13 +59,13 @@ public class LegacyOpenAiModelsConfig {
      */
     @Bean
     public Llm gpt4o() {
-        return openAiModelsConfig.openAiCompatibleLlm(
+        return openAiCompatibleLlm(
                 GPT_4O,
                 new PerTokenPricingModel(2.5, 10.0),
                 OpenAiModels.PROVIDER,
                 LocalDate.of(2024, 8, 6),
                 new LegacyOptionsConverter(),
-                properties.retryTemplate(GPT_4O)
+                openAiProperties.retryTemplate(GPT_4O)
         );
     }
 
@@ -66,13 +77,13 @@ public class LegacyOpenAiModelsConfig {
      */
     @Bean
     public Llm gpt4oMini() {
-        return openAiModelsConfig.openAiCompatibleLlm(
+        return openAiCompatibleLlm(
                 GPT_4O_MINI,
                 new PerTokenPricingModel(0.15, 0.6),
                 OpenAiModels.PROVIDER,
                 LocalDate.of(2024, 7, 18),
                 new LegacyOptionsConverter(),
-                properties.retryTemplate(GPT_4O_MINI)
+                openAiProperties.retryTemplate(GPT_4O_MINI)
         );
     }
 
