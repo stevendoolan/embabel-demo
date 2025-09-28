@@ -1,7 +1,11 @@
-package com.embabel.demo;
+package com.embabel.demo.config.models.openai;
+
+import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O;
+import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O_LITE;
 
 import com.embabel.agent.config.models.OpenAiModels;
-import com.embabel.agent.config.models.OpenAiProperties;
+import com.embabel.agent.config.models.openai.OpenAiModelsConfig;
+import com.embabel.agent.config.models.openai.OpenAiProperties;
 import com.embabel.common.ai.model.Llm;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.common.ai.model.OptionsConverter;
@@ -16,57 +20,50 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * Configures extra Open AI models that are not provided out-of-the-box by Embabel.
- * Based on {@link com.embabel.agent.config.models.OpenAiModels}.
+ * Based on {@link OpenAiModelsConfig}.
  */
 @Configuration(proxyBeanMethods = false)
 @Profile("openai")
 @ConditionalOnProperty("OPENAI_API_KEY")
-public class LegacyOpenAiModels {
+public class LegacyOpenAiModelsConfig {
 
-    private static final String GPT_4O = "gpt-4o";
-    private static final String GPT_4O_LITE = "gpt-4o-lite";
-
-    private final OpenAiModels openAiModels;
+    private final OpenAiModelsConfig openAiModelsConfig;
     private final OpenAiProperties properties;
 
-    public LegacyOpenAiModels(
-            OpenAiModels openAiModels,
+    public LegacyOpenAiModelsConfig(
+            OpenAiModelsConfig openAiModelsConfig,
             OpenAiProperties properties) {
-        this.openAiModels = openAiModels;
+        this.openAiModelsConfig = openAiModelsConfig;
         this.properties = properties;
     }
 
     @Bean
     public Llm gpt4o() {
-        return openAiModels.openAiCompatibleLlm(
+        return openAiModelsConfig.openAiCompatibleLlm(
                 GPT_4O,
-                new PerTokenPricingModel(
-                        3.0,  // $0.003 per 1K input tokens
-                        6.0   // $0.006 per 1K output tokens
-                ),
+                // TODO Find correct pricing
+                new PerTokenPricingModel(0.003, 0.006),
                 OpenAiModels.PROVIDER,
                 LocalDate.of(2025, 1, 1),
-                new DemoOptionsConverter(),
+                new LegacyOptionsConverter(),
                 properties.retryTemplate(GPT_4O)
         );
     }
 
     @Bean
     public Llm gpt4oLite() {
-        return openAiModels.openAiCompatibleLlm(
+        return openAiModelsConfig.openAiCompatibleLlm(
                 GPT_4O_LITE,
-                new PerTokenPricingModel(
-                        1.0,  // $0.001 per 1K input tokens
-                        3.0   // $0.003 per 1K output tokens
-                ),
+                // TODO Find correct pricing
+                new PerTokenPricingModel(0.001, 0.003),
                 OpenAiModels.PROVIDER,
                 LocalDate.of(2025, 1, 1),
-                new DemoOptionsConverter(),
+                new LegacyOptionsConverter(),
                 properties.retryTemplate(GPT_4O_LITE)
         );
     }
 
-    static class DemoOptionsConverter implements OptionsConverter<OpenAiChatOptions> {
+    static class LegacyOptionsConverter implements OptionsConverter<OpenAiChatOptions> {
 
         @NotNull
         @Override

@@ -29,6 +29,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Based on WriteAndReviewAgent in
+ * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
+ */
 @Agent(description = "Generate a story based on user input and review it")
 @Profile("!test")
 public class WriteAndReviewAgent {
