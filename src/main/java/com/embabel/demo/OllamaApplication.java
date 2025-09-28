@@ -20,6 +20,10 @@ import com.embabel.agent.config.annotation.LoggingThemes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Based on OllamaApplication in
+ * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/OllamaApplication.java">embabel-demo</a>
+ */
 @SpringBootApplication
 @EnableAgents(
         loggingTheme = LoggingThemes.STAR_WARS

@@ -21,6 +21,9 @@ import org.springframework.context.annotation.Profile;
 /**
  * Configures extra Open AI models that are not provided out-of-the-box by Embabel.
  * Based on {@link OpenAiModelsConfig}.
+ * <p>
+ * Based on LegacyOpenAiModelsConfig in
+ * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/config/models/openai/LegacyOpenAiModelsConfig.java">embabel-demo</a>.
  */
 @Configuration(proxyBeanMethods = false)
 @Profile("openai")
