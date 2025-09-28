@@ -15,20 +15,18 @@
  */
 package com.embabel.demo;
 
-import com.embabel.agent.config.annotation.EnableAgentShell;
 import com.embabel.agent.config.annotation.EnableAgents;
 import com.embabel.agent.config.annotation.LoggingThemes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableAgentShell
 @EnableAgents(
         loggingTheme = LoggingThemes.STAR_WARS
 )
-public class DemoOpenAIApplication {
+public class OpenAIApplication {
     public static void main(String[] args) {
         System.setProperty("spring.profiles.active", "openai");
-        SpringApplication.run(DemoOpenAIApplication.class, args);
+        SpringApplication.run(OpenAIApplication.class, args);
     }
 }

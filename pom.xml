@@ -22,7 +22,7 @@
         <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter/ -->
         <embabel-agent.version>0.1.3</embabel-agent.version>
 
-        <spring.boot.mainClass>com.embabel.demo.DemoLocalApplication</spring.boot.mainClass>
+        <spring.boot.mainClass>com.embabel.demo.OpenAIApplication</spring.boot.mainClass>
     </properties>
 
     <!-- Based on https://github.com/embabel/java-agent-template/blob/main/pom.xml -->
@@ -104,14 +104,14 @@
             <id>local</id>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.DemoLocalApplication</spring.boot.mainClass>
+                <spring.boot.mainClass>com.embabel.demo.OllamaApplication</spring.boot.mainClass>
             </properties>
         </profile>
         <profile>
             <id>openai</id>
             <properties>
                 <spring.profiles.active>openai</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.DemoOpenAIApplication</spring.boot.mainClass>
+                <spring.boot.mainClass>com.embabel.demo.OpenAIApplication</spring.boot.mainClass>
             </properties>
         </profile>
     </profiles>
