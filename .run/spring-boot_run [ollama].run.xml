@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="spring-boot:run [local]" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="spring-boot:run [ollama]" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -18,7 +18,7 @@
           <option name="pomFileName" />
           <option name="profilesMap">
             <map>
-              <entry key="local" value="true" />
+              <entry key="ollama" value="true" />
             </map>
           </option>
           <option name="projectsCmdOptionValues">

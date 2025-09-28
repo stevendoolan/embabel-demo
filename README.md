@@ -1,3 +1,14 @@
+<div style="border:2px solid red; padding:16px; background-color:#ffe6e6;">
+<h1>Security Warning!</h1>
+<b>This is a Demo project that is publicly available on GitHub!!</b>
+
+This project is not secure, and should not be used in production.
+
+It is provided for educational purposes only.
+
+We use this project to provide the Embabel Engineers with a working example of an Embabel agent when we need help.
+</div>
+
 # Updates 
 ## Update 27 SEP 2025: Connects to Private OpenAI
 

@@ -101,9 +101,9 @@
 
     <profiles>
         <profile>
-            <id>local</id>
+            <id>ollama</id>
             <properties>
-                <spring.profiles.active>local</spring.profiles.active>
+                <spring.profiles.active>ollama</spring.profiles.active>
                 <spring.boot.mainClass>com.embabel.demo.OllamaApplication</spring.boot.mainClass>
             </properties>
         </profile>
