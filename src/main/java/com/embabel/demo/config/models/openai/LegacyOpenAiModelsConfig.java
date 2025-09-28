@@ -40,27 +40,37 @@ public class LegacyOpenAiModelsConfig {
         this.properties = properties;
     }
 
+    /**
+     * Legacy model: GPT-4o ("o" for "omni")
+     * A model that is good for most tasks.
+     * It accepts both text and image inputs, and produces text outputs (including Structured Outputs).
+     * Prices from <a href="https://platform.openai.com/docs/models/gpt-4o">platform.openai.com</a>, in USD per 1m tokens.
+     */
     @Bean
     public Llm gpt4o() {
         return openAiModelsConfig.openAiCompatibleLlm(
                 GPT_4O,
-                // TODO Find correct pricing
-                new PerTokenPricingModel(0.003, 0.006),
+                new PerTokenPricingModel(2.5, 10.0),
                 OpenAiModels.PROVIDER,
-                LocalDate.of(2025, 1, 1),
+                LocalDate.of(2024, 8, 6),
                 new LegacyOptionsConverter(),
                 properties.retryTemplate(GPT_4O)
         );
     }
 
+    /**
+     * Legacy model: GPT-4o Mini ("o" for "omni")
+     * A fast, affordable small model for focused tasks
+     * It accepts both text and image inputs, and produces text outputs (including Structured Outputs).
+     * Prices from <a href="https://platform.openai.com/docs/models/gpt-4o-mini">platform.openai.com</a>, in USD per 1m tokens.
+     */
     @Bean
     public Llm gpt4oMini() {
         return openAiModelsConfig.openAiCompatibleLlm(
                 GPT_4O_MINI,
-                // TODO Find correct pricing
-                new PerTokenPricingModel(0.001, 0.003),
+                new PerTokenPricingModel(0.15, 0.6),
                 OpenAiModels.PROVIDER,
-                LocalDate.of(2025, 1, 1),
+                LocalDate.of(2024, 7, 18),
                 new LegacyOptionsConverter(),
                 properties.retryTemplate(GPT_4O_MINI)
         );
