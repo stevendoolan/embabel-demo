@@ -2,6 +2,8 @@
 <h1>Security Warning!</h1>
 <b>This is a Demo project that is publicly available on GitHub!!</b>
 
+Public Location: https://github.com/stevendoolan/embabel-demo
+
 This project is not secure, and should not be used in production.
 
 It is provided for educational purposes only.
