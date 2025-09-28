@@ -1,17 +1,14 @@
-package com.embabel.demo.config;
+package com.embabel.demo;
 
-import com.embabel.agent.config.models.OpenAiCompatibleModelFactory;
 import com.embabel.agent.config.models.OpenAiModels;
 import com.embabel.agent.config.models.OpenAiProperties;
 import com.embabel.common.ai.model.Llm;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.common.ai.model.OptionsConverter;
 import com.embabel.common.ai.model.PerTokenPricingModel;
-import io.micrometer.observation.ObservationRegistry;
 import java.time.LocalDate;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,27 +21,24 @@ import org.springframework.context.annotation.Profile;
 @Configuration(proxyBeanMethods = false)
 @Profile("openai")
 @ConditionalOnProperty("OPENAI_API_KEY")
-public class ModelConfiguration extends OpenAiCompatibleModelFactory {
+public class LegacyOpenAiModels {
 
     private static final String GPT_4O = "gpt-4o";
     private static final String GPT_4O_LITE = "gpt-4o-lite";
 
+    private final OpenAiModels openAiModels;
     private final OpenAiProperties properties;
 
-    public ModelConfiguration(
-            @Value("${OPENAI_BASE_URL:}") String baseUrl,
-            @Value("${OPENAI_API_KEY}") String apiKey,
-            @Value("${OPENAI_COMPLETIONS_PATH:/chat/completions}") String completionsPath,
-            @Value("${OPENAI_EMBEDDINGS_PATH:/chat/embeddings}") String embeddingsPath,
-            ObservationRegistry observationRegistry,
+    public LegacyOpenAiModels(
+            OpenAiModels openAiModels,
             OpenAiProperties properties) {
-        super(baseUrl, apiKey, completionsPath, embeddingsPath, observationRegistry);
+        this.openAiModels = openAiModels;
         this.properties = properties;
     }
 
     @Bean
     public Llm gpt4o() {
-        return openAiCompatibleLlm(
+        return openAiModels.openAiCompatibleLlm(
                 GPT_4O,
                 new PerTokenPricingModel(
                         3.0,  // $0.003 per 1K input tokens
@@ -59,7 +53,7 @@ public class ModelConfiguration extends OpenAiCompatibleModelFactory {
 
     @Bean
     public Llm gpt4oLite() {
-        return openAiCompatibleLlm(
+        return openAiModels.openAiCompatibleLlm(
                 GPT_4O_LITE,
                 new PerTokenPricingModel(
                         1.0,  // $0.001 per 1K input tokens

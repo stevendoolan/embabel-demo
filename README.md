@@ -7,9 +7,9 @@ export OPENAI_BASE_URL=https://<your-private-openai-domain>
 export OPENAI_API_KEY=<your-api-key>
 ```
 
-My API Key only has access to gpt-4o and gpt-4o-lite.
+My API Key only has access to gpt-4o and gpt-4o-lite. 
 These aren't provided out-of-the-box by Embabel, so I had to implement them myself in
-[ModelConfiguration.java](src/main/java/com/embabel/demo/config/ModelConfiguration.java).
+[LegacyOpenAiModels.java](src/main/java/com/embabel/demo/LegacyOpenAiModels.java).
 Is there a better way of doing this?
 
 Start the service with OpenAI:
