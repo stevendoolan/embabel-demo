@@ -9,6 +9,12 @@
 > 
 > It is provided for educational purposes only.
 
+# About this project
+This project is based on the Embabel Java Agent Template, which is available on GitHub:
+https://github.com/embabel/java-agent-template
+
+Please keep this project up to date as java-agent-template is updated.
+
 # Updates 
 ## Update 27 SEP 2025: Connects to Private OpenAI
 
