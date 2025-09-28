@@ -12,6 +12,6 @@ import com.embabel.agent.config.models.OpenAiModels;
 public class LegacyOpenAiModels {
 
     public static final String GPT_4O = "gpt-4o";
-    public static final String GPT_4O_LITE = "gpt-4o-lite";
+    public static final String GPT_4O_MINI = "gpt-4o-mini";
 
 }

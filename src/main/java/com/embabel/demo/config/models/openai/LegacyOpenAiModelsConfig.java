@@ -1,7 +1,7 @@
 package com.embabel.demo.config.models.openai;
 
 import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O;
-import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O_LITE;
+import static com.embabel.demo.config.models.LegacyOpenAiModels.GPT_4O_MINI;
 
 import com.embabel.agent.config.models.OpenAiModels;
 import com.embabel.agent.config.models.openai.OpenAiModelsConfig;
@@ -54,15 +54,15 @@ public class LegacyOpenAiModelsConfig {
     }
 
     @Bean
-    public Llm gpt4oLite() {
+    public Llm gpt4oMini() {
         return openAiModelsConfig.openAiCompatibleLlm(
-                GPT_4O_LITE,
+                GPT_4O_MINI,
                 // TODO Find correct pricing
                 new PerTokenPricingModel(0.001, 0.003),
                 OpenAiModels.PROVIDER,
                 LocalDate.of(2025, 1, 1),
                 new LegacyOptionsConverter(),
-                properties.retryTemplate(GPT_4O_LITE)
+                properties.retryTemplate(GPT_4O_MINI)
         );
     }
 
