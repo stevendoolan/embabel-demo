@@ -4,16 +4,13 @@
 > **Public Location: https://github.com/stevendoolan/embabel-demo**
 > 
 > We use this project to provide the Embabel Engineers with a working example of an Embabel agent when we need help.
-> 
-> This project is not secure, and should not be used in production.
-> 
-> It is provided for educational purposes only.
+> This project is not secure, and should not be used in production. It is provided for educational purposes only.
 
 # About this project
-This project is based on the Embabel Java Agent Template, which is available on GitHub:
-https://github.com/embabel/java-agent-template
-
+This project is based on the Embabel Java Agent Template, which is available on GitHub.
 Please keep this project up to date as java-agent-template is updated.
+
+https://github.com/embabel/java-agent-template
 
 # Updates 
 ## Update 27 SEP 2025: Connects to Private OpenAI
