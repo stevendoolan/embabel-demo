@@ -12,7 +12,15 @@ Please keep this project up to date as java-agent-template is updated.
 
 https://github.com/embabel/java-agent-template
 
-
+**Table of Contents**
+- [Prerequisites](#prerequisites)
+- [Choose a Model Provider](#choose-a-model-provider)
+  - [OpenAI](#openai)
+  - [Private OpenAI](#private-openai)
+  - [Ollama](#ollama)
+- [Set the System Proxy (if required)](#set-the-system-proxy-if-required)
+- [Build and Run the Service](#build-and-run-the-service)
+- [Updates](#updates)
 
 # How to use this project
 ## Prerequisites
@@ -64,15 +72,25 @@ ollama run qwen3:0.6b
 ```
 
 ## Build and Run the Service
-By default, the service uses OpenAI.
+By default, the service uses OpenAI and web only.
 
 ```shell
 mvn spring-boot:run
 ```
 
-To use Ollama instead of Private OpenAI, start Ollama on your laptop and run:
-```shell
+Start the service with OpenAI and shell only:
+```bash
+mvn spring-boot:run -Popenai,shell
+```
+
+To use Ollama instead of OpenAI, start Ollama on your laptop and run:
+```bash
 mvn spring-boot:run -Pollama
+```
+
+To use Ollama with shell only, run:
+```bash
+mvn spring-boot:run -Pollama,shell
 ```
 
 ---
@@ -99,8 +117,6 @@ Start the service with Ollama:
 ```bash
 mvn spring-boot:run -Pollama
 ```
-
-
 
 ## Steven's Update 3 SEP 2025: Jasper Blues fixed it!
 Thanks very much Jasper Blues for fixing my broken repo!
