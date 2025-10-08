@@ -45,7 +45,8 @@ public class BestDadJokeAgent {
             export = @Export(remote = true, name = "bestDadJoke"))
     @Action
     public JokeAndRating createBestDadJoke(JokesAndRatings jokesAndRatings) {
-        return jokesAndRatings.jokeAndRatings().stream().max(Comparator.comparingDouble(a -> a.rating().score()))
+        return jokesAndRatings.jokeAndRatings().stream()
+                .max(Comparator.comparingDouble(a -> a.rating().score()))
                 .orElseThrow();
     }
 }
