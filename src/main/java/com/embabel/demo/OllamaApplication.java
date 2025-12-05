@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OllamaApplication {
 
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.active", "local");
+        System.setProperty("spring.profiles.active", "ollama");
         ProxyConfigurer.configureProxy();
         SpringApplication.run(OllamaApplication.class, args);
     }
