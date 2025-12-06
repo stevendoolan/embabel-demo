@@ -67,8 +67,7 @@ Use Ollama to run local models on your machine.  This is free, and the models do
 
 Download Ollama from [ollama.com](https://ollama.com/) and install the gpt-oss model with this command:
 ```shell
-ollama run gpt-oss
-ollama run qwen3:0.6b
+ollama run gpt-oss:20b
 ```
 
 ## Build and Run the Service
@@ -95,6 +94,14 @@ mvn spring-boot:run -Pollama,shell
 
 ---
 # Updates
+## Update 6 DEC 2025: Upgraded to new Embabel Version 0.3.0
+This project has been upgraded to use Embabel version 0.3.0, which is now available in Maven Central!
+
+Postman Collection has been created to test the endpoints:
+[embabel-demo.postman_collection.json](postman/embabel-demo.postman_collection.json)
+
+Legacy OpenAI Models have been removed as I don't need them anymore (gpt-4o, gpt-4o-lite).
+
 ## Update 27 SEP 2025: Connects to Private OpenAI
 
 I have got this working with a private OpenAI instance.  I set the following environment variables:
