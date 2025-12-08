@@ -95,6 +95,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>${spring.boot.mainClass}</mainClass>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
                 </configuration>
             </plugin>
         </plugins>
@@ -118,7 +119,6 @@
                 <spring.profiles.active>ollama</spring.profiles.active>
                 <spring.boot.mainClass>com.embabel.demo.OllamaApplication</spring.boot.mainClass>
             </properties>
-
         </profile>
         <profile>
             <id>openai</id>

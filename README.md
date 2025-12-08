@@ -94,6 +94,29 @@ mvn spring-boot:run -Pollama,shell
 
 ---
 # Updates
+## Update 7 DEC 2025:
+Combined Embabel with Sonic Pi by Sam Aaron to create music using AI!
+
+See the new Agent:
+- [SonicPiAgent.java](src/main/java/com/embabel/demo/agent/SonicPiAgent.java)
+
+How to use:
+1. Install Sonic Pi from https://sonic-pi.net/ - on macOS: `brew install --cask sonic-pi`
+2. Start Sonic Pi.
+3. Start the Embabel service with Ollama and shell:
+   ```bash
+   mvn spring-boot:run -Pollama,shell
+   ```
+4. In the shell, enter the command:
+   ```shell
+   x "Write a song like Mozart"
+   ```
+5. There will be two Sonic PI *.rb scripts saved into the `target` directory:
+    - `sonic_pi_*.rb` - the generated Sonic Pi melody
+    - `sonic_pi-*_with_background_track.rb` - the full song
+6. Copy the contents of the `*.rb` files into Sonic Pi and press the "Run" button to play.
+
+
 ## Update 6 DEC 2025: Upgraded to new Embabel Version 0.3.0
 This project has been upgraded to use Embabel version 0.3.0, which is now available in Maven Central!
 
