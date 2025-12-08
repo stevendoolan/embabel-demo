@@ -102,6 +102,36 @@ Postman Collection has been created to test the endpoints:
 
 Legacy OpenAI Models have been removed as I don't need them anymore (gpt-4o, gpt-4o-lite).
 
+### Fibonacci Agent
+Added a Fibonacci Agent as an example of Tool Use:
+- [FibonacciAgent.java](src/main/java/com/embabel/demo/agent/FibonacciAgent.java)
+- [FibonacciCalculator.java](src/main/java/com/embabel/demo/tool/FibonacciCalculator.java)
+
+How to use the Fibonacci Agent using the REST endpoint:
+1. Start the service with OpenAI:
+   ```bash
+   mvn spring-boot:run -Popenai
+   ```
+
+2. Send a GET request: http://localhost:8080/compute-fibonacci?iterations=10
+
+How to use the Fibonacci Agent using the Shell Client:
+1. Start the service with OpenAI and shell:
+   ```bash
+   mvn spring-boot:run -Popenai -Pshell
+   ```
+   
+2. Enter the following command in the shell to compute the 10th Fibonacci number:
+   ```shell
+   fibonacci
+   ```
+   
+3. To compute any Fibonacci number, replace 10 with your desired number: 
+   ```shell
+   x "What is the 10th Fibonacci number?"
+   ```
+
+
 ## Update 27 SEP 2025: Connects to Private OpenAI
 
 I have got this working with a private OpenAI instance.  I set the following environment variables:

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "744b3a41-cb8a-4c44-b460-92f0ca8eaff8",
+		"_postman_id": "088e49e1-a3e9-40a5-9bf6-c13309d96908",
 		"name": "embabel-demo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3409676"
@@ -31,30 +31,55 @@
 			},
 			"response": []
 		},
-        {
-            "name": "Story Writer",
-            "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                    "raw": "http://localhost:8080/write-a-story?about=Steven",
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8080",
-                    "path": [
-                        "write-a-story"
-                    ],
-                    "query": [
-                        {
-                            "key": "about",
-                            "value": "Steven"
-                        }
-                    ]
-                }
-            },
-            "response": []
-        }
+		{
+			"name": "Story Writer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/write-a-story?about=Steven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"write-a-story"
+					],
+					"query": [
+						{
+							"key": "about",
+							"value": "Steven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compute Fibonacci",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/compute-fibonacci?iterations=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compute-fibonacci"
+					],
+					"query": [
+						{
+							"key": "iterations",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
 	]
 }
