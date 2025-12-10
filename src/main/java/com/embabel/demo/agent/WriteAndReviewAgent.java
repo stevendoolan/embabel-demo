@@ -24,7 +24,7 @@ import com.embabel.agent.domain.io.UserInput;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.demo.model.story.ReviewedStory;
 import com.embabel.demo.model.story.Story;
-import com.embabel.demo.persona.Personas;
+import com.embabel.demo.prompt.persona.StoryPersonas;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -53,7 +53,7 @@ public class WriteAndReviewAgent {
         return context.ai()
                 // Higher temperature for more creative output
                 .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
-                .withPromptContributor(Personas.WRITER)
+                .withPromptContributor(StoryPersonas.WRITER)
                 .withTemplate("craft-story-template.jinja")
                 .createObject(Story.class,
                         Map.of(
@@ -70,7 +70,7 @@ public class WriteAndReviewAgent {
         var review = context
                 .ai()
                 .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
-                .withPromptContributor(Personas.REVIEWER)
+                .withPromptContributor(StoryPersonas.REVIEWER)
                 .withTemplate("review-story-template.jinja")
                 .createObject(String.class,
                         Map.of(
@@ -81,7 +81,7 @@ public class WriteAndReviewAgent {
         return new ReviewedStory(
                 story,
                 review,
-                Personas.REVIEWER
+                StoryPersonas.REVIEWER
         );
     }
 }

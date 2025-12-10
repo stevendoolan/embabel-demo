@@ -1,4 +1,4 @@
-package com.embabel.demo.persona;
+package com.embabel.demo.prompt.persona;
 
 import com.embabel.agent.prompt.persona.Persona;
 import com.embabel.agent.prompt.persona.RoleGoalBackstory;
@@ -7,7 +7,7 @@ import com.embabel.agent.prompt.persona.RoleGoalBackstory;
  * Based on Persona in
  * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
  */
-public abstract class Personas {
+public abstract class StoryPersonas {
     public static final RoleGoalBackstory WRITER = RoleGoalBackstory
         .withRole("Creative Storyteller")
         .andGoal("Write engaging and imaginative stories")

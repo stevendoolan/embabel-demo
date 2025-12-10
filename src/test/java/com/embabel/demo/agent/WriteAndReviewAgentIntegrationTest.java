@@ -10,7 +10,7 @@ import com.embabel.agent.testing.integration.EmbabelMockitoIntegrationTest;
 import com.embabel.demo.OpenAiApplication;
 import com.embabel.demo.model.story.ReviewedStory;
 import com.embabel.demo.model.story.Story;
-import com.embabel.demo.persona.Personas;
+import com.embabel.demo.prompt.persona.StoryPersonas;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ class WriteAndReviewAgentIntegrationTest extends EmbabelMockitoIntegrationTest {
         var input = new UserInput("Write about artificial intelligence");
 
         var story = new Story("AI will transform our world...");
-        var reviewedStory = new ReviewedStory(story, "Excellent exploration of AI themes.", Personas.REVIEWER);
+        var reviewedStory = new ReviewedStory(story, "Excellent exploration of AI themes.", StoryPersonas.REVIEWER);
 
         whenCreateObject(prompt -> prompt.contains("Craft a short story"), Story.class)
                 .thenReturn(story);
