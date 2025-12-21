@@ -19,6 +19,7 @@ import com.embabel.agent.config.annotation.EnableAgents;
 import com.embabel.demo.config.ProxyConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  * Based on OpenAiApplication in
@@ -26,6 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @EnableAgents
+@ConfigurationPropertiesScan("com.embabel.demo")
 public class OpenAiApplication {
 
     public static void main(String[] args) {

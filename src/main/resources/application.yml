@@ -1,0 +1,192 @@
+sonic-pi:
+  instructions: |
+    You are an expert Sonic Pi programmer, familiar with music theory and composition.
+    You are a musician skilled in various genres and styles.
+    You write clean, efficient, and well-commented Sonic Pi code.
+    You love creating music using Sonic Pi.
+    Write Sonic Pi code to play melodies based on user input.
+    Make the song repeat.  Do not end the song.
+
+    Sonic Pi does not have a time signature command. Do not write `use_time_signature`.
+    Instead, structure the code using live_loops and sleep statements to reflect the time signature.
+    How to interpret `sleep` values in Sonic Pi:
+    <sleepValues>
+    - sleep 1 = Quarter note
+    - sleep 2 = Half note
+    - sleep 0.5 = Eighth note
+    - sleep 0.25 = Sixteenth note
+    </sleepValues>
+    
+    Time Signature Reference:
+    <timeSignatures>
+    - 4/4: Four quarter notes per measure (common time)
+    - 3/4: Three quarter notes per measure (waltz time)
+    - 6/8: Six eighth notes per measure (compound duple time)
+    </timeSignatures>
+    
+    Make the first percussion hit louder on the first beat of each measure to establish the rhythm.
+    
+    Always set the tempo using `use_bpm <tempoBpm>`.
+
+    Do not use '#' in note names (e.g., use ':c4' instead of ':c#4').
+    
+    Drums/percussion must be played using `sample`, and not using `play_pattern_timed`.
+    Always use a live_loop.
+    Ensure the code is ready to run in Sonic Pi without any modifications.
+
+    Do not use built-in function names as variable names:
+    <builtInFunctionNames>
+    chord
+    </builtInFunctionNames>
+    
+    `play_chord` must always use chord function to define the chord.  Correct usage:
+    <playChordExample1>
+    play_chord chord(:c4, :major)
+    </playChordExample1>
+    <playChordExample2>
+    chords = [chord(:c4, :major), chord(:f4, :major), chord(:g4, :major)]
+    play_chord chords[0], sustain: 3, amp: 0.6
+    </playChordExample2>
+    Incorrect usage:
+    <incorrectPlayChordExample>
+    play_chord [:c4, :e4, :g4]
+    </incorrectPlayChordExample>
+
+  instruments:
+    - bass_foundation
+    - bass_highend
+    - beep
+    - blade
+    - bnoise
+    - chipbass
+    - chiplead
+    - chipnoise
+    - dark_ambience
+    - dpulse
+    - dsaw
+    - dtri
+    - dull_bell
+    - fm
+    - gabberkick
+    - gnoise
+    - growl
+    - hollow
+    - hoover
+    - kalimba
+    - mod_beep
+    - mod_dsaw
+    - mod_fm
+    - mod_pulse
+    - mod_saw
+    - mod_sine
+    - mod_tri
+    - noise
+    - organ_tonewheel
+    - piano
+    - pluck
+    - rhodey
+    - rodeo
+    - saw
+    - sine
+    - sound_in
+    - sound_in_stereo
+    - square
+    - subpulse
+    - supersaw
+    - tb303
+    - tech_saws
+    - tri
+    - winwood_lead
+    - zawa
+
+  samples:
+    - bd_ada
+    - bd_pure
+    - bd_808
+    - bd_zum
+    - bd_gas
+    - bd_sone
+    - bd_haus
+    - bd_zome
+    - bd_boom
+    - bd_klub
+    - bd_fat
+    - bd_tek
+    - bd_mehackit
+    - bd_chip
+    - bd_jazz
+    - bass_hit_c
+    - bass_hard_c
+    - bass_thick_c
+    - bass_drop_c
+    - bass_woodsy_c
+    - bass_voxy_c
+    - bass_voxy_hit_c
+    - bass_dnb_f
+    - bass_trance_c
+    - drum_heavy_kick
+    - drum_tom_mid_soft
+    - drum_tom_mid_hard
+    - drum_tom_lo_soft
+    - drum_tom_lo_hard
+    - drum_tom_hi_soft
+    - drum_tom_hi_hard
+    - drum_splash_soft
+    - drum_splash_hard
+    - drum_snare_soft
+    - drum_snare_hard
+    - drum_cymbal_soft
+    - drum_cymbal_hard
+    - drum_cymbal_open
+    - drum_cymbal_closed
+    - drum_cymbal_pedal
+    - drum_bass_soft
+    - drum_bass_hard
+    - drum_cowbell
+    - drum_roll
+    - elec_triangle
+    - elec_snare
+    - elec_lo_snare
+    - elec_hi_snare
+    - elec_mid_snare
+    - elec_cymbal
+    - elec_soft_kick
+    - elec_filt_snare
+    - elec_fuzz_tom
+    - elec_chime
+    - elec_bong
+    - elec_twang
+    - elec_wood
+    - elec_pop
+    - elec_beep
+    - elec_blip
+    - elec_blip2
+    - elec_ping
+    - elec_bell
+    - elec_flip
+    - elec_tick
+    - elec_hollow_kick
+    - elec_twip
+    - elec_plip
+    - elec_blup
+    - hat_snap
+    - hat_zan
+    - hat_zap
+    - hat_tap
+    - hat_cats
+    - hat_bdu
+    - hat_psych
+    - hat_raw
+    - hat_zild
+    - hat_gump
+    - hat_noiz
+    - hat_sci
+    - hat_star
+    - hat_gem
+    - hat_yosh
+    - hat_mess
+    - hat_cab
+    - hat_gnu
+    - hat_hier
+    - hat_metal
+    - hat_len

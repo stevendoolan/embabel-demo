@@ -54,7 +54,7 @@ public class WriteAndReviewAgent {
                 // Higher temperature for more creative output
                 .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
                 .withPromptContributor(StoryPersonas.WRITER)
-                .withTemplate("craft-story-template.jinja")
+                .withTemplate("story/craft-story-template.jinja")
                 .createObject(Story.class,
                         Map.of(
                                 "storyWordCount", storyWordCount,
@@ -71,7 +71,7 @@ public class WriteAndReviewAgent {
                 .ai()
                 .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
                 .withPromptContributor(StoryPersonas.REVIEWER)
-                .withTemplate("review-story-template.jinja")
+                .withTemplate("story/review-story-template.jinja")
                 .createObject(String.class,
                         Map.of(
                                 "story", story.text(),

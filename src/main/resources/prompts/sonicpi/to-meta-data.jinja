@@ -1,0 +1,42 @@
+Convert the following user input into a SonicPiMetadata object.
+The user input is:
+<userInput>
+{{ userInput }}
+</userInput>
+Extract the melody description as a string.
+
+Key must be one of:
+<keys>
+C, C#, D, D#, E, F, F#, G, G#, A, A#, B, Cm, C#m, Dm, D#m, Em, Fm, F#m, Gm, G#m, Am, A#m, Bm
+</keys>
+
+Key Change must be one of:
+<keyChanges>
+C, C#, D, D#, E, F, F#, G, G#, A, A#, B, Cm, C#m, Dm, D#m, Em, Fm, F#m, Gm, G#m, Am, A#m, Bm, None
+</keyChanges>
+
+Tempo BPM must be an integer between 40 and 300.
+
+Time Signature must be one of:
+<timeSignatures>
+3/4, 4/4, 6/8
+</timeSignatures>
+
+Measures must be an integer between 2 and 8.
+A measure is defined as an equal segments of time according to the specified time signature.
+For example, in 4/4 time, a measure contains four quarter-notes.
+
+Mood must be one of:
+<moods>
+happy, sad, energetic, calm, romantic, mysterious, dramatic, playful, melancholic, uplifting, dark, whimsical,
+serene, intense, nostalgic, adventurous, dreamy, funky, jazzy, bluesy, epic, cheerful, haunting, reflective, vibrant,
+soulful, rhythmic, tranquil, powerful, lighthearted, groovy, sentimental, dynamic, ethereal, bold, smooth, lively,
+poignant, spirited, contemplative, exuberant
+</moods>
+
+Style must be one of:
+<styles>
+classical, jazz, rock, pop, hip-hop, electronic, folk, blues, reggae, country, metal, punk, disco, funk, soul, R&B, gospel, ska
+grunge, ambient, techno, house, trance, dubstep, drum and bass, swing, bossa nova, salsa, tango, bluegrass, Celtic
+flamenco, calypso, zydeco, surf, psychedelic, experimental
+</styles>
