@@ -1,6 +1,6 @@
 package com.embabel.demo.controller;
 
-import com.embabel.agent.api.common.autonomy.AgentInvocation;
+import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.core.AgentPlatform;
 import com.embabel.demo.model.fibonacci.FibonacciRequest;
 import com.embabel.demo.model.fibonacci.FibonacciResponseWithVerification;

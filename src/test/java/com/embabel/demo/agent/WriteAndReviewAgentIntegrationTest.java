@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.embabel.agent.api.common.autonomy.AgentInvocation;
+import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.agent.testing.integration.EmbabelMockitoIntegrationTest;
+import com.embabel.agent.test.integration.EmbabelMockitoIntegrationTest;
 import com.embabel.demo.OpenAiApplication;
 import com.embabel.demo.model.story.ReviewedStory;
 import com.embabel.demo.model.story.Story;

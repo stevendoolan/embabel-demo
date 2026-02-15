@@ -1,9 +1,8 @@
 package com.embabel.demo.controller;
 
-import com.embabel.agent.api.common.autonomy.AgentInvocation;
+import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.demo.model.dadjoke.JokeAndRating;
 import com.embabel.demo.model.story.ReviewedStory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
