@@ -55,6 +55,13 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
+        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-anthropic</artifactId>
+            <version>${embabel-agent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -128,6 +135,13 @@
             <properties>
                 <spring.profiles.active>openai</spring.profiles.active>
                 <spring.boot.mainClass>com.embabel.demo.OpenAiApplication</spring.boot.mainClass>
+            </properties>
+        </profile>
+        <profile>
+            <id>anthropic</id>
+            <properties>
+                <spring.profiles.active>anthropic</spring.profiles.active>
+                <spring.boot.mainClass>com.embabel.demo.AnthropicApplication</spring.boot.mainClass>
             </properties>
         </profile>
     </profiles>

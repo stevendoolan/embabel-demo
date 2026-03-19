@@ -48,6 +48,15 @@ export OPENAI_API_KEY=<your-api-key>
 
 On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables
 
+### Private Anthropic
+To use the Private Anthropic provider, set the following environment variables:
+```bash
+export ANTHROPIC_BASE_URL=https://<your-private-openai-domain>
+export ANTHROPIC_API_KEY=<your-api-key>
+```
+
+On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables
+
 ## Set the System Proxy (if required)
 If you are behind a corporate proxy, you may need to set the system proxy for Java.
 You can do this by setting the following environment variables:
@@ -80,6 +89,16 @@ mvn spring-boot:run
 Start the service with OpenAI and shell only:
 ```bash
 mvn spring-boot:run -Popenai,shell
+```
+
+Start the service with Anthropic and web only:
+```bash
+mvn spring-boot:run -Panthropic
+```
+
+Start the service with Anthropic and shell only:
+```bash
+mvn spring-boot:run -Panthropic,shell
 ```
 
 To use Ollama instead of OpenAI, start Ollama on your laptop and run:
