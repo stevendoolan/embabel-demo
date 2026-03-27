@@ -151,12 +151,5 @@
                 <spring.boot.mainClass>com.embabel.demo.AnthropicApplication</spring.boot.mainClass>
             </properties>
         </profile>
-        <profile>
-            <id>mcpserver</id>
-            <properties>
-                <spring.profiles.active>openai,mcpserver</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.McpServerApplication</spring.boot.mainClass>
-            </properties>
-        </profile>
     </profiles>
 </project>
