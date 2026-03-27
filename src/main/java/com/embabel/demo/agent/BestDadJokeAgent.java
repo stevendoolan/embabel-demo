@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
 @Agent(description = "Create the best dad joke ever")
-@Export(remote = true)
 @Profile("!test")
 public class BestDadJokeAgent {
 
@@ -43,7 +42,7 @@ public class BestDadJokeAgent {
 
     @AchievesGoal(
             description = "Create the best dad joke ever",
-            export = @Export(remote = true, name = "bestDadJoke"))
+            export = @Export(remote = true, name = "bestDadJoke", startingInputTypes = {UserInput.class}))
     @Action
     public JokeAndRating createBestDadJoke(JokesAndRatings jokesAndRatings) {
         return jokesAndRatings.jokeAndRatings().stream()

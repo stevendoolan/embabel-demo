@@ -15,7 +15,6 @@
  */
 package com.embabel.demo;
 
-import com.embabel.agent.config.annotation.EnableAgents;
 import com.embabel.demo.config.ProxyConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,7 +25,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
  * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/AnthropicApplication.java">embabel-demo</a>
  */
 @SpringBootApplication
-@EnableAgents
 @ConfigurationPropertiesScan("com.embabel.demo")
 public class AnthropicApplication {
 

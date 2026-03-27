@@ -34,7 +34,6 @@ import org.springframework.context.annotation.Profile;
  * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
  */
 @Agent(description = "Generate a story based on user input and review it")
-@Export(remote = true)
 @Profile("!test")
 public class WriteAndReviewAgent {
 
@@ -65,7 +64,7 @@ public class WriteAndReviewAgent {
 
     @AchievesGoal(
             description = "The story has been crafted and reviewed by a book reviewer",
-            export = @Export(remote = true, name = "writeAndReviewStory"))
+            export = @Export(remote = true, name = "writeAndReviewStory", startingInputTypes = {UserInput.class}))
     @Action
     public ReviewedStory reviewStory(UserInput userInput, Story story, OperationContext context) {
         var review = context
