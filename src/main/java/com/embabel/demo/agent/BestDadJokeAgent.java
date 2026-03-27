@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
 @Agent(description = "Create the best dad joke ever")
+@Export(remote = true)
 @Profile("!test")
 public class BestDadJokeAgent {
 

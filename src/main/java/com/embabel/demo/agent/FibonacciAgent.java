@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Profile;
  * Could be useful for teaching the Fibonacci sequence.
  */
 @Agent(description = "Compute Fibonacci numbers")
+@Export(remote = true)
 @Profile("!test")
 public record FibonacciAgent(FibonacciCalculator fibonacciCalculator) {
 
