@@ -20,6 +20,9 @@ https://github.com/embabel/java-agent-template
   - [Ollama](#ollama)
 - [Set the System Proxy (if required)](#set-the-system-proxy-if-required)
 - [Build and Run the Service](#build-and-run-the-service)
+- [MCP Server](#mcp-server)
+  - [Claude Code](#claude-code)
+  - [JetBrains AI Assistant](#jetbrains-ai-assistant)
 - [Updates](#updates)
 
 # How to use this project
@@ -109,6 +112,56 @@ mvn spring-boot:run -Pollama
 To use Ollama with shell only, run:
 ```bash
 mvn spring-boot:run -Pollama,shell
+```
+
+## MCP Server
+This application is also an MCP (Model Context Protocol) server.
+When the service is running, all agents with `@Export(remote = true)` are automatically exposed as MCP tools
+via an SSE endpoint at `http://localhost:8080/sse`.
+
+The following tools are available:
+| Tool Name | Agent | Description |
+|---|---|---|
+| `fibonacciNumbers` | FibonacciAgent | Compute Fibonacci numbers using LLM with tool verification |
+| `writeAndReviewStory` | WriteAndReviewAgent | Generate a story and review it |
+| `bestDadJoke` | BestDadJokeAgent | Create the best dad joke ever |
+| `sonicPiCode` | SonicPiAgent | Generate Sonic Pi code from user input |
+
+### Claude Code
+Start the embabel-demo service, then add it to Claude Code from the terminal:
+```bash
+claude mcp add embabel-demo --transport sse http://localhost:8080/sse
+```
+
+Or add a `.mcp.json` file to your project root:
+```json
+{
+  "mcpServers": {
+    "embabel-demo": {
+      "type": "sse",
+      "url": "http://localhost:8080/sse"
+    }
+  }
+}
+```
+
+### JetBrains AI Assistant
+Start the embabel-demo service, then in IntelliJ IDEA:
+1. Go to **Settings | Tools | AI Assistant | Model Context Protocol (MCP)**
+2. Click **Add** (+)
+3. Select **SSE** as the connection type
+4. Set the URL to `http://localhost:8080/sse`
+5. Click **Apply**
+
+Or configure via JSON (**Edit as JSON** button):
+```json
+{
+  "mcpServers": {
+    "embabel-demo": {
+      "url": "http://localhost:8080/sse"
+    }
+  }
+}
 ```
 
 ---
