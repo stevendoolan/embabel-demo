@@ -19,6 +19,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Integration test for the MCP server SSE endpoint.
@@ -26,6 +28,8 @@ import org.junit.jupiter.api.Timeout;
  */
 @Timeout(30)
 class McpServerIntegrationTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(McpServerIntegrationTest.class);
 
     private static final String SSE_URL = "http://localhost:8080/sse";
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -38,6 +42,8 @@ class McpServerIntegrationTest {
     static void connectAndInitialize() throws Exception {
         sseMessages = new LinkedBlockingQueue<>();
 
+        LOG.info("Connecting to MCP SSE endpoint: {}", SSE_URL);
+
         // Connect to SSE endpoint in a background thread
         var endpointReady = new LinkedBlockingQueue<String>();
 
@@ -47,6 +53,8 @@ class McpServerIntegrationTest {
                 connection.setRequestProperty("Accept", "text/event-stream");
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(0); // no timeout, keep stream open
+
+                LOG.info("SSE connection established, reading events...");
 
                 try (var reader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -61,9 +69,12 @@ class McpServerIntegrationTest {
                                 if (data.startsWith("/")) {
                                     data = "http://localhost:8080" + data;
                                 }
+                                LOG.info("Received SSE endpoint event: {}", data);
                                 endpointReady.put(data);
                             } else if ("message".equals(eventType)) {
-                                sseMessages.put(MAPPER.readTree(data));
+                                var parsed = MAPPER.readTree(data);
+                                LOG.info("Received SSE message: {}", MAPPER.writeValueAsString(parsed));
+                                sseMessages.put(parsed);
                             }
                             eventType = null;
                         }
@@ -71,7 +82,7 @@ class McpServerIntegrationTest {
                 }
             } catch (Exception e) {
                 if (!Thread.currentThread().isInterrupted()) {
-                    e.printStackTrace();
+                    LOG.error("SSE connection error", e);
                 }
             }
         });
@@ -79,8 +90,10 @@ class McpServerIntegrationTest {
         // Wait for the endpoint event
         messageEndpoint = endpointReady.poll(10, TimeUnit.SECONDS);
         assertThat(messageEndpoint).as("SSE endpoint event").isNotNull();
+        LOG.info("MCP message endpoint discovered: {}", messageEndpoint);
 
         // Initialize the MCP session
+        LOG.info("Sending initialize request...");
         var initParams = MAPPER.createObjectNode();
         initParams.put("protocolVersion", "2024-11-05");
         initParams.set("capabilities", MAPPER.createObjectNode());
@@ -90,16 +103,23 @@ class McpServerIntegrationTest {
         postJsonRpc("initialize", 1, initParams);
         var initResponse = waitForResponse(1);
         assertThat(initResponse.has("result")).as("initialize response").isTrue();
+        LOG.info("MCP session initialized. Server info: {}",
+                initResponse.get("result").has("serverInfo")
+                        ? MAPPER.writeValueAsString(initResponse.get("result").get("serverInfo"))
+                        : "N/A");
 
         // Send initialized notification
+        LOG.info("Sending initialized notification...");
         var notification = MAPPER.createObjectNode()
                 .put("jsonrpc", "2.0")
                 .put("method", "notifications/initialized");
         postMessage(notification);
+        LOG.info("MCP handshake complete");
     }
 
     @AfterAll
     static void disconnect() {
+        LOG.info("Disconnecting SSE stream");
         if (sseThread != null) {
             sseThread.interrupt();
         }
@@ -107,6 +127,7 @@ class McpServerIntegrationTest {
 
     @Test
     void shouldListExpectedTools() throws Exception {
+        LOG.info("Requesting tools/list...");
         postJsonRpc("tools/list", 10, MAPPER.createObjectNode());
         var response = waitForResponse(10);
 
@@ -119,6 +140,8 @@ class McpServerIntegrationTest {
             toolNames.add(tool.get("name").asText());
         }
 
+        LOG.info("Available tools ({}): {}", toolNames.size(), toolNames);
+
         assertThat(toolNames)
                 .as("Expected MCP tools from exported agents")
                 .contains("bestDadJoke", "fibonacciNumbers", "sonicPiCode", "writeAndReviewStory");
@@ -126,6 +149,7 @@ class McpServerIntegrationTest {
 
     @Test
     void shouldListPrompts() throws Exception {
+        LOG.info("Requesting prompts/list...");
         postJsonRpc("prompts/list", 20, MAPPER.createObjectNode());
         var response = waitForResponse(20);
 
@@ -133,10 +157,18 @@ class McpServerIntegrationTest {
         var prompts = response.get("result").get("prompts");
         assertThat(prompts).as("prompts array").isNotNull();
         assertThat(prompts.isArray()).isTrue();
+
+        List<String> promptNames = new ArrayList<>();
+        for (JsonNode prompt : prompts) {
+            promptNames.add(prompt.get("name").asText());
+        }
+
+        LOG.info("Available prompts ({}): {}", promptNames.size(), promptNames);
     }
 
     @Test
     void shouldHaveToolInputSchemas() throws Exception {
+        LOG.info("Requesting tools/list to verify input schemas...");
         postJsonRpc("tools/list", 30, MAPPER.createObjectNode());
         var response = waitForResponse(30);
 
@@ -146,6 +178,7 @@ class McpServerIntegrationTest {
             assertThat(tool.has("name")).as("tool has name").isTrue();
             assertThat(tool.has("inputSchema"))
                     .as("tool '%s' has inputSchema", name).isTrue();
+            LOG.info("Tool '{}' inputSchema: {}", name, MAPPER.writeValueAsString(tool.get("inputSchema")));
         }
     }
 
@@ -161,6 +194,8 @@ class McpServerIntegrationTest {
     }
 
     private static void postMessage(JsonNode message) throws Exception {
+        LOG.info("POST {} -> {}", messageEndpoint, MAPPER.writeValueAsString(message));
+
         var connection = (HttpURLConnection) URI.create(messageEndpoint).toURL().openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -173,19 +208,24 @@ class McpServerIntegrationTest {
         }
 
         // Read response (202 Accepted expected; actual JSON-RPC response comes via SSE)
-        connection.getResponseCode();
+        int status = connection.getResponseCode();
+        LOG.info("POST response status: {}", status);
         connection.disconnect();
     }
 
     private static JsonNode waitForResponse(int expectedId) throws Exception {
+        LOG.info("Waiting for JSON-RPC response with id={}...", expectedId);
         var deadline = System.currentTimeMillis() + 10_000;
         while (System.currentTimeMillis() < deadline) {
             var msg = sseMessages.poll(1, TimeUnit.SECONDS);
             if (msg != null && msg.has("id") && msg.get("id").asInt() == expectedId) {
+                LOG.info("Received response for id={}: {}", expectedId, MAPPER.writeValueAsString(msg));
                 return msg;
             }
             // Put back messages that don't match (for other tests)
             if (msg != null) {
+                LOG.debug("Received message with id={}, re-queuing (waiting for id={})",
+                        msg.has("id") ? msg.get("id").asInt() : "none", expectedId);
                 sseMessages.put(msg);
             }
         }
