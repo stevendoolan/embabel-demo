@@ -1,7 +1,10 @@
 # Use these OpenAI models
-embabel.models.default-llm=gpt-4.1
-embabel.models.llms.best=gpt-4.1
-embabel.models.llms.cheapest=gpt-4.1-mini
+embabel:
+  models:
+    default-llm: gpt-4.1
+    llms:
+      best: gpt-4.1
+      cheapest: gpt-4.1-mini
 
 # Private OpenAI
 # -----------------------------
@@ -13,7 +16,10 @@ embabel.models.llms.cheapest=gpt-4.1-mini
 # -----------------------------
 # WARNING! DO NOT USE THIS, IS IT NOT SECURE AND MAY RECORD YOUR PROMPTS!
 # Requires the following Environment Variables to be set for OpenAI's public API:
-# export OPENAI_API_KEY=<your_api_key
+# export OPENAI_API_KEY=<your_api_key>
 
 # Enable virtual threads for better concurrency with LLM calls
-spring.threads.virtual.enabled=true
+spring:
+  threads:
+    virtual:
+      enabled: true
