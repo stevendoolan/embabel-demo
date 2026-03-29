@@ -7,6 +7,9 @@ spring:
   ai:
     mcp:
       server:
+        name: embabel-demo
+        version: 1.0.0
+        request-timeout: 30s
         type: sync
 
 sonic-pi:
