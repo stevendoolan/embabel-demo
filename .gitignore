@@ -9,3 +9,5 @@ embabel-agent-api/src/main/resources/mcp/**
 .idea/**
 
 **/*.log
+
+.DS_Store
