@@ -4,24 +4,31 @@
 # Install the required LLMs onto Ollama:
 #
 #     ollama run gpt-oss
-#
 
 # An excellent general-use model.  How to install:
 #
 # ollama run gpt-oss:20b
 #
-embabel.models.default-llm=gpt-oss:20b
-embabel.models.llms.best=gpt-oss:20b
-embabel.models.llms.cheapest=gpt-oss:20b
+embabel:
+  models:
+    default-llm: "gpt-oss:20b"
+    llms:
+      best: "gpt-oss:20b"
+      cheapest: "gpt-oss:20b"
 
 # A small model to compare with gpt-oss:20b.  How to install:
 #
 # ollama run qwen3:4b
 #
-#embabel.models.default-llm=qwen3:4b
-#embabel.models.llms.best=qwen3:4b
-#embabel.models.llms.cheapest=qwen3:4b
+# embabel:
+#   models:
+#     default-llm: "qwen3:4b"
+#     llms:
+#       best: "qwen3:4b"
+#       cheapest: "qwen3:4b"
 
 # Enable virtual threads for better concurrency with LLM calls
-spring.threads.virtual.enabled=true
-spring.ai.mcp.server.type=sync
+spring:
+  threads:
+    virtual:
+      enabled: true

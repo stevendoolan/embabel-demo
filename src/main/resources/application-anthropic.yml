@@ -1,0 +1,16 @@
+# Use these Anthropic models
+embabel:
+  models:
+    default-llm: claude-sonnet-4-5
+    llms:
+      best: claude-opus-4-1
+      cheapest: claude-sonnet-4-5
+
+# Requires the following Environment Variables to be set:
+# export ANTHROPIC_API_KEY=<your_api_key>
+
+# Enable virtual threads for better concurrency with LLM calls
+spring:
+  threads:
+    virtual:
+      enabled: true
