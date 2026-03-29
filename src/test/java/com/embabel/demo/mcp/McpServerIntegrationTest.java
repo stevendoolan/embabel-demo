@@ -182,6 +182,35 @@ class McpServerIntegrationTest {
         }
     }
 
+    @Test
+    void shouldListResources() throws Exception {
+        LOG.info("Requesting resources/list...");
+        postJsonRpc("resources/list", 40, MAPPER.createObjectNode());
+        var response = waitForResponse(40);
+
+        assertThat(response.has("result")).as("resources/list has result").isTrue();
+        var resources = response.get("result").get("resources");
+        assertThat(resources.isArray()).isTrue();
+
+        List<String> uris = new ArrayList<>();
+        for (JsonNode resource : resources) {
+            uris.add(resource.get("uri").asText());
+        }
+        LOG.info("Available resources ({}): {}", uris.size(), uris);
+
+        assertThat(uris).contains("embabel://demo/info");
+    }
+
+    @Test
+    void shouldRespondToPing() throws Exception {
+        LOG.info("Sending ping...");
+        postJsonRpc("ping", 60, MAPPER.createObjectNode());
+        var response = waitForResponse(60);
+
+        assertThat(response.has("result")).as("ping has result").isTrue();
+        LOG.info("Ping response: {}", MAPPER.writeValueAsString(response.get("result")));
+    }
+
     // --- Helper methods ---
 
     private static void postJsonRpc(String method, int id, JsonNode params) throws Exception {
