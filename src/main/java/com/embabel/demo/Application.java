@@ -15,14 +15,12 @@
  */
 package com.embabel.demo;
 
-import com.embabel.agent.config.annotation.EnableAgents;
 import com.embabel.demo.config.ProxyConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
-@EnableAgents
 @ConfigurationPropertiesScan("com.embabel.demo")
 public class Application {
 
