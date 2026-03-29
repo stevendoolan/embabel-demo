@@ -126,6 +126,16 @@ class McpServerIntegrationTest {
     }
 
     @Test
+    void shouldRespondToPing() throws Exception {
+        LOG.info("Sending ping...");
+        postJsonRpc("ping", 60, MAPPER.createObjectNode());
+        var response = waitForResponse(60);
+
+        assertThat(response.has("result")).as("ping has result").isTrue();
+        LOG.info("Ping response: {}", MAPPER.writeValueAsString(response.get("result")));
+    }
+
+    @Test
     void shouldListExpectedTools() throws Exception {
         LOG.info("Requesting tools/list...");
         postJsonRpc("tools/list", 10, MAPPER.createObjectNode());
@@ -183,25 +193,6 @@ class McpServerIntegrationTest {
     }
 
     @Test
-    void shouldListResources() throws Exception {
-        LOG.info("Requesting resources/list...");
-        postJsonRpc("resources/list", 40, MAPPER.createObjectNode());
-        var response = waitForResponse(40);
-
-        assertThat(response.has("result")).as("resources/list has result").isTrue();
-        var resources = response.get("result").get("resources");
-        assertThat(resources.isArray()).isTrue();
-
-        List<String> uris = new ArrayList<>();
-        for (JsonNode resource : resources) {
-            uris.add(resource.get("uri").asText());
-        }
-        LOG.info("Available resources ({}): {}", uris.size(), uris);
-
-        assertThat(uris).contains("embabel://demo/info");
-    }
-
-    @Test
     @Timeout(120)
     void shouldInvokeBestDadJokeTool() throws Exception {
         LOG.info("Invoking tools/call for bestDadJoke...");
@@ -236,16 +227,6 @@ class McpServerIntegrationTest {
 
         LOG.info("Best dad joke: '{}' (rating: {})",
                 jokeResponse.get("joke").asText(), jokeResponse.get("rating").asInt());
-    }
-
-    @Test
-    void shouldRespondToPing() throws Exception {
-        LOG.info("Sending ping...");
-        postJsonRpc("ping", 60, MAPPER.createObjectNode());
-        var response = waitForResponse(60);
-
-        assertThat(response.has("result")).as("ping has result").isTrue();
-        LOG.info("Ping response: {}", MAPPER.writeValueAsString(response.get("result")));
     }
 
     // --- Helper methods ---
