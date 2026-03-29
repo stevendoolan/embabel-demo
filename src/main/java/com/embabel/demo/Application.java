@@ -20,17 +20,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-/**
- * Based on AnthropicApplication in
- * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/AnthropicApplication.java">embabel-demo</a>
- */
 @SpringBootApplication
 @ConfigurationPropertiesScan("com.embabel.demo")
-public class AnthropicApplication {
+public class Application {
 
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.active", "anthropic");
         ProxyConfigurer.configureProxy();
-        SpringApplication.run(AnthropicApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
