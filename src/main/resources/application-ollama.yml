@@ -26,9 +26,3 @@ embabel:
 #     llms:
 #       best: "qwen3:4b"
 #       cheapest: "qwen3:4b"
-
-# Enable virtual threads for better concurrency with LLM calls
-spring:
-  threads:
-    virtual:
-      enabled: true
