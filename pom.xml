@@ -103,6 +103,9 @@
                 <configuration>
                     <mainClass>${spring.boot.mainClass}</mainClass>
                     <workingDirectory>${project.build.directory}</workingDirectory>
+                    <systemPropertyVariables>
+                        <spring.config.additional-location>${spring.config.additional-location}</spring.config.additional-location>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
@@ -123,8 +126,8 @@
         <profile>
             <id>ollama</id>
             <properties>
-                <spring.profiles.active>ollama</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.OllamaApplication</spring.boot.mainClass>
+                <spring.config.additional-location>file:${project.basedir}/config/ollama/</spring.config.additional-location>
+                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
         </profile>
         <profile>
@@ -133,15 +136,15 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>openai</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.OpenAiApplication</spring.boot.mainClass>
+                <spring.config.additional-location>file:${project.basedir}/config/openai/</spring.config.additional-location>
+                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
         </profile>
         <profile>
             <id>anthropic</id>
             <properties>
-                <spring.profiles.active>anthropic</spring.profiles.active>
-                <spring.boot.mainClass>com.embabel.demo.AnthropicApplication</spring.boot.mainClass>
+                <spring.config.additional-location>file:${project.basedir}/config/anthropic/</spring.config.additional-location>
+                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
         </profile>
     </profiles>

@@ -1,3 +1,9 @@
+# Enable virtual threads for better concurrency with LLM calls
+spring:
+  threads:
+    virtual:
+      enabled: true
+
 sonic-pi:
   instructions: |
     You are an expert Sonic Pi programmer, familiar with music theory and composition.

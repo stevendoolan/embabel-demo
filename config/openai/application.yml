@@ -17,9 +17,3 @@ embabel:
 # WARNING! DO NOT USE THIS, IS IT NOT SECURE AND MAY RECORD YOUR PROMPTS!
 # Requires the following Environment Variables to be set for OpenAI's public API:
 # export OPENAI_API_KEY=<your_api_key>
-
-# Enable virtual threads for better concurrency with LLM calls
-spring:
-  threads:
-    virtual:
-      enabled: true

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.agent.test.integration.EmbabelMockitoIntegrationTest;
-import com.embabel.demo.OpenAiApplication;
+import com.embabel.demo.Application;
 import com.embabel.demo.model.story.ReviewedStory;
 import com.embabel.demo.model.story.Story;
 import com.embabel.demo.prompt.persona.StoryPersonas;
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = OpenAiApplication.class)
+@SpringBootTest(classes = Application.class)
 class WriteAndReviewAgentIntegrationTest extends EmbabelMockitoIntegrationTest {
 
     @BeforeAll

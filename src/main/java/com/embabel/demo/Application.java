@@ -21,18 +21,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-/**
- * Based on OpenAiApplication in
- * <a href="https://github.com/stevendoolan/embabel-demo/blob/main/src/main/java/com/embabel/demo/OpenAiApplication.java">embabel-demo</a>
- */
 @SpringBootApplication
 @EnableAgents
 @ConfigurationPropertiesScan("com.embabel.demo")
-public class OpenAiApplication {
+public class Application {
 
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.active", "openai");
         ProxyConfigurer.configureProxy();
-        SpringApplication.run(OpenAiApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
