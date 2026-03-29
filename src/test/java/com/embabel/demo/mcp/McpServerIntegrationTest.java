@@ -202,6 +202,43 @@ class McpServerIntegrationTest {
     }
 
     @Test
+    @Timeout(120)
+    void shouldInvokeBestDadJokeTool() throws Exception {
+        LOG.info("Invoking tools/call for bestDadJoke...");
+        var params = MAPPER.createObjectNode();
+        params.put("name", "bestDadJoke");
+        params.set("arguments", MAPPER.createObjectNode().put("text", "programming"));
+
+        postJsonRpc("tools/call", 70, params);
+        var response = waitForResponse(70, 120_000);
+
+        assertThat(response.has("result")).as("tools/call has result").isTrue();
+        var result = response.get("result");
+        LOG.info("bestDadJoke result: {}", MAPPER.writeValueAsString(result));
+
+        assertThat(result.has("content")).as("result has content").isTrue();
+        var content = result.get("content");
+        assertThat(content.isArray()).as("content is array").isTrue();
+        assertThat(content.size()).as("content is not empty").isGreaterThan(0);
+
+        var firstContent = content.get(0);
+        assertThat(firstContent.get("type").asText()).as("content type is text").isEqualTo("text");
+
+        var text = firstContent.get("text").asText();
+        LOG.info("bestDadJoke response text: {}", text);
+
+        // Parse the response text as JSON and verify it has joke and rating fields
+        var jokeResponse = MAPPER.readTree(text);
+        assertThat(jokeResponse.has("joke")).as("response has joke field").isTrue();
+        assertThat(jokeResponse.has("rating")).as("response has rating field").isTrue();
+        assertThat(jokeResponse.get("joke").asText()).as("joke is not blank").isNotBlank();
+        assertThat(jokeResponse.get("rating").asInt()).as("rating is between 1 and 10").isBetween(1, 10);
+
+        LOG.info("Best dad joke: '{}' (rating: {})",
+                jokeResponse.get("joke").asText(), jokeResponse.get("rating").asInt());
+    }
+
+    @Test
     void shouldRespondToPing() throws Exception {
         LOG.info("Sending ping...");
         postJsonRpc("ping", 60, MAPPER.createObjectNode());
@@ -243,8 +280,12 @@ class McpServerIntegrationTest {
     }
 
     private static JsonNode waitForResponse(int expectedId) throws Exception {
-        LOG.info("Waiting for JSON-RPC response with id={}...", expectedId);
-        var deadline = System.currentTimeMillis() + 10_000;
+        return waitForResponse(expectedId, 10_000);
+    }
+
+    private static JsonNode waitForResponse(int expectedId, long timeoutMillis) throws Exception {
+        LOG.info("Waiting for JSON-RPC response with id={} (timeout={}ms)...", expectedId, timeoutMillis);
+        var deadline = System.currentTimeMillis() + timeoutMillis;
         while (System.currentTimeMillis() < deadline) {
             var msg = sseMessages.poll(1, TimeUnit.SECONDS);
             if (msg != null && msg.has("id") && msg.get("id").asInt() == expectedId) {
