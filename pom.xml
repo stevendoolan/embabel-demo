@@ -38,37 +38,11 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-ollama</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-openai</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-anthropic</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
         <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-mcpserver/ -->
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-starter-mcpserver</artifactId>
             <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- Unit and Integration Testing -->
@@ -115,6 +89,14 @@
                 <spring.config.additional-location>file:${project.basedir}/config/ollama/</spring.config.additional-location>
                 <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-ollama</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>openai</id>
@@ -125,6 +107,14 @@
                 <spring.config.additional-location>file:${project.basedir}/config/openai/</spring.config.additional-location>
                 <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-openai</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>anthropic</id>
@@ -132,6 +122,14 @@
                 <spring.config.additional-location>file:${project.basedir}/config/anthropic/</spring.config.additional-location>
                 <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-anthropic</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
