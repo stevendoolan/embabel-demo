@@ -23,6 +23,8 @@
     <properties>
         <java.version>21</java.version>
 
+        <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
+
         <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-starter -->
         <embabel-agent.version>0.3.4</embabel-agent.version>
 
@@ -41,27 +43,7 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-ollama</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-openai</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-anthropic</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -81,6 +63,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-test -->
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-test</artifactId>
@@ -88,6 +71,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -127,8 +111,15 @@
             <id>ollama</id>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/ollama/</spring.config.additional-location>
-                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-ollama</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>openai</id>
@@ -137,15 +128,29 @@
             </activation>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/openai/</spring.config.additional-location>
-                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-openai</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>anthropic</id>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/anthropic/</spring.config.additional-location>
-                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
             </properties>
+            <dependencies>
+                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-anthropic</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
