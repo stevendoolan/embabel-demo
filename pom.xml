@@ -25,9 +25,6 @@
 
         <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-starter -->
         <embabel-agent.version>0.3.4</embabel-agent.version>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.shell/spring-shell-standard -->
-        <spring-shell.version>3.4.2</spring-shell.version>
     </properties>
 
     <dependencies>
@@ -74,13 +71,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.shell/spring-shell-standard -->
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-standard</artifactId>
-            <version>${spring-shell.version}</version>
-        </dependency>
-
         <!-- Unit and Integration Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -119,17 +109,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>shell</id>
-            <dependencies>
-                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-shell/ -->
-                <dependency>
-                    <groupId>com.embabel.agent</groupId>
-                    <artifactId>embabel-agent-starter-shell</artifactId>
-                    <version>${embabel-agent.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
         <profile>
             <id>ollama</id>
             <properties>
