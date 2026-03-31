@@ -40,24 +40,11 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
-        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-mcpserver/ -->
+        <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-starter-mcpserver -->
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-starter-mcpserver</artifactId>
             <version>${embabel-agent.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.shell/spring-shell-standard -->
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-standard</artifactId>
-            <version>${spring-shell.version}</version>
         </dependency>
 
         <!-- Unit and Integration Testing -->
@@ -100,21 +87,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>ollama</id>
-            <properties>
-                <spring.config.additional-location>file:${project.basedir}/config/ollama/</spring.config.additional-location>
-                <spring.boot.mainClass>com.embabel.demo.Application</spring.boot.mainClass>
-            </properties>
-            <dependencies>
-                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
-                <dependency>
-                    <groupId>com.embabel.agent</groupId>
-                    <artifactId>embabel-agent-starter-ollama</artifactId>
-                    <version>${embabel-agent.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
         <profile>
             <id>ollama</id>
             <properties>
