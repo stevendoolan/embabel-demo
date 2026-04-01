@@ -64,7 +64,7 @@ public class WriteAndReviewAgent {
 
     @AchievesGoal(
             description = "The story has been crafted and reviewed by a book reviewer",
-            export = @Export(remote = true, name = "writeAndReviewStory"))
+            export = @Export(remote = true, name = "writeAndReviewStory", startingInputTypes = {UserInput.class}))
     @Action
     public ReviewedStory reviewStory(UserInput userInput, Story story, OperationContext context) {
         var review = context

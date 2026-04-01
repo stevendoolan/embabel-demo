@@ -43,6 +43,34 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
+        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-ollama</artifactId>
+            <version>${embabel-agent.version}</version>
+        </dependency>
+
+        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-openai</artifactId>
+            <version>${embabel-agent.version}</version>
+        </dependency>
+
+        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-anthropic</artifactId>
+            <version>${embabel-agent.version}</version>
+        </dependency>
+
+        <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-mcpserver/ -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-starter-mcpserver</artifactId>
+            <version>${embabel-agent.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,6 +110,13 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>e2e</excludedGroups>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -112,14 +147,6 @@
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/ollama/</spring.config.additional-location>
             </properties>
-            <dependencies>
-                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-ollama/ -->
-                <dependency>
-                    <groupId>com.embabel.agent</groupId>
-                    <artifactId>embabel-agent-starter-ollama</artifactId>
-                    <version>${embabel-agent.version}</version>
-                </dependency>
-            </dependencies>
         </profile>
         <profile>
             <id>openai</id>
@@ -129,28 +156,12 @@
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/openai/</spring.config.additional-location>
             </properties>
-            <dependencies>
-                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-openai/ -->
-                <dependency>
-                    <groupId>com.embabel.agent</groupId>
-                    <artifactId>embabel-agent-starter-openai</artifactId>
-                    <version>${embabel-agent.version}</version>
-                </dependency>
-            </dependencies>
         </profile>
         <profile>
             <id>anthropic</id>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/anthropic/</spring.config.additional-location>
             </properties>
-            <dependencies>
-                <!-- https://repo.embabel.com/ui/native/libs-release/com/embabel/agent/embabel-agent-starter-anthropic/ -->
-                <dependency>
-                    <groupId>com.embabel.agent</groupId>
-                    <artifactId>embabel-agent-starter-anthropic</artifactId>
-                    <version>${embabel-agent.version}</version>
-                </dependency>
-            </dependencies>
         </profile>
     </profiles>
 </project>

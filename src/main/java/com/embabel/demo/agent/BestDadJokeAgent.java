@@ -14,6 +14,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Agent that creates the best dad joke ever.
+ * <p>
+ * Inspired / directly copied from this YouTube video by Coffee + Software's James Ward and Josh Long:
+ * <a href="https://www.youtube.com/watch?v=kpeYvKha5oE&t=5s">https://www.youtube.com/watch?...</a>
+ */
 @Agent(description = "Create the best dad joke ever")
 @Profile("!test")
 public class BestDadJokeAgent {
@@ -42,7 +48,7 @@ public class BestDadJokeAgent {
 
     @AchievesGoal(
             description = "Create the best dad joke ever",
-            export = @Export(remote = true, name = "bestDadJoke"))
+            export = @Export(remote = true, name = "bestDadJoke", startingInputTypes = {UserInput.class}))
     @Action
     public JokeAndRating createBestDadJoke(JokesAndRatings jokesAndRatings) {
         return jokesAndRatings.jokeAndRatings().stream()

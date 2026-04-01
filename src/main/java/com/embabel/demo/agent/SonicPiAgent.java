@@ -88,7 +88,7 @@ public record SonicPiAgent(
 
     @AchievesGoal(
             description = "Sonic Pi code has been generated based on user input",
-            export = @Export(remote = true, name = "sonicPiCode"))
+            export = @Export(remote = true, name = "sonicPiCode", startingInputTypes = {UserInput.class}))
     @Action
     public SonicPiScript combineAllSonicPiScripts(
             SonicPiMetadata sonicPiMetadata,
