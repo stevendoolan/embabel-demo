@@ -10,7 +10,25 @@ spring:
         name: embabel-demo
         version: 1.0.0
         request-timeout: 30s
-        type: sync
+        type: SYNC
+
+      client:
+        enabled: true
+        name: embabel-demo
+        version: 1.0.0
+        request-timeout: 30s
+        type: SYNC
+
+        stdio:
+          connections:
+            # MCP server exposed by Docker Desktop MCP Toolkit extension
+            # Add --verbose to the args to enable verbose logging
+            docker-mcp:
+              command: docker
+              args:
+                - mcp
+                - gateway
+                - run
 
 sonic-pi:
   instructions: |
