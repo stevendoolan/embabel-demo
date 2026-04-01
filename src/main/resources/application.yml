@@ -61,7 +61,10 @@ sonic-pi:
     
     Always set the tempo using `use_bpm <tempoBpm>`.
 
-    Do not use '#' in note names (e.g., use ':c4' instead of ':c#4').
+    To write a sharp note, use `s` (e.g. `:cs4` for C#4). Do not use '#' in note names.
+    All sharp notes: `cs`, `ds`, `fs`, `gs`, `as` (e.g. `:cs4`, `:ds4`, `:fs4`, `:gs4`, `:as4`).
+    Do not write `:bes4` for Bb4. Instead, write `:as4` for A#4, which is enharmonically equivalent to Bb4.
+    All flat notes: `db`, `eb`, `gb`, `ab`, `bb` (e.g. `:db4`, `:eb4`, `:gb4`, `:ab4`, `:bb4`).
     
     Drums/percussion must be played using `sample`, and not using `play_pattern_timed`.
     Always use a live_loop.
@@ -69,21 +72,88 @@ sonic-pi:
 
     Do not use built-in function names as variable names:
     <builtInFunctionNames>
-    chord
+      chord
     </builtInFunctionNames>
     
     `play_chord` must always use chord function to define the chord.  Correct usage:
     <playChordExample1>
-    play_chord chord(:c4, :major)
+      play_chord chord(:c4, :major)
     </playChordExample1>
     <playChordExample2>
-    chords = [chord(:c4, :major), chord(:f4, :major), chord(:g4, :major)]
-    play_chord chords[0], sustain: 3, amp: 0.6
+      chords = [chord(:c4, :major), chord(:f4, :major), chord(:g4, :major)]
+      play_chord chords[0], sustain: 3, amp: 0.6
     </playChordExample2>
     Incorrect usage:
     <incorrectPlayChordExample>
-    play_chord [:c4, :e4, :g4]
+      play_chord [:c4, :e4, :g4]
     </incorrectPlayChordExample>
+    
+    To change a chord, do not write ':maj7'. Instead write ':major7'.  Full range of C chords:
+    <cChords>
+      chord(:C, '1')
+      chord(:C, '5')
+      chord(:C, '+5')
+      chord(:C, 'm+5')
+      chord(:C, :sus2)
+      chord(:C, :sus4)
+      chord(:C, '6')
+      chord(:C, :m6)
+      chord(:C, '7sus2')
+      chord(:C, '7sus4')
+      chord(:C, '7-5')
+      chord(:C, 'm7-5')
+      chord(:C, '7+5')
+      chord(:C, 'm7+5')
+      chord(:C, '9')
+      chord(:C, :m9)
+      chord(:C, 'm7+9')
+      chord(:C, :maj9)
+      chord(:C, '9sus4')
+      chord(:C, '6*9')
+      chord(:C, 'm6*9')
+      chord(:C, '7-9')
+      chord(:C, 'm7-9')
+      chord(:C, '7-10')
+      chord(:C, '9+5')
+      chord(:C, 'm9+5')
+      chord(:C, '7+5-9')
+      chord(:C, 'm7+5-9')
+      chord(:C, '11')
+      chord(:C, :m11)
+      chord(:C, :maj11)
+      chord(:C, '11+')
+      chord(:C, 'm11+')
+      chord(:C, '13')
+      chord(:C, :m13)
+      chord(:C, :add2)
+      chord(:C, :add4)
+      chord(:C, :add9)
+      chord(:C, :add11)
+      chord(:C, :add13)
+      chord(:C, :madd2)
+      chord(:C, :madd4)
+      chord(:C, :madd9)
+      chord(:C, :madd11)
+      chord(:C, :madd13)
+      chord(:C, :major)
+      chord(:C, :M)
+      chord(:C, :minor)
+      chord(:C, :m)
+      chord(:C, :major7)
+      chord(:C, :dom7)
+      chord(:C, '7')
+      chord(:C, :M7)
+      chord(:C, :minor7)
+      chord(:C, :m7)
+      chord(:C, :augmented)
+      chord(:C, :a)
+      chord(:C, :diminished)
+      chord(:C, :dim)
+      chord(:C, :i)
+      chord(:C, :diminished7)
+      chord(:C, :dim7)
+      chord(:C, :i7)
+    </cChords>
 
   instruments:
     - bass_foundation

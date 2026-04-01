@@ -155,7 +155,7 @@ class McpServerIntegrationTest {
 
         assertThat(toolNames)
                 .as("Expected MCP tools from exported agents")
-                .contains("bestDadJoke", "fibonacciNumbers", "sonicPiCode", "writeAndReviewStory");
+                .contains("bestDadJoke", "fibonacciNumbers", "writeAndReviewStory");
     }
 
     @Test

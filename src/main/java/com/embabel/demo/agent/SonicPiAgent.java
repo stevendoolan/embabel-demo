@@ -86,9 +86,11 @@ public record SonicPiAgent(
                         "percussionSamples", String.join(", ", sonicPiMetadata.percussionSamples())));
     }
 
+    /**
+     * Not exporting this agent as an MCP Server, as it takes too long!
+     */
     @AchievesGoal(
-            description = "Sonic Pi code has been generated based on user input",
-            export = @Export(remote = true, name = "sonicPiCode", startingInputTypes = {UserInput.class}))
+            description = "Sonic Pi code has been generated based on user input")
     @Action
     public SonicPiScript combineAllSonicPiScripts(
             SonicPiMetadata sonicPiMetadata,

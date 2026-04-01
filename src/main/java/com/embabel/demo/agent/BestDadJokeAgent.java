@@ -6,6 +6,7 @@ import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
+import com.embabel.demo.model.dadjoke.BestDadJokeResult;
 import com.embabel.demo.model.dadjoke.JokeAndRating;
 import com.embabel.demo.model.dadjoke.Jokes;
 import com.embabel.demo.model.dadjoke.JokesAndRatings;
@@ -50,9 +51,13 @@ public class BestDadJokeAgent {
             description = "Create the best dad joke ever",
             export = @Export(remote = true, name = "bestDadJoke", startingInputTypes = {UserInput.class}))
     @Action
-    public JokeAndRating createBestDadJoke(JokesAndRatings jokesAndRatings) {
-        return jokesAndRatings.jokeAndRatings().stream()
+    public BestDadJokeResult createBestDadJoke(JokesAndRatings jokesAndRatings) {
+        JokeAndRating bestJoke = jokesAndRatings.jokeAndRatings().stream()
                 .max(Comparator.comparingDouble(a -> a.rating().score()))
                 .orElseThrow();
+        List<JokeAndRating> otherJokes = jokesAndRatings.jokeAndRatings().stream()
+                .filter(j -> j != bestJoke)
+                .toList();
+        return new BestDadJokeResult(bestJoke, otherJokes);
     }
 }
