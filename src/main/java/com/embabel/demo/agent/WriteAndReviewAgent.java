@@ -22,10 +22,21 @@ import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.common.ai.model.LlmOptions;
+import com.embabel.demo.model.story.ReviewedStories;
 import com.embabel.demo.model.story.ReviewedStory;
+import com.embabel.demo.model.story.Stories;
 import com.embabel.demo.model.story.Story;
+import com.embabel.demo.model.story.StoryReview;
 import com.embabel.demo.prompt.persona.StoryPersonas;
+import jakarta.annotation.Nullable;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
@@ -33,55 +44,84 @@ import org.springframework.context.annotation.Profile;
  * Based on WriteAndReviewAgent in
  * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
  */
-@Agent(description = "Generate a story based on user input and review it")
+@Agent(description = "Generate stories based on user input, review them, and return the best one")
 @Profile("!test")
 public class WriteAndReviewAgent {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WriteAndReviewAgent.class);
+    private static final int MAX_RETRIES = 3;
+
+    private final int storyCount;
     private final int storyWordCount;
     private final int reviewWordCount;
 
     public WriteAndReviewAgent(
-            @Value("${storyWordCount:100}") int storyWordCount,
+            @Value("${storyCount:3}") int storyCount,
+            @Value("${storyWordCount:500}") int storyWordCount,
             @Value("${reviewWordCount:100}") int reviewWordCount
     ) {
+        this.storyCount = storyCount;
         this.storyWordCount = storyWordCount;
         this.reviewWordCount = reviewWordCount;
     }
 
     @Action
-    public Story craftStory(UserInput userInput, OperationContext context) {
-        return context.ai()
-                // Higher temperature for more creative output
-                .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
-                .withPromptContributor(StoryPersonas.WRITER)
-                .withTemplate("story/craft-story-template.jinja")
-                .createObject(Story.class,
-                        Map.of(
-                                "storyWordCount", storyWordCount,
-                                "userInput", userInput.getContent()
-                        ));
+    public Stories craftStories(UserInput userInput, OperationContext context) {
+        List<Story> stories = IntStream.range(0, storyCount).parallel().mapToObj(i ->
+                retry("craftStory", () ->
+                        context.ai()
+                                .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
+                                .withPromptContributor(StoryPersonas.WRITER)
+                                .withTemplate("story/craft-story-template.jinja")
+                                .createObject(Story.class,
+                                        Map.of(
+                                                "storyWordCount", storyWordCount,
+                                                "currentDate", LocalDate.now().toString(),
+                                                "userInput", userInput.getContent()
+                                        )))
+        ).filter(Objects::nonNull).toList();
+        return new Stories(stories);
+    }
+
+    @Action
+    public ReviewedStories reviewStories(UserInput userInput, Stories stories, OperationContext context) {
+        List<ReviewedStory> reviewed = stories.stories().stream().parallel().map(story ->
+                retry("reviewStory", () -> {
+                    var review = context.ai()
+                            .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
+                            .withPromptContributor(StoryPersonas.REVIEWER)
+                            .withTemplate("story/review-story-template.jinja")
+                            .createObject(StoryReview.class,
+                                    Map.of(
+                                            "reviewWordCount", reviewWordCount,
+                                            "story", story.text(),
+                                            "userInput", userInput.getContent()
+                                    ));
+                    return new ReviewedStory(story, review, StoryPersonas.REVIEWER);
+                })
+        ).filter(Objects::nonNull).toList();
+        return new ReviewedStories(reviewed);
+    }
+
+    private <T> @Nullable T retry(String operationName, java.util.function.Supplier<T> operation) {
+        for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                return operation.get();
+            } catch (Exception e) {
+                LOG.warn("{} failed on attempt {}/{}: {}", operationName, attempt, MAX_RETRIES, e.getMessage());
+            }
+        }
+        LOG.error("{} failed after {} attempts, skipping", operationName, MAX_RETRIES);
+        return null;
     }
 
     @AchievesGoal(
-            description = "The story has been crafted and reviewed by a book reviewer",
+            description = "Stories have been crafted, reviewed, and the best one selected",
             export = @Export(remote = true, name = "writeAndReviewStory", startingInputTypes = {UserInput.class}))
     @Action
-    public ReviewedStory reviewStory(UserInput userInput, Story story, OperationContext context) {
-        var review = context
-                .ai()
-                .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
-                .withPromptContributor(StoryPersonas.REVIEWER)
-                .withTemplate("story/review-story-template.jinja")
-                .createObject(String.class,
-                        Map.of(
-                                "story", story.text(),
-                                "userInput", userInput.getContent()
-                        ));
-
-        return new ReviewedStory(
-                story,
-                review,
-                StoryPersonas.REVIEWER
-        );
+    public ReviewedStory selectBestStory(ReviewedStories reviewedStories) {
+        return reviewedStories.reviewedStories().stream()
+                .max(Comparator.comparingInt(rs -> rs.review().rating()))
+                .orElseThrow();
     }
 }

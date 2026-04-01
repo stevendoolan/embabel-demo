@@ -10,7 +10,7 @@ import org.springframework.lang.NonNull;
 
 public record ReviewedStory(
         Story story,
-        String review,
+        StoryReview review,
         Persona reviewer
 ) implements HasContent, Timestamped {
 
@@ -26,15 +26,17 @@ public record ReviewedStory(
         return String.format("""
                         # Story
                         %s
-                        
+
                         # Review
+                        Rating: %d/10
                         %s
-                        
+
                         # Reviewer
                         %s, %s
                         """,
                 story.text(),
-                review,
+                review.rating(),
+                review.explanation(),
                 reviewer.getName(),
                 getTimestamp().atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy"))

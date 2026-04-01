@@ -91,19 +91,26 @@ class RestControllerIntegrationTest {
         LOG.info("Calling GET /write-a-story?about=a+brave+robot ...");
         var json = getJson(BASE_URL + "/write-a-story?about=a+brave+robot");
 
-        LOG.info("Response:\n\n{}\n\n", MAPPER.writeValueAsString(json));
+        LOG.debug("Response:\n\n{}\n\n", json);
 
         assertThat(json.has("story")).as("response has 'story'").isTrue();
         var story = json.get("story");
         assertThat(story.has("text")).as("story has 'text'").isTrue();
         assertThat(story.get("text").asText()).as("story text is not blank").isNotBlank();
 
+        LOG.info("Story text:\n\n{}\n\n", story.get("text").asText());
+
         assertThat(json.has("review")).as("response has 'review'").isTrue();
-        assertThat(json.get("review").asText()).as("review is not blank").isNotBlank();
+        var review = json.get("review");
+        assertThat(review.has("rating")).as("review has 'rating'").isTrue();
+        assertThat(review.get("rating").asInt()).as("review rating is between 1 and 10").isBetween(1, 10);
+        assertThat(review.has("explanation")).as("review has 'explanation'").isTrue();
+        assertThat(review.get("explanation").asText()).as("review explanation is not blank").isNotBlank();
 
         assertThat(json.has("reviewer")).as("response has 'reviewer'").isTrue();
 
-        LOG.info("Story written and reviewed. Review:\n\n{}\n\n", json.get("review").asText());
+        LOG.info("Review: Rating: {}/10\nExplanation:\n\n{}\n\n",
+                review.get("rating").asInt(), review.get("explanation").asText());
     }
 
     @Test
