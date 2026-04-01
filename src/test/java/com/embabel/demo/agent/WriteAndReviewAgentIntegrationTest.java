@@ -12,9 +12,11 @@ import com.embabel.demo.model.story.ReviewedStory;
 import com.embabel.demo.model.story.Story;
 import com.embabel.demo.prompt.persona.StoryPersonas;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@Tag("integration")
 @SpringBootTest(classes = Application.class)
 class WriteAndReviewAgentIntegrationTest extends EmbabelMockitoIntegrationTest {
 
