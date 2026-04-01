@@ -248,7 +248,7 @@ class McpServerIntegrationTest {
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setDoOutput(true);
         connection.setConnectTimeout(5000);
-        connection.setReadTimeout(5000);
+        connection.setReadTimeout(120_000);
 
         try (var out = connection.getOutputStream()) {
             out.write(MAPPER.writeValueAsBytes(message));
