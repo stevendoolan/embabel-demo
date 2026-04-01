@@ -198,7 +198,7 @@ class McpServerIntegrationTest {
         LOG.info("Invoking tools/call for bestDadJoke...");
         var params = MAPPER.createObjectNode();
         params.put("name", "bestDadJoke");
-        params.set("arguments", MAPPER.createObjectNode().put("text", "programming"));
+        params.set("arguments", MAPPER.createObjectNode().put("content", "programming"));
 
         postJsonRpc("tools/call", 70, params);
         var response = waitForResponse(70, 120_000);
