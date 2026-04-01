@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * Integration test for the MCP server SSE endpoint.
  * Requires the application to be running on localhost:8080.
  */
-@Tag("integration")
+@Tag("e2e")
 @Timeout(30)
 class McpServerIntegrationTest {
 
