@@ -9,14 +9,14 @@ spring:
       server:
         name: embabel-demo
         version: 1.0.0
-        request-timeout: 30s
+        request-timeout: 300s
         type: SYNC
 
       client:
         enabled: true
         name: embabel-demo
         version: 1.0.0
-        request-timeout: 30s
+        request-timeout: 300s
         type: SYNC
 
         # Required for running Docker MCP Tools:

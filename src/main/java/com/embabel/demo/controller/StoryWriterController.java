@@ -5,6 +5,8 @@ import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.demo.model.story.ReviewedStory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +26,11 @@ public record StoryWriterController(AgentPlatform agentPlatform) {
     public ReviewedStory writeAStory(@RequestParam("about") String about) {
         return AgentInvocation.create(agentPlatform, ReviewedStory.class)
                 .invoke(new UserInput("Write a story about %s".formatted(about)));
+    }
+
+    @PostMapping("/write-a-story")
+    public ReviewedStory writeAStoryFromPost(@RequestBody String about) {
+        return AgentInvocation.create(agentPlatform, ReviewedStory.class)
+                .invoke(new UserInput(about));
     }
 }

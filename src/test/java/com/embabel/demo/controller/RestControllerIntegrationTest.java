@@ -5,9 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -114,6 +117,34 @@ class RestControllerIntegrationTest {
     }
 
     @Test
+    void shouldWriteAStoryFromPost() throws Exception {
+        var story = Files.readString(Path.of("src/test/resources/Incident Chat.md"), StandardCharsets.UTF_8);
+        LOG.info("Calling POST /write-a-story with {} chars ...", story.length());
+        var json = postTextForJson(BASE_URL + "/write-a-story", story);
+
+        LOG.debug("Response:\n\n{}\n\n", json);
+
+        assertThat(json.has("story")).as("response has 'story'").isTrue();
+        var storyNode = json.get("story");
+        assertThat(storyNode.has("text")).as("story has 'text'").isTrue();
+        assertThat(storyNode.get("text").asText()).as("story text is not blank").isNotBlank();
+
+        LOG.info("Story text:\n\n{}\n\n", storyNode.get("text").asText());
+
+        assertThat(json.has("review")).as("response has 'review'").isTrue();
+        var review = json.get("review");
+        assertThat(review.has("rating")).as("review has 'rating'").isTrue();
+        assertThat(review.get("rating").asInt()).as("review rating is between 1 and 10").isBetween(1, 10);
+        assertThat(review.has("explanation")).as("review has 'explanation'").isTrue();
+        assertThat(review.get("explanation").asText()).as("review explanation is not blank").isNotBlank();
+
+        assertThat(json.has("reviewer")).as("response has 'reviewer'").isTrue();
+
+        LOG.info("Review: Rating: {}/10\nExplanation:\n\n{}\n\n",
+                review.get("rating").asInt(), review.get("explanation").asText());
+    }
+
+    @Test
     @Timeout(600)
     void shouldGenerateSonicPiScript() throws Exception {
         // Submit async job
@@ -186,6 +217,33 @@ class RestControllerIntegrationTest {
         try (var in = connection.getInputStream()) {
             var body = new String(in.readAllBytes(), StandardCharsets.UTF_8);
             return MAPPER.readTree(body);
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    private static JsonNode postTextForJson(String url, String body) throws IOException {
+        LOG.info("POST {} ({} chars)", url, body.length());
+
+        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setDoOutput(true);
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(120_000);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            os.write(body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        int status = connection.getResponseCode();
+        LOG.info("Response status: {}", status);
+        assertThat(status).as("HTTP status is 200 OK").isEqualTo(200);
+
+        try (var in = connection.getInputStream()) {
+            var responseBody = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            return MAPPER.readTree(responseBody);
         } finally {
             connection.disconnect();
         }

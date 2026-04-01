@@ -20,8 +20,11 @@ https://github.com/embabel/java-agent-template
   - [Ollama](#ollama)
 - [Set the System Proxy (if required)](#set-the-system-proxy-if-required)
 - [Build and Run the Service](#build-and-run-the-service)
+- [Docker](#docker)
 - [MCP Server](#mcp-server)
   - [Claude Code](#claude-code)
+  - [GitHub Copilot](#github-copilot)
+  - [IntelliJ IDEA Ultimate](#intellij-idea-ultimate)
   - [JetBrains AI Assistant](#jetbrains-ai-assistant)
 - [Agent Documentation](#agent-documentation)
 - [Updates](#updates)
@@ -115,6 +118,27 @@ To use Ollama with shell only, run:
 mvn spring-boot:run -Pollama,shell
 ```
 
+## Docker
+You can run this project in Docker using Docker Compose. The Docker build uses the `anthropic` Maven profile.
+
+Set the required environment variables:
+```bash
+export ANTHROPIC_BASE_URL=https://<your-private-anthropic-domain>
+export ANTHROPIC_API_KEY=<your-api-key>
+```
+
+Build and start the service:
+```bash
+docker compose up --build
+```
+
+The service will be available at `http://localhost:8080`.
+
+To stop the service:
+```bash
+docker compose down
+```
+
 ## MCP Server
 
 > **Warning: The MCP server is currently unsecured.** There is no authentication or authorisation on the SSE endpoint. Do not expose it to untrusted networks. MCP Server Security functionality is expected in Embabel Agent 0.4.0.
@@ -143,11 +167,64 @@ Or add a `.mcp.json` file to your project root:
   "mcpServers": {
     "embabel-demo": {
       "type": "sse",
-      "url": "http://localhost:8080/sse"
+      "url": "http://localhost:8080/sse",
+      "timeout": 300000
     }
   }
 }
 ```
+
+### GitHub Copilot
+Start the embabel-demo service, then add a `.vscode/mcp.json` file to your project root:
+```json
+{
+  "servers": {
+    "embabel-demo": {
+      "type": "sse",
+      "url": "http://localhost:8080/sse",
+      "timeout": 300000
+    }
+  }
+}
+```
+
+Or configure via VS Code settings (`settings.json`):
+```json
+{
+  "mcp": {
+    "servers": {
+      "embabel-demo": {
+        "type": "sse",
+        "url": "http://localhost:8080/sse",
+        "timeout": 300000
+      }
+    }
+  }
+}
+```
+
+### IntelliJ IDEA Ultimate
+> Requires the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot) v1.5.57 or later.
+
+Start the embabel-demo service, then in IntelliJ IDEA:
+1. Open **GitHub Copilot Chat** (click the Copilot Chat icon on the right side of the editor)
+2. Switch to **Agent** mode
+3. Click the **Tools** icon, then **Add More Tools...**
+4. Add the embabel-demo server to the `mcp.json` configuration file that opens:
+
+```json
+{
+  "servers": {
+    "embabel-demo": {
+      "type": "sse",
+      "url": "http://localhost:8080/sse",
+      "timeout": 300000
+    }
+  }
+}
+```
+
+Alternatively, go to **Settings | Tools | GitHub Copilot | Model Context Protocol (MCP)** and click **Configure** to edit the `mcp.json` file directly.
 
 ### JetBrains AI Assistant
 Start the embabel-demo service, then in IntelliJ IDEA:
@@ -162,7 +239,8 @@ Or configure via JSON (**Edit as JSON** button):
 {
   "mcpServers": {
     "embabel-demo": {
-      "url": "http://localhost:8080/sse"
+      "url": "http://localhost:8080/sse",
+      "timeout": 300000
     }
   }
 }
@@ -175,12 +253,12 @@ Each agent in the `com.embabel.demo.agent` package has its own documentation pag
 
 See the full [Agent Documentation](docs/agents/index.md).
 
-| Agent | Description |
-|-------|-------------|
-| [Best Dad Joke Agent](docs/agents/best-dad-joke-agent.md) | Generate and rate dad jokes, then select the best one |
-| [Fibonacci Agent](docs/agents/fibonacci-agent.md) | Compute Fibonacci numbers using LLM with tool verification |
-| [Sonic Pi Agent](docs/agents/sonic-pi-agent.md) | Generate Sonic Pi code to play a melody based on user input |
-| [Write and Review Agent](docs/agents/write-and-review-agent.md) | Generate stories, review them, and return the best one |
+| Agent                                                           | Description                                                 |
+|-----------------------------------------------------------------|-------------------------------------------------------------|
+| [Best Dad Joke Agent](docs/agents/best-dad-joke-agent.md)       | Generate and rate dad jokes, then select the best one       |
+| [Fibonacci Agent](docs/agents/fibonacci-agent.md)               | Compute Fibonacci numbers using LLM with tool verification  |
+| [Sonic Pi Agent](docs/agents/sonic-pi-agent.md)                 | Generate Sonic Pi code to play a melody based on user input |
+| [Write and Review Agent](docs/agents/write-and-review-agent.md) | Generate stories, review them, and return the best one      |
 
 ---
 # Updates
