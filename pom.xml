@@ -68,13 +68,6 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-starter-mcpserver-security -->
-        <dependency>
-            <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-mcpserver-security</artifactId>
-            <version>${embabel-agent.version}</version>
-        </dependency>
-
         <!-- Unit and Integration Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
