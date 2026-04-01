@@ -115,6 +115,9 @@ mvn spring-boot:run -Pollama,shell
 ```
 
 ## MCP Server
+
+> **Warning: The MCP server is currently unsecured.** There is no authentication or authorisation on the SSE endpoint. Do not expose it to untrusted networks. MCP Server Security functionality is expected in Embabel Agent 0.4.0.
+
 This application is also an MCP (Model Context Protocol) server.
 When the service is running, all agents with `@Export(remote = true)` are automatically exposed as MCP tools
 via an SSE endpoint at `http://localhost:8080/sse`.
