@@ -23,6 +23,7 @@ https://github.com/embabel/java-agent-template
 - [MCP Server](#mcp-server)
   - [Claude Code](#claude-code)
   - [JetBrains AI Assistant](#jetbrains-ai-assistant)
+- [Agent Documentation](#agent-documentation)
 - [Updates](#updates)
 
 # How to use this project
@@ -166,6 +167,20 @@ Or configure via JSON (**Edit as JSON** button):
   }
 }
 ```
+
+---
+# Agent Documentation
+
+Each agent in the `com.embabel.demo.agent` package has its own documentation page describing its actions, flow, and configuration.
+
+See the full [Agent Documentation](docs/agents/index.md).
+
+| Agent | Description |
+|-------|-------------|
+| [Best Dad Joke Agent](docs/agents/best-dad-joke-agent.md) | Generate and rate dad jokes, then select the best one |
+| [Fibonacci Agent](docs/agents/fibonacci-agent.md) | Compute Fibonacci numbers using LLM with tool verification |
+| [Sonic Pi Agent](docs/agents/sonic-pi-agent.md) | Generate Sonic Pi code to play a melody based on user input |
+| [Write and Review Agent](docs/agents/write-and-review-agent.md) | Generate stories, review them, and return the best one |
 
 ---
 # Updates
