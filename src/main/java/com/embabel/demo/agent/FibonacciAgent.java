@@ -83,7 +83,7 @@ public record FibonacciAgent(FibonacciCalculator fibonacciCalculator) {
 
     @AchievesGoal(
             description = "Compute Fibonacci numbers using LLM and then verify the fibonacciNumber with tool",
-            export = @Export(remote = true, name = "fibonacciNumbers",  startingInputTypes = {UserInput.class}))
+            export = @Export(remote = true, name = "fibonacciNumbers", startingInputTypes = {UserInput.class}))
     @Action
     public FibonacciResponseWithVerification fibonacciWithVerification(
             FibonacciResponseWithTool fibonacciResponseWithTool,
