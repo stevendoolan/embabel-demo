@@ -19,16 +19,17 @@ spring:
         request-timeout: 30s
         type: SYNC
 
-        stdio:
-          connections:
-            # MCP server exposed by Docker Desktop MCP Toolkit extension
-            # Add --verbose to the args to enable verbose logging
-            docker-mcp:
-              command: docker
-              args:
-                - mcp
-                - gateway
-                - run
+        # Required for running Docker MCP Tools:
+#        stdio:
+#          connections:
+#            # MCP server exposed by Docker Desktop MCP Toolkit extension
+#            # Add --verbose to the args to enable verbose logging
+#            docker-mcp:
+#              command: docker
+#              args:
+#                - mcp
+#                - gateway
+#                - run
 
 sonic-pi:
   instructions: |
