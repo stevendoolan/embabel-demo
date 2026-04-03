@@ -227,6 +227,37 @@ class McpServerIntegrationTest {
         LOG.info("Best dad joke response: {}", text);
     }
 
+    @Test
+    @Timeout(120)
+    void shouldInvokeWriteAndReviewStoryTool() throws Exception {
+        LOG.info("Invoking tools/call for writeAndReviewStory...");
+        var params = MAPPER.createObjectNode();
+        params.put("name", "writeAndReviewStory");
+        params.set("arguments", MAPPER.createObjectNode().put("content", "a brave developer who fixed a production outage"));
+
+        postJsonRpc("tools/call", 80, params);
+        var response = waitForResponse(80, 120_000);
+
+        assertThat(response.has("result")).as("tools/call has result").isTrue();
+        var result = response.get("result");
+        LOG.info("writeAndReviewStory result:\n\n{}\n\n", MAPPER.writeValueAsString(result));
+
+        assertThat(result.has("content")).as("result has content").isTrue();
+        var content = result.get("content");
+        assertThat(content.isArray()).as("content is array").isTrue();
+        assertThat(content.size()).as("content is not empty").isGreaterThan(0);
+
+        var firstContent = content.get(0);
+        assertThat(firstContent.get("type").asText()).as("content type is text").isEqualTo("text");
+
+        var text = firstContent.get("text").asText();
+        LOG.info("writeAndReviewStory response text:\n\n{}\n\n", text);
+
+        assertThat(text).as("response contains story section").contains("# Story");
+        assertThat(text).as("response contains review section").contains("# Review");
+        assertThat(text).as("response contains rating").containsPattern("Rating: \\d+/10");
+    }
+
     // --- Helper methods ---
 
     private static void postJsonRpc(String method, int id, JsonNode params) throws Exception {

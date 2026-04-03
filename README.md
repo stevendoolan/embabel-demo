@@ -147,13 +147,16 @@ This application is also an MCP (Model Context Protocol) server.
 When the service is running, all agents with `@Export(remote = true)` are automatically exposed as MCP tools
 via an SSE endpoint at `http://localhost:8080/sse`.
 
+> **Note:** Some MCP tools (e.g. `writeAndReviewStory`) are long-running and may time out in JetBrains AI Assistant. For these calls, use Claude Code directly instead.
+
 The following tools are available:
-| Tool Name | Agent | Description |
-|---|---|---|
-| `fibonacciNumbers` | FibonacciAgent | Compute Fibonacci numbers using LLM with tool verification |
-| `writeAndReviewStory` | WriteAndReviewAgent | Generate a story and review it |
-| `bestDadJoke` | BestDadJokeAgent | Create the best dad joke ever |
-| `sonicPiCode` | SonicPiAgent | Generate Sonic Pi code from user input |
+
+| Tool Name             | Agent               | Description                                                |
+|-----------------------|---------------------|------------------------------------------------------------|
+| `fibonacciNumbers`    | FibonacciAgent      | Compute Fibonacci numbers using LLM with tool verification |
+| `writeAndReviewStory` | WriteAndReviewAgent | Generate a story and review it                             |
+| `bestDadJoke`         | BestDadJokeAgent    | Create the best dad joke ever                              |
+| `sonicPiCode`         | SonicPiAgent        | Generate Sonic Pi code from user input                     |
 
 ### Claude Code
 Start the embabel-demo service, then add it to Claude Code from the terminal:
@@ -172,6 +175,18 @@ Or add a `.mcp.json` file to your project root:
     }
   }
 }
+```
+
+#### Example: Best Dad Joke
+Use the `bestDadJoke` tool to generate a dad joke about a programming topic:
+```
+Tell me a dad joke about recursion.
+```
+
+#### Example: Write and Review Story
+Use the `writeAndReviewStory` tool to generate a story from an incident chat log and save the output:
+```
+Write a story about the incident at @docs/examples/incident-chat.md. Save the result to incident-story.md.
 ```
 
 ### GitHub Copilot
@@ -245,6 +260,16 @@ Or configure via JSON (**Edit as JSON** button):
   }
 }
 ```
+
+#### Reconnecting After MCP Server Restart
+If the MCP server is restarted, JetBrains AI Assistant may lose its connection to the server. To reconnect:
+1. Go to **Settings | Tools | AI Assistant | Model Context Protocol (MCP)**
+2. Untick the checkbox next to the **embabel-demo** MCP server and click **Apply**
+3. Tick the same checkbox again and click **Apply**
+
+> **Troubleshooting:** Do this if the AI Assistant cannot find the MCP server, but you know it's running.
+
+![JetBrains AI Assistant MCP](./docs/images/jetbrains-ai-assistant-mcp.png)
 
 ---
 # Agent Documentation

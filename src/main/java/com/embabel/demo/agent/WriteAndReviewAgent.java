@@ -67,19 +67,20 @@ public class WriteAndReviewAgent {
 
     @Action
     public Stories craftStories(UserInput userInput, OperationContext context) {
-        List<Story> stories = IntStream.range(0, storyCount).parallel().mapToObj(i ->
+        List<String> storyTexts = IntStream.range(0, storyCount).parallel().mapToObj(i ->
                 retry("craftStory", () ->
                         context.ai()
                                 .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
                                 .withPromptContributor(StoryPersonas.WRITER)
                                 .withTemplate("story/craft-story-template.jinja")
-                                .createObject(Story.class,
+                                .createObject(String.class,
                                         Map.of(
                                                 "storyWordCount", storyWordCount,
                                                 "currentDate", LocalDate.now().toString(),
                                                 "userInput", userInput.getContent()
                                         )))
         ).filter(Objects::nonNull).toList();
+        List<Story> stories = storyTexts.stream().map(Story::new).toList();
         return new Stories(stories);
     }
 
