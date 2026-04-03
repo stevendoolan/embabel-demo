@@ -177,16 +177,30 @@ Or add a `.mcp.json` file to your project root:
 }
 ```
 
+#### Reconnecting After MCP Server Restart
+If you restart the embabel-demo service, Claude Code will lose its connection to the MCP server. To reconnect:
+1. Type `/mcp`
+2. Select `embabel-demo`
+3. Select `4. Reconnect`
+
 #### Example: Best Dad Joke
 Use the `bestDadJoke` tool to generate a dad joke about a programming topic:
 ```
 Tell me a dad joke about recursion.
+```
+If Claude Code doesn't use the MCP tool, try being explicit:
+```
+Use the embabel-demo MCP server to tell me a dad joke about recursion.
 ```
 
 #### Example: Write and Review Story
 Use the `writeAndReviewStory` tool to generate a story from an incident chat log and save the output:
 ```
 Write a story about the incident at @docs/examples/incident-chat.md. Save the result to incident-story.md.
+```
+If Claude Code doesn't use the MCP tool, try being explicit:
+```
+Use the embabel-demo MCP server to write a story about the incident at @docs/examples/incident-chat.md. Save the result to incident-story.md.
 ```
 
 ### GitHub Copilot
