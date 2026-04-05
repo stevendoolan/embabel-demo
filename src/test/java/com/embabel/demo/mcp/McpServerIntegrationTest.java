@@ -24,7 +24,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Integration test for the MCP server SSE endpoint.
- * Requires the application to be running on localhost:8080.
+ * Requires the application to be running on localhost.
+ * Port defaults to 48080 (Docker) and can be overridden with {@code -DTEST_PORT=8080}.
  */
 @Tag("e2e")
 @Timeout(30)
@@ -32,7 +33,8 @@ class McpServerIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(McpServerIntegrationTest.class);
 
-    private static final String SSE_URL = "http://localhost:8080/sse";
+    private static final String BASE_URL = "http://localhost:" + System.getProperty("TEST_PORT", "48080");
+    private static final String SSE_URL = BASE_URL + "/sse";
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static String messageEndpoint;
@@ -68,7 +70,7 @@ class McpServerIntegrationTest {
                             var data = line.substring(5).trim();
                             if ("endpoint".equals(eventType)) {
                                 if (data.startsWith("/")) {
-                                    data = "http://localhost:8080" + data;
+                                    data = BASE_URL + data;
                                 }
                                 LOG.info("Received SSE endpoint event: {}", data);
                                 endpointReady.put(data);

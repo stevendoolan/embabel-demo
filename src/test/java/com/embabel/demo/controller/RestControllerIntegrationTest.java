@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * End-to-end integration test for the REST controllers.
- * Requires the application to be running on localhost:8080.
+ * Requires the application to be running on localhost.
+ * Port defaults to 48080 (Docker) and can be overridden with {@code -DTEST_PORT=8080}.
  */
 @Tag("e2e")
 @Timeout(240)
@@ -27,7 +28,7 @@ class RestControllerIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestControllerIntegrationTest.class);
 
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "http://localhost:" + System.getProperty("TEST_PORT", "48080");
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
@@ -167,36 +168,12 @@ class RestControllerIntegrationTest {
         assertThat(status).as("job completed successfully").isEqualTo("COMPLETED");
         LOG.info("Response: {}", MAPPER.writeValueAsString(json));
 
-        // Verify result
+        // Verify result is a non-blank script string
         assertThat(json.has("result")).as("response has 'result'").isTrue();
-        var result = json.get("result");
+        var result = json.get("result").asText();
+        assertThat(result).as("result script is not blank").isNotBlank();
 
-        // Verify metadata
-        assertThat(result.has("sonicPiMetadata")).as("result has 'sonicPiMetadata'").isTrue();
-        var metadata = result.get("sonicPiMetadata");
-        assertThat(metadata.get("songTitle").asText()).as("songTitle is not blank").isNotBlank();
-        assertThat(metadata.get("composerName").asText()).as("composerName is not blank").isNotBlank();
-        assertThat(metadata.get("key").asText()).as("key is not blank").isNotBlank();
-        assertThat(metadata.get("tempoBpm").asInt()).as("tempo is between 40 and 300").isBetween(40, 300);
-        assertThat(metadata.get("timeSignature").asText()).as("timeSignature is not blank").isNotBlank();
-        assertThat(metadata.get("mood").asText()).as("mood is not blank").isNotBlank();
-        assertThat(metadata.get("style").asText()).as("style is not blank").isNotBlank();
-        assertThat(metadata.get("melodyInstruments").isArray()).as("melodyInstruments is an array").isTrue();
-        assertThat(metadata.get("melodyInstruments").size()).as("at least one melody instrument").isGreaterThanOrEqualTo(1);
-
-        // Verify complete script
-        assertThat(result.has("completeScript")).as("result has 'completeScript'").isTrue();
-        var script = result.get("completeScript");
-        assertThat(script.has("scriptContent")).as("completeScript has 'scriptContent'").isTrue();
-        assertThat(script.get("scriptContent").asText()).as("scriptContent is not blank").isNotBlank();
-
-        LOG.info("Sonic Pi script generated: {}\nTempo: {} BPM, Key: {}, Mood: {}",
-                metadata.get("songTitle").asText(),
-                metadata.get("tempoBpm").asInt(),
-                metadata.get("key").asText(),
-                metadata.get("mood").asText());
-
-        LOG.info("Sonic Pi script:\n\n{}\n\n", script.get("scriptContent").asText());
+        LOG.info("Sonic Pi script:\n\n{}\n\n", result);
     }
 
     // --- Helper methods ---

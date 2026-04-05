@@ -7,14 +7,13 @@ import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.common.ai.model.LlmOptions;
-import com.embabel.demo.model.sonicpi.SonicPiCompleteScript;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
-import com.embabel.demo.model.sonicpi.SonicPiScript;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithHarmony;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
 import com.embabel.demo.prompt.persona.SonicPiPromptContributor;
 import java.io.File;
+import java.time.Duration;
 import java.io.FileWriter;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -86,13 +85,11 @@ public record SonicPiAgent(
                         "percussionSamples", String.join(", ", sonicPiMetadata.percussionSamples())));
     }
 
-    /**
-     * Not exporting this agent as an MCP Server, as it takes too long!
-     */
     @AchievesGoal(
-            description = "Sonic Pi code has been generated based on user input")
+            description = "Sonic Pi code has been generated based on user input",
+            export = @Export(remote = true, name = "sonicPiCode", startingInputTypes = {UserInput.class}))
     @Action
-    public SonicPiScript combineAllSonicPiScripts(
+    public String combineAllSonicPiScripts(
             SonicPiMetadata sonicPiMetadata,
             SonicPiScriptWithMelody sonicPiScriptWithMelody,
             SonicPiScriptWithHarmony sonicPiScriptWithHarmony,
@@ -104,21 +101,18 @@ public record SonicPiAgent(
         LOG.info("{}", sonicPiScriptWithHarmony.scriptContent());
         LOG.info("{}", sonicPiScriptWithPercussion.scriptContent());
 
-        var sonicPiCompleteScript = context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+        var scriptContent = context.ai()
+                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
                 .withTemplate("sonicpi/combine-all-parts.jinja")
-                .createObject(SonicPiCompleteScript.class, Map.of(
+                .createObject(String.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
                         "harmonyScriptContent", sonicPiScriptWithHarmony.scriptContent(),
                         "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent()));
 
-        var sonicPiScript = new SonicPiScript(
-                sonicPiMetadata,
-                sonicPiCompleteScript
-        );
-        writeFile(sonicPiScript.filename(), sonicPiCompleteScript.scriptContent());
-        return sonicPiScript;
+        var filename = "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
+        writeFile(filename, scriptContent);
+        return scriptContent;
     }
 
     private static void writeFile(String fileName, String scriptContent) {

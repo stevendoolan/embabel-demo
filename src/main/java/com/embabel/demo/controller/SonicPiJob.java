@@ -1,13 +1,12 @@
 package com.embabel.demo.controller;
 
-import com.embabel.demo.model.sonicpi.SonicPiScript;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SonicPiJob(
         String jobId,
         Status status,
-        SonicPiScript result,
+        String result,
         String error) {
 
     public enum Status {
@@ -18,7 +17,7 @@ public record SonicPiJob(
         return new SonicPiJob(jobId, Status.RUNNING, null, null);
     }
 
-    public static SonicPiJob completed(String jobId, SonicPiScript result) {
+    public static SonicPiJob completed(String jobId, String result) {
         return new SonicPiJob(jobId, Status.COMPLETED, result, null);
     }
 

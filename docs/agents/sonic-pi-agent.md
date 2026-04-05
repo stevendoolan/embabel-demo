@@ -8,7 +8,7 @@
 
 **Description:** Write Sonic Pi code to play a melody based on user input.
 
-**MCP Export:** Not exported (takes too long)
+**MCP Export:** Not yet working via MCP Server
 
 Generates a complete Sonic Pi Ruby script by composing melody, harmony, and percussion tracks separately, then combining them. All LLM calls use high temperature (1.0) for creative music generation.
 

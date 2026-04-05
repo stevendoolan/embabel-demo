@@ -3,7 +3,6 @@ package com.embabel.demo.controller;
 import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.demo.model.sonicpi.SonicPiScript;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +35,7 @@ public class SonicPiController {
         jobs.put(jobId, SonicPiJob.running(jobId));
 
         CompletableFuture.supplyAsync(() ->
-                AgentInvocation.create(agentPlatform, SonicPiScript.class)
+                AgentInvocation.create(agentPlatform, String.class)
                         .invoke(new UserInput(prompt))
         ).whenComplete((result, ex) -> {
             if (ex != null) {

@@ -109,6 +109,7 @@
 
     <build>
         <plugins>
+            <!-- TODO Use maven-failsafe-plugin for e2e tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -150,9 +151,6 @@
         </profile>
         <profile>
             <id>openai</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/openai/</spring.config.additional-location>
             </properties>
@@ -161,6 +159,15 @@
             <id>anthropic</id>
             <properties>
                 <spring.config.additional-location>file:${project.basedir}/config/anthropic/</spring.config.additional-location>
+            </properties>
+        </profile>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.config.additional-location>file:${project.basedir}/config/all/</spring.config.additional-location>
             </properties>
         </profile>
     </profiles>

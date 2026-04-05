@@ -1,0 +1,19 @@
+# All model providers enabled: Anthropic, OpenAI, and Ollama.
+# The default LLM is Anthropic, but all providers are available.
+embabel:
+  models:
+    default-llm: claude-sonnet-4-5
+    llms:
+      best: claude-opus-4-1
+      cheapest: gpt-4.1-mini
+
+# Requires the following Environment Variables for Anthropic:
+# export ANTHROPIC_BASE_URL=https://<your-private-anthropic-domain>
+# export ANTHROPIC_API_KEY=<your_api_key>
+
+# Requires the following Environment Variables for OpenAI:
+# export OPENAI_BASE_URL=https://<your-private-openai-domain> (optional)
+# export OPENAI_API_KEY=<your_api_key>
+
+# Ollama requires no environment variables.
+# Install from https://ollama.com/ and run: ollama run gpt-oss:20b
