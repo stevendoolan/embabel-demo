@@ -92,8 +92,8 @@ class RestControllerIntegrationTest {
 
     @Test
     void shouldWriteAStory() throws Exception {
-        LOG.info("Calling GET /write-a-story?about=a+brave+robot ...");
-        var json = getJson(BASE_URL + "/write-a-story?about=a+brave+robot");
+        LOG.info("Calling GET /story?about=a+brave+robot ...");
+        var json = getJson(BASE_URL + "/story?about=a+brave+robot");
 
         LOG.debug("Response:\n\n{}\n\n", json);
 
@@ -120,8 +120,8 @@ class RestControllerIntegrationTest {
     @Test
     void shouldWriteAStoryFromPost() throws Exception {
         var story = Files.readString(Path.of("src/test/resources/Incident Chat.md"), StandardCharsets.UTF_8);
-        LOG.info("Calling POST /write-a-story with {} chars ...", story.length());
-        var json = postTextForJson(BASE_URL + "/write-a-story", story);
+        LOG.info("Calling POST /story with {} chars ...", story.length());
+        var json = postTextForJson(BASE_URL + "/story", story);
 
         LOG.debug("Response:\n\n{}\n\n", json);
 

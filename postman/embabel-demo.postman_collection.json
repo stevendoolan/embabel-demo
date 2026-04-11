@@ -37,14 +37,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/write-a-story?about=Steven",
+					"raw": "http://localhost:8080/story?about=Steven",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"write-a-story"
+						"story"
 					],
 					"query": [
 						{

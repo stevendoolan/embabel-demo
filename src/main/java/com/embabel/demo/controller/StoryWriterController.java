@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
  * 1. Comment out "embabel-agent-starter-shell" in pom.xml to disable the shell.
  * 2. Run the application.
  * 3. Open a browser and go to:
- * <a href="http://localhost:8080/write-a-story?about=Steven">http://localhost:8080/write-a-story?about=Steven</a>
+ * <a href="http://localhost:8080/story?about=Steven">http://localhost:8080/story?about=Steven</a>
  */
 @RestController
 public record StoryWriterController(AgentPlatform agentPlatform) {
 
-    @GetMapping("/write-a-story")
+    @GetMapping("/story")
     public ReviewedStory writeAStory(@RequestParam("about") String about) {
         return AgentInvocation.create(agentPlatform, ReviewedStory.class)
                 .invoke(new UserInput("Write a story about %s".formatted(about)));
     }
 
-    @PostMapping("/write-a-story")
+    @PostMapping("/story")
     public ReviewedStory writeAStoryFromPost(@RequestBody String about) {
         return AgentInvocation.create(agentPlatform, ReviewedStory.class)
                 .invoke(new UserInput(about));
