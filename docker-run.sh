@@ -12,6 +12,13 @@ if [ "${1:-}" = "--stop" ] || [ "${1:-}" = "-s" ]; then
   exit 0
 fi
 
+# Follow logs for an already-running container
+if [ "${1:-}" = "--logs" ] || [ "${1:-}" = "-l" ]; then
+  echo "Following logs for ${CONTAINER_NAME}... Press Control+C to exit."
+  docker logs -f "${CONTAINER_NAME}"
+  exit 0
+fi
+
 # Pull the latest image unless --run-only is specified
 if [ "${1:-}" = "--run-only" ] || [ "${1:-}" = "-r" ]; then
   shift
