@@ -85,6 +85,51 @@
 			"response": []
 		},
 		{
+			"name": "Sonic Pi - Generate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/sonic-pi?prompt=frank sinatra croon",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sonic-pi"
+					],
+					"query": [
+						{
+							"key": "prompt",
+							"value": "frank sinatra croon"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sonic Pi - Job Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/sonic-pi/{{jobId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sonic-pi",
+						"{{jobId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Fibonacci",
 			"request": {
 				"method": "GET",
