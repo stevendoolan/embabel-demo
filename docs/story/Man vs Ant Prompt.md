@@ -13,7 +13,7 @@ Excerpt from old war diary:
 >
 > The other guy didn't make it (photo of scarecrow).
 
-Write a story called "Man vs Ant", a humourous take on a war story, about a man hunting and killing ants in his backyard.
+Write a story called "Man vs Ant", a humorous take on a war story, about a man hunting and killing ants in his backyard.
 
 Main Character: Steven, a 45 year old Software Engineer,
 who is allergic to everything outside (dust, grass, pollen) and avoid it wherever possible.
@@ -51,7 +51,7 @@ Nickname: The Exterminator
 Personality: Methodical problem-solver who treats every household issue like a production incident
 Weakness: Can't resist Googling "how to kill ants permanently" at 2am
 Catchphrase: "That's not a bug, that's a feature... wait, no, that's definitely a bug."
-Attire: Thongs, stubbies, and a faded Bunnings polo — zero PPE
+Attire: Thongs, stubbies, and a faded Bunnings polo — zero PPE (no gloves, no mask, no safety glasses)
 Ally: Wife, who watches from the kitchen window shaking her head
 Nemesis: The Ant Queen, unseen but ever-present
 
