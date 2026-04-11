@@ -47,8 +47,8 @@ starts the container on port 48080 (4 looks like **e** for Embabel),
 and follows the logs. It automatically passes through any provider
 environment variables that are set.
 
-| Command                       | Short | Description                   |
-|-------------------------------|-------|-------------------------------|
+| Command                      | Short | Description                   |
+|------------------------------|-------|-------------------------------|
 | `./docker-run.sh`            |       | Pull the latest image and run |
 | `./docker-run.sh --run-only` | `-r`  | Run without pulling           |
 | `./docker-run.sh --logs`     | `-l`  | Follow the container logs     |
@@ -168,11 +168,11 @@ at `http://localhost:48080/sse`.
 
 The following tools are available:
 
-| Tool Name             | Agent                                                   | Description                                                |
-|-----------------------|---------------------------------------------------------|------------------------------------------------------------|
-| `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification |
-| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                             |
-| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)       | Create the best dad joke ever                              |
+| Tool Name             | Agent                                                   | Description                                                      |
+|-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
+| `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
+| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
+| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)       | Create the best dad joke ever                                    |
 | `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
 ### Claude Code
