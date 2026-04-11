@@ -12,8 +12,8 @@ if [ "${1:-}" = "stop" ]; then
   exit 0
 fi
 
-# Pull the latest image unless --no-pull is specified
-if [ "${1:-}" = "--no-pull" ]; then
+# Pull the latest image unless --run-only is specified
+if [ "${1:-}" = "--run-only" ]; then
   shift
 else
   echo "Pulling ${IMAGE}..."
