@@ -86,6 +86,21 @@
 		},
 		{
 			"name": "Sonic Pi - Generate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"if (jsonData.jobId) {",
+							"    pm.collectionVariables.set('jobId', jsonData.jobId);",
+							"    console.log('Set jobId to: ' + jsonData.jobId);",
+							"}"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
