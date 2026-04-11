@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <a href="http://localhost:8080/story?about=Steven">http://localhost:8080/story?about=Steven</a>
  */
 @RestController
-public record StoryWriterController(AgentPlatform agentPlatform) {
+public record StoryController(AgentPlatform agentPlatform) {
 
     @GetMapping(value = "/story", produces = MediaType.TEXT_PLAIN_VALUE)
     public String writeAStory(@RequestParam("about") String about) {
