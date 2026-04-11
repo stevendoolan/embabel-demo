@@ -45,6 +45,54 @@ I think I really did it this time.
 
 Or did I?  To be continued in 2027.
 
+## Character Detail
+
+Nickname: The Exterminator
+Personality: Methodical problem-solver who treats every household issue like a production incident
+Weakness: Can't resist Googling "how to kill ants permanently" at 2am
+Catchphrase: "That's not a bug, that's a feature... wait, no, that's definitely a bug."
+Attire: Thongs, stubbies, and a faded Bunnings polo — zero PPE
+Ally: Wife, who watches from the kitchen window shaking her head
+Nemesis: The Ant Queen, unseen but ever-present
+
+## Tone & Style
+
+Genre: Comedy / Mockumentary War Diary
+Tone: Deadpan serious narration over absurdly trivial events
+Narrative Voice: First-person war correspondent, embedded with the ants
+Influences: Blackadder Goes Forth, The Castle, Karl Pilkington
+Running Gag: The scarecrow is always mentioned as a fallen comrade
+
+## Setting Detail
+
+Property Type: Suburban brick house, single story, built in the 80s
+Patio Description: Concrete slab under a tin roof, cluttered with kids' old projects and forgotten storage tubs
+Weather: Already 27°C at 7am, humid, classic Brisbane autumn
+Wildlife: Butcher birds Tina, Gina and Zina watching from the mango tree like war correspondents
+Soundtrack: Cicadas, distant lawnmower, occasional cockatoo screaming
+
+## Story Structure
+
+Opening Scene: Steven making coffee, finding ants floating in the water tank
+Climax: The greenhouse cover reveal — the nest
+False Victory: Day 1 ending with "Job done!"
+Cliffhanger: A single scout ant appears on the kitchen bench the next morning
+Epilogue Tease: "Day 3: They're back. They brought friends."
+
+## Arsenal / Props
+
+Primary Weapon: Mortein Power Gard outdoor spray
+Secondary Weapon: Kitchen sponge soaked in vinegar (wife's suggestion, ignored)
+Recon Equipment: iPhone torch held at ground level
+Supply Depot: Bunnings Warehouse, Stafford
+Rations: Instant coffee (the good stuff — Moccona)
+
+## Emotional Stakes
+
+What's Really At Risk: The coffee machine — the one thing that makes mornings bearable
+Inner Conflict: A software engineer who automates everything, defeated by 2mm insects
+Victory Condition: One full week with zero ants in the kitchen
+
 
 > **IMPORTANT:** This is True story from 12 Apr 2026, from my patio.
 
