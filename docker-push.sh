@@ -16,4 +16,8 @@ docker push "${VERSIONED_TAG}"
 echo "Pushing ${LATEST_TAG}..."
 docker push "${LATEST_TAG}"
 
+echo "Tagging git repo with ${TAG}..."
+git tag "${TAG}"
+git push origin "${TAG}"
+
 echo "Done. Image available at https://hub.docker.com/r/${DOCKER_USER}/${IMAGE_NAME}"
