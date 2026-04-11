@@ -93,7 +93,7 @@ The following tools are available:
 |-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
 | `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
 | `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
-| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)       | Create the best dad joke ever                                    |
+| `dadJoke`             | [DadJokeAgent](agents/dad-joke-agent.md)                | Create a dad joke                                                |
 | `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
 ## Claude Code
@@ -126,8 +126,8 @@ If you restart the embabel-demo service, Claude Code will lose its connection to
 2. Select `embabel-demo`
 3. Select `4. Reconnect`
 
-### Example: Best Dad Joke
-Use the `bestDadJoke` tool to generate a dad joke about a programming topic:
+### Example: Dad Joke
+Use the `dadJoke` tool to generate a dad joke about a programming topic:
 ```
 Tell me a dad joke about recursion.
 ```

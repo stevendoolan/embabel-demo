@@ -32,9 +32,9 @@ class RestControllerIntegrationTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
-    void shouldGetBestDadJoke() throws Exception {
-        LOG.info("Calling GET /best-dad-joke?topic=programming ...");
-        var json = getJson(BASE_URL + "/best-dad-joke?topic=programming");
+    void shouldGetDadJoke() throws Exception {
+        LOG.info("Calling GET /dad-joke?topic=programming ...");
+        var json = getJson(BASE_URL + "/dad-joke?topic=programming");
 
         LOG.info("Response: {}", MAPPER.writeValueAsString(json));
 
@@ -63,7 +63,7 @@ class RestControllerIntegrationTest {
             assertThat(jokeEntry.get("rating").has("score")).as("each rating has 'score'").isTrue();
         }
 
-        LOG.info("Best Dad Joke:\n\n{}\n\n(score: {})", bestJoke.get("joke").asText(), rating.get("score").asDouble());
+        LOG.info("Dad Joke:\n\n{}\n\n(score: {})", bestJoke.get("joke").asText(), rating.get("score").asDouble());
 
         var sb = new StringBuilder("Other jokes:\n");
         for (var jokeEntry : allJokes) {

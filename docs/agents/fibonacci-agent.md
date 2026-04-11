@@ -1,6 +1,6 @@
 # Fibonacci Agent
 
-[Previous: Best Dad Joke Agent](best-dad-joke-agent.md) | [Index](index.md) | [Next: Sonic Pi Agent](sonic-pi-agent.md)
+[Previous: Dad Joke Agent](dad-joke-agent.md) | [Index](index.md) | [Next: Sonic Pi Agent](sonic-pi-agent.md)
 
 ---
 
@@ -60,4 +60,4 @@ FibonacciResponse    FibonacciResponse
 
 ---
 
-[Previous: Best Dad Joke Agent](best-dad-joke-agent.md) | [Index](index.md) | [Next: Sonic Pi Agent](sonic-pi-agent.md)
+[Previous: Dad Joke Agent](dad-joke-agent.md) | [Index](index.md) | [Next: Sonic Pi Agent](sonic-pi-agent.md)

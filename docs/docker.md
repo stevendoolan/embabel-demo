@@ -172,7 +172,7 @@ The following tools are available:
 |-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
 | `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
 | `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
-| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)       | Create the best dad joke ever                                    |
+| `dadJoke`             | [DadJokeAgent](agents/dad-joke-agent.md)                | Create a dad joke                                                |
 | `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
 ### Claude Code

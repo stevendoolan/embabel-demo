@@ -29,7 +29,7 @@ public record DemoShell(
         return reviewedStory.getContent();
     }
 
-    @ShellMethod("Best Dad Joke Demo")
+    @ShellMethod("Dad Joke Demo")
     String joke() {
         return AgentInvocation
                 .create(agentPlatform, JokeAndRating.class)
