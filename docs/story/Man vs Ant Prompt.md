@@ -66,15 +66,15 @@ Running Gag: The scarecrow is always mentioned as a fallen comrade
 
 ## Setting Detail
 
-Property Type: Suburban brick house, single story, built in the 80s
+Property Type: Suburban brick house, single story, built in the 2000s
 Patio Description: Concrete slab under a tin roof, cluttered with kids' old projects and forgotten storage tubs
 Weather: Already 27°C at 7am, humid, classic Brisbane autumn
 Wildlife: Butcher birds Tina, Gina and Zina watching from the mango tree like war correspondents
-Soundtrack: Cicadas, distant lawnmower, occasional cockatoo screaming
+Soundtrack: Cicadas, distant lawnmower, occasional cockatoo screaming, cars passing by on the main road
 
 ## Story Structure
 
-Opening Scene: Steven making coffee, finding ants floating in the water tank
+Opening Scene: Steven making coffee, finding ants crawling all over the water tank
 Climax: The greenhouse cover reveal — the nest
 False Victory: Day 1 ending with "Job done!"
 Cliffhanger: A single scout ant appears on the kitchen bench the next morning
@@ -92,7 +92,7 @@ Rations: Instant coffee (the good stuff — Moccona)
 
 What's Really At Risk: The coffee machine — the one thing that makes mornings bearable
 Inner Conflict: A software engineer who automates everything, defeated by 2mm insects
-Victory Condition: One full week with zero ants in the kitchen
+Victory Condition / Acceptance Criteria: One full week with zero ants in the kitchen
 
 
 > **IMPORTANT:** This is True story from 12 Apr 2026, from my patio.
