@@ -171,7 +171,7 @@ The following tools are available:
 | Tool Name             | Agent                                                   | Description                                                      |
 |-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
 | `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
-| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
+| `story`               | [StoryAgent](agents/story-agent.md)                     | Generate a story and review it                                   |
 | `dadJoke`             | [DadJokeAgent](agents/dad-joke-agent.md)                | Create a dad joke                                                |
 | `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
@@ -192,7 +192,7 @@ Add the MCP server to your global Claude Code config at `~/.claude.json`:
 ```
 
 The 10-minute timeout (600000ms) is recommended because some agents
-(e.g. `sonicPiCode`, `writeAndReviewStory`) are long-running.
+(e.g. `sonicPiCode`, `story`) are long-running.
 
 Alternatively, add via the CLI (note: this does not set the timeout,
 so you will need to edit `~/.claude.json` afterwards to add it):

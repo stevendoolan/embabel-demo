@@ -1,6 +1,6 @@
 # Sonic Pi Agent
 
-[Previous: Fibonacci Agent](fibonacci-agent.md) | [Index](index.md) | [Next: Write and Review Agent](write-and-review-agent.md)
+[Previous: Fibonacci Agent](fibonacci-agent.md) | [Index](index.md) | [Next: Story Agent](story-agent.md)
 
 ---
 
@@ -81,4 +81,4 @@ SonicPiScript   SonicPiScript
 
 ---
 
-[Previous: Fibonacci Agent](fibonacci-agent.md) | [Index](index.md) | [Next: Write and Review Agent](write-and-review-agent.md)
+[Previous: Fibonacci Agent](fibonacci-agent.md) | [Index](index.md) | [Next: Story Agent](story-agent.md)

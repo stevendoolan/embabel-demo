@@ -41,21 +41,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Based on WriteAndReviewAgent in
+ * Based on StoryAgent in
  * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
  */
 @Agent(description = "Generate stories based on user input, review them, and return the best one")
 @Profile("!test")
-public class WriteAndReviewAgent {
+public class StoryAgent {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WriteAndReviewAgent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StoryAgent.class);
     private static final int MAX_RETRIES = 3;
 
     private final int storyCount;
     private final int storyWordCount;
     private final int reviewWordCount;
 
-    public WriteAndReviewAgent(
+    public StoryAgent(
             @Value("${storyCount:3}") int storyCount,
             @Value("${storyWordCount:500}") int storyWordCount,
             @Value("${reviewWordCount:100}") int reviewWordCount
@@ -118,7 +118,7 @@ public class WriteAndReviewAgent {
 
     @AchievesGoal(
             description = "Stories have been crafted, reviewed, and the best one selected",
-            export = @Export(remote = true, name = "writeAndReviewStory", startingInputTypes = {UserInput.class}))
+            export = @Export(remote = true, name = "story", startingInputTypes = {UserInput.class}))
     @Action
     public ReviewedStory selectBestStory(ReviewedStories reviewedStories) {
         return reviewedStories.reviewedStories().stream()

@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class WriteAndReviewAgentUnitTest {
+class StoryAgentUnitTest {
 
     @Test
     void testCraftStories() {
@@ -21,7 +21,7 @@ class WriteAndReviewAgentUnitTest {
         context.expectResponse(new Story("One upon a time Sir Galahad . . "));
         context.expectResponse(new Story("Sir Galahad rode into the sunset . . "));
 
-        var agent = new WriteAndReviewAgent(2, 200, 400);
+        var agent = new StoryAgent(2, 200, 400);
         agent.craftStories(new UserInput("Tell me a story about a brave knight", Instant.now()), context);
 
         String prompt = promptRunner.getLlmInvocations().getFirst().getMessages().getFirst().getContent();
@@ -30,7 +30,7 @@ class WriteAndReviewAgentUnitTest {
 
     @Test
     void testReviewStories() {
-        var agent = new WriteAndReviewAgent(2, 200, 400);
+        var agent = new StoryAgent(2, 200, 400);
         var userInput = new UserInput("Tell me a story about a brave knight", Instant.now());
         var stories = new Stories(List.of(new Story("Once upon a time, Sir Galahad...")));
         var context = FakeOperationContext.create();

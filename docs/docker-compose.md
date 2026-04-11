@@ -85,14 +85,14 @@ This application is also an MCP (Model Context Protocol) server.
 When the service is running, all agents with `@Export(remote = true)` are automatically exposed as MCP tools
 via an SSE endpoint at `http://localhost:48080/sse`.
 
-> **Note:** Some MCP tools (e.g. `writeAndReviewStory`) are long-running and may time out in JetBrains AI Assistant. For these calls, use Claude Code directly instead.
+> **Note:** Some MCP tools (e.g. `story`) are long-running and may time out in JetBrains AI Assistant. For these calls, use Claude Code directly instead.
 
 The following tools are available:
 
 | Tool Name             | Agent                                                   | Description                                                      |
 |-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
 | `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
-| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
+| `story`               | [StoryAgent](agents/story-agent.md)                     | Generate a story and review it                                   |
 | `dadJoke`             | [DadJokeAgent](agents/dad-joke-agent.md)                | Create a dad joke                                                |
 | `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
@@ -112,7 +112,7 @@ global Claude Code config at `~/.claude.json`:
 ```
 
 The 10-minute timeout (600000ms) is recommended because some agents
-(e.g. `sonicPiCode`, `writeAndReviewStory`) are long-running.
+(e.g. `sonicPiCode`, `story`) are long-running.
 
 Alternatively, add via the CLI (note: this does not set the timeout,
 so you will need to edit `~/.claude.json` afterwards to add it):
@@ -136,8 +136,8 @@ If Claude Code doesn't use the MCP tool, try being explicit:
 Use the embabel-demo MCP server to tell me a dad joke about recursion.
 ```
 
-### Example: Write and Review Story
-Use the `writeAndReviewStory` tool to generate a story from an incident chat log and save the output:
+### Example: Story
+Use the `story` tool to generate a story from an incident chat log and save the output:
 ```
 Write a story about the incident at @docs/examples/incident-chat.md. Save the result to incident-story.md.
 ```
