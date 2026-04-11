@@ -6,6 +6,7 @@ import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
+import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.demo.model.dadjoke.DadJokeResult;
 import com.embabel.demo.model.dadjoke.JokeAndRating;
 import com.embabel.demo.model.dadjoke.Jokes;
@@ -35,14 +36,14 @@ public class DadJokeAgent {
     @Action
     public Jokes writeJokes(UserInput userInput, OperationContext context) {
         return context.ai()
-                .withAutoLlm()
+                .withLlm(LlmOptions.withLlmForRole("best"))
                 .createObject("Write %s Dad Jokes based on: %s".formatted(jokeCount, userInput.getContent()), Jokes.class);
     }
 
     @Action
     public JokesAndRatings rateJokes(Jokes jokes, OperationContext context) {
         List<JokeAndRating> list = jokes.jokes().stream().parallel().map(joke -> context.ai()
-                .withAutoLlm()
+                .withLlm(LlmOptions.withLlmForRole("cheapest"))
                 .createObject("On a scale from 1 to %s, rate this joke: %s".formatted(jokeCount, joke), JokeAndRating.class)).toList();
         return new JokesAndRatings(list);
     }
