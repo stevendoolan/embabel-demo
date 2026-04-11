@@ -66,13 +66,13 @@ public class StoryAgent {
     }
 
     @Action
-    public Stories craftStories(UserInput userInput, OperationContext context) {
+    public Stories writeStories(UserInput userInput, OperationContext context) {
         List<String> storyTexts = IntStream.range(0, storyCount).parallel().mapToObj(i ->
-                retry("craftStory", () ->
+                retry("writeStory", () ->
                         context.ai()
                                 .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
                                 .withPromptContributor(StoryPersonas.WRITER)
-                                .withTemplate("story/craft-story-template.jinja")
+                                .withTemplate("story/write-story-template.jinja")
                                 .createObject(String.class,
                                         Map.of(
                                                 "storyWordCount", storyWordCount,
