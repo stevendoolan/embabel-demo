@@ -157,7 +157,7 @@ class McpServerIntegrationTest {
 
         assertThat(toolNames)
                 .as("Expected MCP tools from exported agents")
-                .contains("dadJoke", "fibonacciNumbers", "writeAndReviewStory");
+                .contains("dadJoke", "fibonacciNumbers", "story");
     }
 
     @Test
@@ -231,10 +231,10 @@ class McpServerIntegrationTest {
 
     @Test
     @Timeout(120)
-    void shouldInvokeWriteAndReviewStoryTool() throws Exception {
-        LOG.info("Invoking tools/call for writeAndReviewStory...");
+    void shouldInvokeStoryTool() throws Exception {
+        LOG.info("Invoking tools/call for story...");
         var params = MAPPER.createObjectNode();
-        params.put("name", "writeAndReviewStory");
+        params.put("name", "story");
         params.set("arguments", MAPPER.createObjectNode().put("content", "a brave developer who fixed a production outage"));
 
         postJsonRpc("tools/call", 80, params);
@@ -242,7 +242,7 @@ class McpServerIntegrationTest {
 
         assertThat(response.has("result")).as("tools/call has result").isTrue();
         var result = response.get("result");
-        LOG.info("writeAndReviewStory result:\n\n{}\n\n", MAPPER.writeValueAsString(result));
+        LOG.info("story result:\n\n{}\n\n", MAPPER.writeValueAsString(result));
 
         assertThat(result.has("content")).as("result has content").isTrue();
         var content = result.get("content");
@@ -253,7 +253,7 @@ class McpServerIntegrationTest {
         assertThat(firstContent.get("type").asText()).as("content type is text").isEqualTo("text");
 
         var text = firstContent.get("text").asText();
-        LOG.info("writeAndReviewStory response text:\n\n{}\n\n", text);
+        LOG.info("story response text:\n\n{}\n\n", text);
 
         assertThat(text).as("response contains story section").contains("# Story");
         assertThat(text).as("response contains review section").contains("# Review");

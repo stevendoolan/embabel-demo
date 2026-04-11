@@ -1,14 +1,14 @@
-# Write and Review Agent
+# Story Agent
 
 [Previous: Sonic Pi Agent](sonic-pi-agent.md) | [Index](index.md) | [Next: Index](index.md)
 
 ---
 
-**Source:** [`WriteAndReviewAgent.java`](../../src/main/java/com/embabel/demo/agent/WriteAndReviewAgent.java)
+**Source:** [`StoryAgent.java`](../../src/main/java/com/embabel/demo/agent/StoryAgent.java)
 
 **Description:** Generate stories based on user input, review them, and return the best one.
 
-**MCP Export:** `writeAndReviewStory`
+**MCP Export:** `story`
 
 Based on the [java-agent-template WriteAndReviewAgent](https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java). Uses different LLM roles for writing (best quality, high temperature) and reviewing (cheapest, low temperature), with retry logic for resilience.
 

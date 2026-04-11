@@ -5,7 +5,7 @@ import com.embabel.agent.prompt.persona.RoleGoalBackstory;
 
 /**
  * Based on Persona in
- * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/WriteAndReviewAgent.java">java-agent-template</a>.
+ * <a href="https://github.com/embabel/java-agent-template/blob/main/src/main/java/com/embabel/template/agent/StoryAgent.java">java-agent-template</a>.
  */
 public abstract class StoryPersonas {
     public static final RoleGoalBackstory WRITER = new RoleGoalBackstory(
