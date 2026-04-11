@@ -6,10 +6,25 @@ PORT="48080"
 CONTAINER_NAME="embabel-demo"
 
 # Stop and remove the container
-if [ "${1:-}" = "stop" ]; then
+if [ "${1:-}" = "--stop" ] || [ "${1:-}" = "-s" ]; then
   echo "Stopping ${CONTAINER_NAME}..."
   docker rm -f "${CONTAINER_NAME}" 2>/dev/null || echo "Container not running."
   exit 0
+fi
+
+# Follow logs for an already-running container
+if [ "${1:-}" = "--logs" ] || [ "${1:-}" = "-l" ]; then
+  echo "Following logs for ${CONTAINER_NAME}... Press Control+C to exit."
+  docker logs -f "${CONTAINER_NAME}"
+  exit 0
+fi
+
+# Pull the latest image unless --run-only is specified
+if [ "${1:-}" = "--run-only" ] || [ "${1:-}" = "-r" ]; then
+  shift
+else
+  echo "Pulling ${IMAGE}..."
+  docker pull "${IMAGE}"
 fi
 
 # Build docker run arguments
@@ -39,5 +54,5 @@ echo "Starting ${IMAGE} on port ${PORT}..."
 docker run -d "${ARGS[@]}" "${IMAGE}"
 
 echo "Following logs... Press Control+C to exit (container will keep running)."
-echo "To stop: ./docker-run.sh stop"
+echo "To stop: ./docker-run.sh --stop"
 docker logs -f "${CONTAINER_NAME}"
