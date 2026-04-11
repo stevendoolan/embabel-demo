@@ -157,7 +157,7 @@ class McpServerIntegrationTest {
 
         assertThat(toolNames)
                 .as("Expected MCP tools from exported agents")
-                .contains("bestDadJoke", "fibonacciNumbers", "writeAndReviewStory");
+                .contains("dadJoke", "fibonacciNumbers", "writeAndReviewStory");
     }
 
     @Test
@@ -197,10 +197,10 @@ class McpServerIntegrationTest {
 
     @Test
     @Timeout(120)
-    void shouldInvokeBestDadJokeTool() throws Exception {
-        LOG.info("Invoking tools/call for bestDadJoke...");
+    void shouldInvokeDadJokeTool() throws Exception {
+        LOG.info("Invoking tools/call for dadJoke...");
         var params = MAPPER.createObjectNode();
-        params.put("name", "bestDadJoke");
+        params.put("name", "dadJoke");
         params.set("arguments", MAPPER.createObjectNode().put("content", "programming"));
 
         postJsonRpc("tools/call", 70, params);
@@ -208,7 +208,7 @@ class McpServerIntegrationTest {
 
         assertThat(response.has("result")).as("tools/call has result").isTrue();
         var result = response.get("result");
-        LOG.info("bestDadJoke result: {}", MAPPER.writeValueAsString(result));
+        LOG.info("dadJoke result: {}", MAPPER.writeValueAsString(result));
 
         assertThat(result.has("content")).as("result has content").isTrue();
         var content = result.get("content");
@@ -219,14 +219,14 @@ class McpServerIntegrationTest {
         assertThat(firstContent.get("type").asText()).as("content type is text").isEqualTo("text");
 
         var text = firstContent.get("text").asText();
-        LOG.info("bestDadJoke response text: {}", text);
+        LOG.info("dadJoke response text: {}", text);
 
         // Response is a Java record toString(): JokeAndRating[joke=..., rating=Rating[score=N.N]]
         assertThat(text).as("response contains joke").contains("joke=");
         assertThat(text).as("response contains rating").contains("rating=");
         assertThat(text).as("response contains score").containsPattern("score=\\d");
 
-        LOG.info("Best dad joke response: {}", text);
+        LOG.info("Dad joke response: {}", text);
     }
 
     @Test

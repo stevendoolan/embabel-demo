@@ -8,7 +8,7 @@ Documentation for each agent in the `com.embabel.demo.agent` package.
 
 | Agent                                               | Description                                                 | MCP Export              |
 |-----------------------------------------------------|-------------------------------------------------------------|-------------------------|
-| [Best Dad Joke Agent](best-dad-joke-agent.md)       | Generate and rate dad jokes, then select the best one       | `bestDadJoke`           |
+| [Dad Joke Agent](dad-joke-agent.md)                 | Generate and rate dad jokes, then select the best one       | `dadJoke`               |
 | [Fibonacci Agent](fibonacci-agent.md)               | Compute Fibonacci numbers using LLM with tool verification  | `fibonacciNumbers`      |
 | [Sonic Pi Agent](sonic-pi-agent.md)                 | Generate Sonic Pi code to play a melody based on user input | Not yet working via MCP |
 | [Write and Review Agent](write-and-review-agent.md) | Generate stories, review them, and return the best one      | `writeAndReviewStory`   |

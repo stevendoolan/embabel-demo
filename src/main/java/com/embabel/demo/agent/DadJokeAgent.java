@@ -6,7 +6,7 @@ import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.annotation.Export;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.demo.model.dadjoke.BestDadJokeResult;
+import com.embabel.demo.model.dadjoke.DadJokeResult;
 import com.embabel.demo.model.dadjoke.JokeAndRating;
 import com.embabel.demo.model.dadjoke.Jokes;
 import com.embabel.demo.model.dadjoke.JokesAndRatings;
@@ -16,19 +16,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Agent that creates the best dad joke ever.
+ * Agent that creates a dad joke.
  * <p>
  * Inspired / directly copied from this YouTube video by Coffee + Software's James Ward and Josh Long:
  * <a href="https://www.youtube.com/watch?v=kpeYvKha5oE&t=5s">https://www.youtube.com/watch?...</a>
  */
-@Agent(description = "Create the best dad joke ever")
+@Agent(description = "Create a dad joke")
 @Profile("!test")
-public class BestDadJokeAgent {
+public class DadJokeAgent {
 
     private int jokeCount;
 
-    public BestDadJokeAgent(
-        @Value("${bestdadjoke.joke-count:5}") int jokeCount) {
+    public DadJokeAgent(
+        @Value("${dadjoke.joke-count:5}") int jokeCount) {
         this.jokeCount = jokeCount;
     }
 
@@ -48,16 +48,16 @@ public class BestDadJokeAgent {
     }
 
     @AchievesGoal(
-            description = "Create the best dad joke ever",
-            export = @Export(remote = true, name = "bestDadJoke", startingInputTypes = {UserInput.class}))
+            description = "Create a dad joke",
+            export = @Export(remote = true, name = "dadJoke", startingInputTypes = {UserInput.class}))
     @Action
-    public BestDadJokeResult createBestDadJoke(JokesAndRatings jokesAndRatings) {
+    public DadJokeResult createDadJoke(JokesAndRatings jokesAndRatings) {
         JokeAndRating bestJoke = jokesAndRatings.jokeAndRatings().stream()
                 .max(Comparator.comparingDouble(a -> a.rating().score()))
                 .orElseThrow();
         List<JokeAndRating> otherJokes = jokesAndRatings.jokeAndRatings().stream()
                 .filter(j -> j != bestJoke)
                 .toList();
-        return new BestDadJokeResult(bestJoke, otherJokes);
+        return new DadJokeResult(bestJoke, otherJokes);
     }
 }

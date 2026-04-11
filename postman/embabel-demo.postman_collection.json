@@ -7,19 +7,19 @@
 	},
 	"item": [
 		{
-			"name": "Best Dad Joke Generator",
+			"name": "Dad Joke Generator",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/best-dad-joke?topic=chickens",
+					"raw": "http://localhost:8080/dad-joke?topic=chickens",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"best-dad-joke"
+						"dad-joke"
 					],
 					"query": [
 						{
