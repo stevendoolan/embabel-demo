@@ -51,7 +51,7 @@ Nickname: The Exterminator
 Personality: Methodical problem-solver who treats every household issue like a production incident
 Weakness: Can't resist Googling "how to kill ants permanently" at 2am
 Catchphrase: "That's not a bug, that's a feature... wait, no, that's definitely a bug."
-Attire: Thongs, stubbies, and a faded Bunnings polo — zero PPE (no gloves, no mask, no safety glasses)
+Attire: Datadog t-shirt (Steven loves free swag from vendors), pajama shorts and slides — zero PPE (no gloves, no mask, no safety glasses)
 Situation: Wife has taken the kids to visit the grandparents for school holidays — this is what hubby gets up to when she's away
 Ally: Wife (absent) — would be shaking her head if she could see this
 Nemesis: The Ant Queen, unseen but ever-present
@@ -86,7 +86,8 @@ Primary Weapon: Mortein Power Gard outdoor spray
 Secondary Weapon: Kitchen sponge soaked in vinegar (wife's suggestion, ignored)
 Recon Equipment: iPhone torch held at ground level
 Supply Depot: Bunnings Warehouse, Stafford
-Rations: Instant coffee (the good stuff — Moccona)
+Rations: Kai Coffee, single origin subscription from the Sunshine Coast
+Morale Booster: The thought of a hot cup of coffee without ants in it
 
 ## Emotional Stakes
 
