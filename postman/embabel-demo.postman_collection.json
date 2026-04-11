@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/dad-joke?topic=chickens",
+					"raw": "http://localhost:8080/dad-joke?topic=programming",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -24,7 +24,7 @@
 					"query": [
 						{
 							"key": "topic",
-							"value": "chickens"
+							"value": "programming"
 						}
 					]
 				}
