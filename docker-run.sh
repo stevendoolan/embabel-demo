@@ -12,6 +12,14 @@ if [ "${1:-}" = "stop" ]; then
   exit 0
 fi
 
+# Pull the latest image unless --no-pull is specified
+if [ "${1:-}" = "--no-pull" ]; then
+  shift
+else
+  echo "Pulling ${IMAGE}..."
+  docker pull "${IMAGE}"
+fi
+
 # Build docker run arguments
 ARGS=("-p" "${PORT}:8080" "--name" "${CONTAINER_NAME}")
 
