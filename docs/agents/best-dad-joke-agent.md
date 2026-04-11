@@ -14,9 +14,9 @@ Inspired by the [Coffee + Software](https://www.youtube.com/watch?v=kpeYvKha5oE&
 
 ## Configuration
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `bestdadjoke.joke-count` | 5 | Number of jokes to generate |
+| Property                 | Default | Description                 |
+|--------------------------|---------|-----------------------------|
+| `bestdadjoke.joke-count` | 5       | Number of jokes to generate |
 
 ## Action Flow
 
@@ -50,11 +50,11 @@ JokesAndRatings
 
 ## Actions
 
-| # | Action | Input | Output | Description |
-|---|--------|-------|--------|-------------|
-| 1 | `writeJokes` | `UserInput` | `Jokes` | Uses LLM to generate N dad jokes based on user input |
-| 2 | `rateJokes` | `Jokes` | `JokesAndRatings` | Rates each joke in parallel using LLM |
-| 3 | `createBestDadJoke` | `JokesAndRatings` | `BestDadJokeResult` | Selects the highest-rated joke as the best |
+| # | Action              | Input             | Output              | Description                                          |
+|---|---------------------|-------------------|---------------------|------------------------------------------------------|
+| 1 | `writeJokes`        | `UserInput`       | `Jokes`             | Uses LLM to generate N dad jokes based on user input |
+| 2 | `rateJokes`         | `Jokes`           | `JokesAndRatings`   | Rates each joke in parallel using LLM                |
+| 3 | `createBestDadJoke` | `JokesAndRatings` | `BestDadJokeResult` | Selects the highest-rated joke as the best           |
 
 ---
 

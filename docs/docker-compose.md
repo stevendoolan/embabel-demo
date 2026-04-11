@@ -74,8 +74,8 @@ Available models include:
 | Provider  | Models                                 |
 |-----------|----------------------------------------|
 | Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`             |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`             |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`              |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`              |
 
 ## MCP Server
 
@@ -89,12 +89,12 @@ via an SSE endpoint at `http://localhost:48080/sse`.
 
 The following tools are available:
 
-| Tool Name             | Agent                                                        | Description                                                |
-|-----------------------|--------------------------------------------------------------|------------------------------------------------------------|
-| `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)                  | Compute Fibonacci numbers using LLM with tool verification |
-| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md)      | Generate a story and review it                             |
-| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)            | Create the best dad joke ever                              |
-| `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                     | Generate Sonic Pi code from user input (not yet working via MCP) |
+| Tool Name             | Agent                                                   | Description                                                      |
+|-----------------------|---------------------------------------------------------|------------------------------------------------------------------|
+| `fibonacciNumbers`    | [FibonacciAgent](agents/fibonacci-agent.md)             | Compute Fibonacci numbers using LLM with tool verification       |
+| `writeAndReviewStory` | [WriteAndReviewAgent](agents/write-and-review-agent.md) | Generate a story and review it                                   |
+| `bestDadJoke`         | [BestDadJokeAgent](agents/best-dad-joke-agent.md)       | Create the best dad joke ever                                    |
+| `sonicPiCode`         | [SonicPiAgent](agents/sonic-pi-agent.md)                | Generate Sonic Pi code from user input (not yet working via MCP) |
 
 ## Claude Code
 Start the embabel-demo service, then add the MCP server to your

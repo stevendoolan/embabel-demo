@@ -51,12 +51,12 @@ FibonacciResponse    FibonacciResponse
 
 ## Actions
 
-| # | Action | Input | Output | Description |
-|---|--------|-------|--------|-------------|
-| 1 | `toFibonacciRequest` | `UserInput` | `FibonacciRequest` | Converts user input into a structured request using LLM |
-| 2 | `fibonacciWithTool` | `FibonacciRequest` | `FibonacciResponseWithTool` | Computes Fibonacci using the FibonacciCalculator tool via LLM |
-| 3 | `fibonacciWithExplanation` | `FibonacciRequest` | `FibonacciResponseWithExplanation` | Computes Fibonacci with LLM and provides explanation |
-| 4 | `fibonacciWithVerification` | `FibonacciResponseWithTool`, `FibonacciResponseWithExplanation` | `FibonacciResponseWithVerification` | Verifies both methods produced the same result |
+| # | Action                      | Input                                                           | Output                              | Description                                                   |
+|---|-----------------------------|-----------------------------------------------------------------|-------------------------------------|---------------------------------------------------------------|
+| 1 | `toFibonacciRequest`        | `UserInput`                                                     | `FibonacciRequest`                  | Converts user input into a structured request using LLM       |
+| 2 | `fibonacciWithTool`         | `FibonacciRequest`                                              | `FibonacciResponseWithTool`         | Computes Fibonacci using the FibonacciCalculator tool via LLM |
+| 3 | `fibonacciWithExplanation`  | `FibonacciRequest`                                              | `FibonacciResponseWithExplanation`  | Computes Fibonacci with LLM and provides explanation          |
+| 4 | `fibonacciWithVerification` | `FibonacciResponseWithTool`, `FibonacciResponseWithExplanation` | `FibonacciResponseWithVerification` | Verifies both methods produced the same result                |
 
 ---
 
