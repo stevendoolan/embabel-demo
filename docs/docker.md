@@ -47,29 +47,12 @@ starts the container on port 48080 (4 looks like **e** for Embabel),
 and follows the logs. It automatically passes through any provider
 environment variables that are set.
 
-Pull the latest image and run:
-
-```bash
-./docker-run.sh
-```
-
-Run without pulling (use the existing local image):
-
-```bash
-./docker-run.sh --run-only
-```
-
-Follow the container logs (if you exited with Control+C):
-
-```bash
-./docker-logs.sh
-```
-
-Stop and remove the container:
-
-```bash
-./docker-run.sh stop
-```
+| Command                      | Short   | Description                          |
+|------------------------------|---------|--------------------------------------|
+| `./docker-run.sh`           |         | Pull the latest image and run        |
+| `./docker-run.sh --run-only`| `-r`    | Run without pulling                  |
+| `./docker-run.sh --stop`    | `-s`    | Stop and remove the container        |
+| `./docker-logs.sh`          |         | Follow the container logs            |
 
 The script detects which provider variables (`ANTHROPIC_BASE_URL`,
 `ANTHROPIC_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_API_KEY`) are set in
