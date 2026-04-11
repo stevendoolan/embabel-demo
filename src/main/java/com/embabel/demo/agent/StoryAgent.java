@@ -120,9 +120,10 @@ public class StoryAgent {
             description = "Stories have been crafted, reviewed, and the best one selected",
             export = @Export(remote = true, name = "story", startingInputTypes = {UserInput.class}))
     @Action
-    public ReviewedStory selectBestStory(ReviewedStories reviewedStories) {
+    public Story selectBestStory(ReviewedStories reviewedStories) {
         return reviewedStories.reviewedStories().stream()
                 .max(Comparator.comparingInt(rs -> rs.review().rating()))
+                .map(ReviewedStory::story)
                 .orElseThrow();
     }
 }

@@ -3,7 +3,8 @@ package com.embabel.demo.controller;
 import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
-import com.embabel.demo.model.story.ReviewedStory;
+import com.embabel.demo.model.story.Story;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,15 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public record StoryWriterController(AgentPlatform agentPlatform) {
 
-    @GetMapping("/story")
-    public ReviewedStory writeAStory(@RequestParam("about") String about) {
-        return AgentInvocation.create(agentPlatform, ReviewedStory.class)
-                .invoke(new UserInput("Write a story about %s".formatted(about)));
+    @GetMapping(value = "/story", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String writeAStory(@RequestParam("about") String about) {
+        return AgentInvocation.create(agentPlatform, Story.class)
+                .invoke(new UserInput("Write a story about %s".formatted(about)))
+                .text();
     }
 
-    @PostMapping("/story")
-    public ReviewedStory writeAStoryFromPost(@RequestBody String about) {
-        return AgentInvocation.create(agentPlatform, ReviewedStory.class)
-                .invoke(new UserInput(about));
+    @PostMapping(value = "/story", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String writeAStoryFromPost(@RequestBody String about) {
+        return AgentInvocation.create(agentPlatform, Story.class)
+                .invoke(new UserInput(about))
+                .text();
     }
 }
