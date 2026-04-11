@@ -22,7 +22,7 @@ class StoryAgentUnitTest {
         context.expectResponse(new Story("Sir Galahad rode into the sunset . . "));
 
         var agent = new StoryAgent(2, 200, 400);
-        agent.craftStories(new UserInput("Tell me a story about a brave knight", Instant.now()), context);
+        agent.writeStories(new UserInput("Tell me a story about a brave knight", Instant.now()), context);
 
         String prompt = promptRunner.getLlmInvocations().getFirst().getMessages().getFirst().getContent();
         assertTrue(prompt.contains("knight"), "Expected prompt to contain 'knight'");

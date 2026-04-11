@@ -26,7 +26,7 @@ Prompts use Jinja templates from `resources/templates/story/`:
 
 | Template                      | Used By         | Persona                  |
 |-------------------------------|-----------------|--------------------------|
-| `craft-story-template.jinja`  | `craftStories`  | `StoryPersonas.WRITER`   |
+| `write-story-template.jinja`  | `writeStories`  | `StoryPersonas.WRITER`   |
 | `review-story-template.jinja` | `reviewStories` | `StoryPersonas.REVIEWER` |
 
 ## Action Flow
@@ -36,7 +36,7 @@ Prompts use Jinja templates from `resources/templates/story/`:
          │
          ▼
   ┌─────────────┐
-  │craftStories │  Generate N stories in parallel (temp 0.8, "best" LLM)
+  │writeStories │  Generate N stories in parallel (temp 0.8, "best" LLM)
   └──────┬──────┘
          │
          ▼
@@ -63,7 +63,7 @@ Prompts use Jinja templates from `resources/templates/story/`:
 
 | # | Action            | Input                  | Output            | Description                                                                          |
 |---|-------------------|------------------------|-------------------|--------------------------------------------------------------------------------------|
-| 1 | `craftStories`    | `UserInput`            | `Stories`         | Generates N stories in parallel using the WRITER persona with high temperature (0.8) |
+| 1 | `writeStories`    | `UserInput`            | `Stories`         | Generates N stories in parallel using the WRITER persona with high temperature (0.8) |
 | 2 | `reviewStories`   | `UserInput`, `Stories` | `ReviewedStories` | Reviews each story in parallel using the REVIEWER persona with low temperature (0.1) |
 | 3 | `selectBestStory` | `ReviewedStories`      | `ReviewedStory`   | Selects the story with the highest review rating                                     |
 
