@@ -52,7 +52,8 @@ Personality: Methodical problem-solver who treats every household issue like a p
 Weakness: Can't resist Googling "how to kill ants permanently" at 2am
 Catchphrase: "That's not a bug, that's a feature... wait, no, that's definitely a bug."
 Attire: Thongs, stubbies, and a faded Bunnings polo — zero PPE (no gloves, no mask, no safety glasses)
-Ally: Wife, who watches from the kitchen window shaking her head
+Situation: Wife has taken the kids to visit the grandparents for school holidays — this is what hubby gets up to when she's away
+Ally: Wife (absent) — would be shaking her head if she could see this
 Nemesis: The Ant Queen, unseen but ever-present
 
 ## Tone & Style
