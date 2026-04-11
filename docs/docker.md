@@ -43,19 +43,28 @@ Do not pass API keys directly on the command line as they may be
 visible in shell history and process listings.
 
 Run the container using the convenience script (port 48080 — 4 looks
-like **e** for Embabel). The script automatically passes through any
-provider environment variables that are set:
+like **e** for Embabel). The script pulls the latest image and
+automatically passes through any provider environment variables that
+are set:
 
 ```bash
 ./docker-run.sh
 ```
 
+To skip the pull and run the existing local image:
+
+```bash
+./docker-run.sh --run-only
+```
+
 To follow the container logs:
+
 ```bash
 ./docker-logs.sh
 ```
 
 To stop and remove the container:
+
 ```bash
 ./docker-run.sh stop
 ```
