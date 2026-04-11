@@ -4,19 +4,21 @@
 
 # Docker Compose
 
-You can run this project in Docker using Docker Compose. The Docker build
-uses the `all` Maven profile and runs with `config/all`.
+Docker Compose builds from source and runs the application locally. The
+Docker build uses the `all` Maven profile and runs with `config/all`.
 
 Set the environment variables for your model provider
-(if not already in your `~/.zshrc`):
+(if not already in your `~/.zshrc` — see [Setup](setup.md) for details):
 
 **Anthropic:**
+
 ```bash
 export ANTHROPIC_BASE_URL=https://<your-private-anthropic-domain>
 export ANTHROPIC_API_KEY=<your-api-key>
 ```
 
 **OpenAI:**
+
 ```bash
 export OPENAI_BASE_URL=https://<your-private-openai-domain>
 export OPENAI_API_KEY=<your-api-key>
@@ -29,6 +31,7 @@ on the host machine.
 
 On Linux (without Docker Desktop), you may need to set
 `OLLAMA_HOST=0.0.0.0` so Ollama listens on all interfaces:
+
 ```bash
 export OLLAMA_HOST=0.0.0.0
 ollama serve
@@ -40,6 +43,7 @@ variables you have not exported will be passed as empty strings,
 which is safe because the application ignores empty values.
 
 Build and start the service:
+
 ```bash
 docker compose up --build
 ```
@@ -47,6 +51,7 @@ docker compose up --build
 The service will be available at `http://localhost:48080`.
 
 To stop the service:
+
 ```bash
 docker compose down
 ```
@@ -66,11 +71,11 @@ docker compose run \
 
 Available models include:
 
-| Provider  | Models                                      |
-|-----------|---------------------------------------------|
-| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5`      |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`                  |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`                  |
+| Provider  | Models                                 |
+|-----------|----------------------------------------|
+| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`             |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`             |
 
 ## MCP Server
 
