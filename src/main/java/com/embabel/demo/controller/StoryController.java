@@ -5,6 +5,7 @@ import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.demo.model.story.Story;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
  * <a href="http://localhost:8080/story?about=Steven">http://localhost:8080/story?about=Steven</a>
  */
 @RestController
-public record StoryController(AgentPlatform agentPlatform) {
+public class StoryController {
 
+    private final AgentPlatform agentPlatform;
+
+    public StoryController(AgentPlatform agentPlatform) {
+        this.agentPlatform = agentPlatform;
+    }
+
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/story", produces = MediaType.TEXT_PLAIN_VALUE)
     public String writeAStory(@RequestParam("about") String about) {
         return AgentInvocation.create(agentPlatform, Story.class)
@@ -30,6 +38,7 @@ public record StoryController(AgentPlatform agentPlatform) {
                 .text();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/story", produces = MediaType.TEXT_PLAIN_VALUE)
     public String writeAStoryFromPost(@RequestBody String about) {
         return AgentInvocation.create(agentPlatform, Story.class)

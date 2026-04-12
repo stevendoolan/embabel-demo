@@ -4,6 +4,7 @@ import com.embabel.agent.api.invocation.AgentInvocation;
 import com.embabel.agent.core.AgentPlatform;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.demo.model.dadjoke.DadJokeResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
  * <a href="http://localhost:8080/best-dad-joke?topic=chicken">http://localhost:8080/best-dad-joke?topic=chicken</a>
  */
 @RestController
-public record DadJokeController(AgentPlatform agentPlatform) {
+public class DadJokeController {
 
+    private final AgentPlatform agentPlatform;
+
+    public DadJokeController(AgentPlatform agentPlatform) {
+        this.agentPlatform = agentPlatform;
+    }
+
+    @PreAuthorize("hasRole('DAD')")
     @GetMapping("/dad-joke")
     public DadJokeResult getDadJoke(@RequestParam("topic") String topic) {
         return AgentInvocation.create(agentPlatform, DadJokeResult.class)
