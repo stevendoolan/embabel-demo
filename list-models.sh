@@ -13,18 +13,6 @@ set -e
 PROVIDER="${1:-anthropic}"
 
 case "$PROVIDER" in
-  openai)
-    if [ -z "$OPENAI_API_KEY" ]; then
-      echo "ERROR: OPENAI_API_KEY environment variable is not set." >&2
-      exit 1
-    fi
-    BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
-    MODELS_URL="${BASE_URL}/models"
-    echo "Fetching models from ${MODELS_URL}..."
-    curl -sS "$MODELS_URL" -H "Authorization: Bearer ${OPENAI_API_KEY}" \
-      | jq -r '.data[].id' | sort
-    ;;
-
   anthropic)
     if [ -z "$ANTHROPIC_API_KEY" ]; then
       echo "ERROR: ANTHROPIC_API_KEY environment variable is not set." >&2
@@ -34,6 +22,18 @@ case "$PROVIDER" in
     MODELS_URL="${BASE_URL}/v1/models"
     echo "Fetching models from ${MODELS_URL}..."
     curl -sS "$MODELS_URL" -H "Authorization: Bearer ${ANTHROPIC_API_KEY}" \
+      | jq -r '.data[].id' | sort
+    ;;
+
+  openai)
+    if [ -z "$OPENAI_API_KEY" ]; then
+      echo "ERROR: OPENAI_API_KEY environment variable is not set." >&2
+      exit 1
+    fi
+    BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+    MODELS_URL="${BASE_URL}/models"
+    echo "Fetching models from ${MODELS_URL}..."
+    curl -sS "$MODELS_URL" -H "Authorization: Bearer ${OPENAI_API_KEY}" \
       | jq -r '.data[].id' | sort
     ;;
 
