@@ -33,7 +33,11 @@ case "$PROVIDER" in
       echo "ERROR: ANTHROPIC_API_KEY environment variable is not set." >&2
       exit 1
     fi
-    BASE_URL="${ANTHROPIC_BASE_URL:-https://litellm.fcm.digital}"
+    if [ -z "$ANTHROPIC_BASE_URL" ]; then
+      echo "ERROR: ANTHROPIC_BASE_URL environment variable is not set." >&2
+      exit 1
+    fi
+    BASE_URL="$ANTHROPIC_BASE_URL"
     MODELS_URL="${BASE_URL}/v1/models"
     echo "Fetching models from ${MODELS_URL}..."
     curl -sS "$MODELS_URL" -H "Authorization: Bearer ${ANTHROPIC_API_KEY}" \
