@@ -18,13 +18,10 @@ case "$PROVIDER" in
       echo "ERROR: OPENAI_API_KEY environment variable is not set." >&2
       exit 1
     fi
-    if [ -z "$OPENAI_BASE_URL" ]; then
-      echo "ERROR: OPENAI_BASE_URL environment variable is not set." >&2
-      exit 1
-    fi
-    MODELS_URL="${OPENAI_BASE_URL}/models?api-version=2024-10-21"
+    BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+    MODELS_URL="${BASE_URL}/models"
     echo "Fetching models from ${MODELS_URL}..."
-    curl -sS "$MODELS_URL" -H "api-key: ${OPENAI_API_KEY}" \
+    curl -sS "$MODELS_URL" -H "Authorization: Bearer ${OPENAI_API_KEY}" \
       | jq -r '.data[].id' | sort
     ;;
 
@@ -33,11 +30,7 @@ case "$PROVIDER" in
       echo "ERROR: ANTHROPIC_API_KEY environment variable is not set." >&2
       exit 1
     fi
-    if [ -z "$ANTHROPIC_BASE_URL" ]; then
-      echo "ERROR: ANTHROPIC_BASE_URL environment variable is not set." >&2
-      exit 1
-    fi
-    BASE_URL="$ANTHROPIC_BASE_URL"
+    BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
     MODELS_URL="${BASE_URL}/v1/models"
     echo "Fetching models from ${MODELS_URL}..."
     curl -sS "$MODELS_URL" -H "Authorization: Bearer ${ANTHROPIC_API_KEY}" \
