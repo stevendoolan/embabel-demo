@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+#
+# List available models from an LLM provider API.
+#
+# Usage:
+#   ./list-models.sh                  # default: anthropic
+#   ./list-models.sh openai
+#   ./list-models.sh ollama
+#   ./list-models.sh anthropic
+
+set -e
+
+PROVIDER="${1:-anthropic}"
+
+case "$PROVIDER" in
+  anthropic)
+    if [ -z "$ANTHROPIC_API_KEY" ]; then
+      echo "ERROR: ANTHROPIC_API_KEY environment variable is not set." >&2
+      exit 1
+    fi
+    BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
+    MODELS_URL="${BASE_URL}/v1/models"
+    echo "Fetching models from ${MODELS_URL}..."
+    curl -sS "$MODELS_URL" -H "Authorization: Bearer ${ANTHROPIC_API_KEY}" \
+      | jq -r '.data[].id' | sort
+    ;;
+
+  openai)
+    if [ -z "$OPENAI_API_KEY" ]; then
+      echo "ERROR: OPENAI_API_KEY environment variable is not set." >&2
+      exit 1
+    fi
+    BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+    MODELS_URL="${BASE_URL}/models"
+    echo "Fetching models from ${MODELS_URL}..."
+    curl -sS "$MODELS_URL" -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+      | jq -r '.data[].id' | sort
+    ;;
+
+  ollama)
+    MODELS_URL="http://localhost:11434/api/tags"
+    echo "Fetching models from ${MODELS_URL}..."
+    curl -sS "$MODELS_URL" | jq -r '.models[].name' | sort
+    ;;
+
+  *)
+    echo "ERROR: Unknown provider '${PROVIDER}'. Valid values: openai, ollama, anthropic" >&2
+    exit 1
+    ;;
+esac
