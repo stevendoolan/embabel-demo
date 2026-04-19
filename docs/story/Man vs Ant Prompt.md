@@ -117,7 +117,7 @@ Lest we forget.
 
 ### Summary based on War Record
 
-**Kevin James Smith** (Service No. QX16737) was born on 12 April 1916 in Charleville, Queensland. He was a boot maker by trade and a member of the Church of England. He was single at the time of enlistment.
+**Kevin James Smith** (Service No. QX16737) was born on 12 April 1916 in Charleville, Queensland. He was a drover by trade and a member of the Church of England. He was single at the time of enlistment.
 
 He enlisted in the Australian Military Forces on 19 February 1941 at Toowoomba, Queensland, at the age of 24. His next of kin was his father, Thomas Smith, of Nelson Street, Charleville, Queensland.
 

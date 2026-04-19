@@ -1,173 +1,209 @@
 {
-	"info": {
-		"_postman_id": "eb790abb-d83c-4a62-94cd-b1a8fcd2174f",
-		"name": "embabel-demo",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3409676"
-	},
-	"item": [
-		{
-			"name": "Dad Joke",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:48080/dad-joke?topic=programming",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"dad-joke"
-					],
-					"query": [
-						{
-							"key": "topic",
-							"value": "programming"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Story",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:48080/story?about=Steven",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"story"
-					],
-					"query": [
-						{
-							"key": "about",
-							"value": "Steven"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Story",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "# Chat: P1 INC0042069 - KangarooBank Mobile App displaying negative balances as positive\n---\n\n## Chat Members\n- Bazza\n- Brenda\n- Callum\n- Damo\n- Fiona\n- Gavin\n- Hayley\n- Jono\n- Karen\n- Lachlan (known as Lachy)\n- Megan (known as Megs)\n- Neville\n- Priya\n- Rhonda\n- Shane\n- Tanya\n- Wayne\n\n## Chat Content\nTuesday 6 May 2026 9:03AM AEST\n\nHi Team,\n\nRaising a P1. KangarooBank Mobile App is showing negative balances as positive numbers for all customers. We have customers celebrating paying off their mortgage when they actually owe $450,000. Social media is going nuts.\n\nCallum Reid (AU) changed the group name to P1 INC0042069 - KangarooBank Mobile Negative Balance Display.\n\nTuesday 6 May 2026 9:06AM AEST\n\nMorning all. We are looking into it now.\n\nDamo Fitzpatrick (AU) added Priya Sharma (AU) and Lachlan O'Brien (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:08AM AEST\n\nJust to confirm the scope - this is ALL customers or just a subset?\n\nTuesday 6 May 2026 9:10AM AEST\n\nAll of them Priya. Every single one. My mum just rang me to say she's going to Bali because her credit card is showing she's $12,000 in the black.\n\nTuesday 6 May 2026 9:11AM AEST\n\nPlease tell your mum not to book anything yet\n\nToo late. She's already at the airport.\n\nCallum Reid (AU)\nBrilliant. Ok, which release went out last night?\n\nTuesday 6 May 2026 9:14AM AEST\n\nv4.7.2 went to prod at 11:45PM AEST last night. It was the currency formatting update for the new multi-currency feature.\n\nTuesday 6 May 2026 9:21AM AEST\n\nFound it. Someone changed `Math.abs()` on the balance display thinking it was fixing a formatting bug. It's literally taking the absolute value of every balance. Every negative number is now positive.\n\nDamo Fitzpatrick (AU)\nFound it. Someone changed `Math.abs()` on the balance display thinking it was fixing a formatting bug.\nYou're joking. Who approved that PR?\n\nWayne Bucket (AU) added Gavin Thornton (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:23AM AEST\n\nGavin Thornton (AU) - FYI you approved the PR for the currency formatting change. Can you jump on this please.\n\nTuesday 6 May 2026 9:25AM AEST\n\nLook I saw \"fix negative display issue\" in the PR title and the tests were green. How was I supposed to know they meant they were REMOVING the negative sign, not fixing a rendering bug?\n\nTuesday 6 May 2026 9:26AM AEST\n\nThe unit test literally says `assertEquals(450000, formatBalance(-450000))` and you thought that was CORRECT?\n\nTuesday 6 May 2026 9:27AM AEST\n\nIn my defence it was 4:30 on a Friday\n\nTanya Wells (AU) added Karen Mitchell (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:29AM AEST\n\nKaren Mitchell (AU) - Comms are asking how many customers are affected. The ABC has picked it up.\n\nFiona Xu (AU)\nKaren Mitchell (AU) - Comms are asking how many customers are affected. The ABC has picked it up.\n2.3 million active mobile app users. All of them are seeing incorrect balances.\n\nTuesday 6 May 2026 9:31AM AEST\n\nOh good lord. What's the hashtag?\n\nTuesday 6 May 2026 9:32AM AEST\n\n#KangarooBank is trending. Also #FreeMoney and #ThankYouKangaroo. Someone's made a TikTok already with 400k views.\n\nBrenda Hooper (AU) added Shane Gallagher (AU) and Rhonda Park (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:34AM AEST\n\nShane Gallagher (AU) / Rhonda Park (AU) - Contact centre update: call volumes up 3,400%. Queue time is 4 hours. Customers are calling to confirm they've paid off their home loan. One bloke in Toowoomba is at a Porsche dealership trying to get finance approved based on his app screenshot.\n\nShane Gallagher (AU)\nOne bloke in Toowoomba is at a Porsche dealership trying to get finance approved based on his app screenshot.\nCan we please focus on the fix. Damo how long to rollback?\n\nTuesday 6 May 2026 9:37AM AEST\n\nRollback is ready. Deploying v4.7.1 now. ETA 15 minutes.\n\nTuesday 6 May 2026 9:38AM AEST\n\nCan we put a banner on the app in the meantime? Something like \"Balances may be temporarily incorrect\"\n\nNeville Bruce (AU)\nCan we put a banner on the app in the meantime?\nAlready on it. Legal is reviewing the wording now.\n\nTuesday 6 May 2026 9:41AM AEST\n\nLegal came back. They don't want us to say \"incorrect\". They want us to say \"balances are currently undergoing a scheduled display refresh\"\n\nTuesday 6 May 2026 9:42AM AEST\n\nA SCHEDULED DISPLAY REFRESH? We turned everyone's debt into savings and we're calling it a SCHEDULED DISPLAY REFRESH?\n\nMegan Porter (AU)\nA SCHEDULED DISPLAY REFRESH?\nI don't write the copy Karen, I just pass it along.\n\nTuesday 6 May 2026 9:51AM AEST\n\nRollback deployed. Balances should be correcting now. Can everyone check?\n\nTuesday 6 May 2026 9:53AM AEST\n\nConfirmed. My test account is showing -$2,450.00 again as expected.\n\nPriya Sharma (AU)\nConfirmed. My test account is showing -$2,450.00 again as expected.\nSame here. Negative balances are back to negative.\n\nTuesday 6 May 2026 9:55AM AEST\n\nTwitter is now full of people saying we've stolen their money because their balance \"went down\". We can't win.\n\nJono Mackenzie (AU) added Hayley Chen (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:58AM AEST\n\nHayley Chen (AU) - Compliance here. APRA are on the phone. They want to know how a `Math.abs()` call made it through our change management process.\n\nTuesday 6 May 2026 9:59AM AEST\n\nTell APRA our change management process is very thorough and this was an isolated incident\n\nTuesday 6 May 2026 10:00AM AEST\n\nGavin it literally passed through your review with a comment that said \"looks good mate, chuck it in\" at 4:47PM on a Friday\n\nBazza Wentworth (AU)\nTell APRA our change management process is very thorough\nI just want to flag that three customers have already applied for loans at other banks using screenshots of their KangarooBank \"positive\" balances as proof of savings. Fraud team is across it.\n\nTuesday 6 May 2026 10:03AM AEST\n\nUpdate from contact centre: A customer in Cairns withdrew $15,000 cash this morning before balances were corrected. She said she \"wanted to get it out before the bank realised their mistake.\" She's now at the airport.\n\nTuesday 6 May 2026 10:05AM AEST\n\nCan we get a timeline for the PIR? APRA want it by COB Friday.\n\nTuesday 6 May 2026 10:06AM AEST\n\nScheduling PIR for Thursday 8 May, 10AM AEST. All team leads please block your calendars.\n\nDamo Fitzpatrick (AU)\nRollback deployed. Balances should be correcting now.\nCan we confirm the fix is fully propagated? CDN cache?\n\nTuesday 6 May 2026 10:08AM AEST\n\nGood call. CDN cache TTL is 30 minutes. Some users might still see old values until 10:15AM AEST.\n\nTuesday 6 May 2026 10:14AM AEST\n\nConfirmed all balances are displaying correctly now. Datadog monitors are green.\n\nTuesday 6 May 2026 10:22AM AEST\n\nFinal count from contact centre: 47,000 calls received. 312 customers attempted transactions based on incorrect balances. 4 car dealership visits. 1 customer put a deposit on a boat in Airlie Beach.\n\nTuesday 6 May 2026 10:25AM AEST\n\nCan we resolve this incident?\n\nTuesday 6 May 2026 10:26AM AEST\n\nYes but I want the following actions logged:\n1. Code review process update - no more Friday afternoon approvals\n2. Unit test review - tests should not pass when they assert that negative numbers equal positive numbers\n3. Balance display changes require sign-off from Finance team\n4. Gavin to complete mandatory code review training\n\nGavin Thornton (AU)\nIn my defence it was 4:30 on a Friday\nNoted, Callum. I will also be updating my LinkedIn to \"Available for new opportunities.\"\n\nTuesday 6 May 2026 10:28AM AEST\n\nLet's not be hasty Gavin. But maybe no more Friday deploys yeah?\n\nShane Gallagher (AU)\n1 customer put a deposit on a boat in Airlie Beach.\nCan someone please follow up on the boat situation? Legal wants to know if we're liable.\n\nTuesday 6 May 2026 10:31AM AEST\n\nResolving INC0042069. PIR scheduled for Thursday 8 May. All action items logged.\n\nTuesday 6 May 2026 10:33AM AEST\n\nThanks everyone. Great work getting this sorted quickly. And Gavin - we've all been there mate.\n\nTuesday 6 May 2026 10:34AM AEST\n\nNot like this we haven't.\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:48080/story",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"story"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sonic Pi - Generate",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"if (jsonData.jobId) {",
-							"    pm.collectionVariables.set('jobId', jsonData.jobId);",
-							"    console.log('Set jobId to: ' + jsonData.jobId);",
-							"}"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:48080/sonic-pi?prompt=frank sinatra croon",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"sonic-pi"
-					],
-					"query": [
-						{
-							"key": "prompt",
-							"value": "frank sinatra croon"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sonic Pi - Job Status",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:48080/sonic-pi/{{jobId}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"sonic-pi",
-						"{{jobId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Fibonacci",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:48080/compute-fibonacci?iterations=10",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "48080",
-					"path": [
-						"compute-fibonacci"
-					],
-					"query": [
-						{
-							"key": "iterations",
-							"value": "10"
-						}
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "deea1907-a25f-41b2-a258-c5c8c02434a1",
+    "name": "embabel-demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3409676"
+  },
+  "item": [
+    {
+      "name": "Dad Joke",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:48080/dad-joke?topic=programming",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "dad-joke"
+          ],
+          "query": [
+            {
+              "key": "topic",
+              "value": "programming"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Story",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:48080/story?about=programming",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "story"
+          ],
+          "query": [
+            {
+              "key": "about",
+              "value": "programming"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Story 1 - Man vs Ant",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "# Man vs Ant\n\nExcerpt from old war diary:\n\n> Man vs Ant\n> Day 2\n>\n> Its been tough out there. Look around and there's another 1000 of the slimy biscuits. But my trusty ant gun pulled me through.\n>\n> Found the nest. You wouldn't believe the size of it, all laid out flat like that.\n>\n> Got em all. Calling for a chicken to pull me out of this dark steamy jungle of a backyard.\n>\n> The other guy didn't make it (photo of scarecrow).\n\nWrite a story called \"Man vs Ant\", a humorous take on a war story, about a man hunting and killing ants in his backyard.\n\nMain Character: Steven, a 45 year old Software Engineer,\nwho is allergic to everything outside (dust, grass, pollen) and avoid it wherever possible.\n\nLocation: Australia, Brisbane.\nDate: 12 April 2026, 7:00am\n\n## Day 1: Easter Monday, public holiday, 6 April 2026\nAnts in kitchen. Always getting in the coffee machine. I'm forever washing them down the drain.\nBought supplies (Mortein Power Gard, the expert's DIY).\nWent ant hunting.\nSprayed all along the walls, where they meet the ground.\nSprayed all ants I could see.\nLifted a few boxes, but no nest.\nFigured they must be in the grass.\nNo more ants, as far as I can see. Job done!\n\n## Day 2: Sunday 12 April 2026\n7am. Ants everywhere!!!\nGet my Mortein Gard and spray them all.\nAAAAAAAHHHHHHHHHHHH....HHHHHHHHHHHHHHHHHHHH!\nThere's more in a box, a plastic tub.  I put it on the grass.\nThere's an old scarecrow the kids made. I take it out.  No ants.\nThere's a blue tarp.  Got a few ants on it, in it. I take it out and spray it.\nThere's a green plastic greenhouse garden bed cover.  It's covered in ants!!!\nGingerly, I take it out and open it  up, spraying every surface. Turn it over, spray again. Yuck!\nAre those little white things?  This is the nest!!  Wow! Fantastic!!\nI think I really did it this time.\n\nOr did I?  To be continued in 2027.\n\n## Character Detail\n\nNickname: The Exterminator\nPersonality: Methodical problem-solver who treats every household issue like a production incident\nWeakness: Can't resist Googling \"how to kill ants permanently\" at 2am\nCatchphrase: \"That's not a bug, that's a feature... wait, no, that's definitely a bug.\"\nAttire: Datadog t-shirt (Steven loves free swag from vendors), pajama shorts and slides — zero PPE (no gloves, no mask, no safety glasses)\nSituation: Wife has taken the kids to visit the grandparents for school holidays — this is what hubby gets up to when she's away\nAlly: Wife (absent) — would be shaking her head if she could see this\nNemesis: The Ant Queen, unseen but ever-present\n\n## Tone & Style\n\nGenre: Comedy / Mockumentary War Diary\nTone: Deadpan serious narration over absurdly trivial events\nNarrative Voice: First-person war correspondent, embedded with the ants\nInfluences: Blackadder Goes Forth, The Castle, Karl Pilkington\nRunning Gag: The scarecrow is always mentioned as a fallen comrade\n\n## Setting Detail\n\nProperty Type: Suburban brick house, single story, built in the 2000s\nPatio Description: Concrete slab under a tin roof, cluttered with kids' old projects and forgotten storage tubs\nWeather: Already 27°C at 7am, humid, classic Brisbane autumn\nWildlife: Butcher birds Tina, Gina and Zina watching from the mango tree like war correspondents\nSoundtrack: Cicadas, distant lawnmower, occasional cockatoo screaming, cars passing by on the main road\n\n## Story Structure\n\nOpening Scene: Steven making coffee, finding ants crawling all over the water tank\nClimax: The greenhouse cover reveal — the nest\nFalse Victory: Day 1 ending with \"Job done!\"\nCliffhanger: A single scout ant appears on the kitchen bench the next morning\nEpilogue Tease: \"Day 3: They're back. They brought friends.\"\n\n## Arsenal / Props\n\nPrimary Weapon: Mortein Power Gard outdoor spray\nSecondary Weapon: Kitchen sponge soaked in vinegar (wife's suggestion, ignored)\nRecon Equipment: iPhone torch held at ground level\nSupply Depot: Bunnings Warehouse, Stafford\nRations: Kai Coffee, single origin subscription from the Sunshine Coast\nMorale Booster: The thought of a hot cup of coffee without ants in it\n\n## Emotional Stakes\n\nWhat's Really At Risk: The coffee machine — the one thing that makes mornings bearable\nInner Conflict: A software engineer who automates everything, defeated by 2mm insects\nVictory Condition / Acceptance Criteria: One full week with zero ants in the kitchen\n\n\n> **IMPORTANT:** This is True story from 12 Apr 2026, from my patio.\n\n## Also True\n\nBefore anyone goes and bites my head off for writing a funny war story,\nthis is my way of processing this fact:\n\nMy grandfather was in World War II - for real!\n\nKevin James Smith\nService Number QX16737\nDate of Birth 12 April 1916\nEnlisted 19 February 1941 in Toowoomba\nDischarged 11 May 1946\n\nMy Dad, Maxwell James Doolan, died on 7 Feb 2026, so now I carry on the legacy.  He would like that.\n\nLest we forget.\n\n### Summary based on War Record\n\n**Kevin James Smith** (Service No. QX16737) was born on 12 April 1916 in Charleville, Queensland. He was a drover by trade and a member of the Church of England. He was single at the time of enlistment.\n\nHe enlisted in the Australian Military Forces on 19 February 1941 at Toowoomba, Queensland, at the age of 24. His next of kin was his father, Thomas Smith, of Nelson Street, Charleville, Queensland.\n\nHe was medically examined and found fit for Class I service. He served as a Private (Pte) throughout the war. His service included:\n\n- **Total effective service**: approximately 1,724 days\n- **Active service in Australia**: approximately 1,728 days\n- **Active service overseas**: approximately 358 days\n\nHis overseas service included embarkation on the ship \"Nieuw Amsterdam\" and service in locations including what appears to be the Netherlands East Indies / New Guinea theatre.\n\nHe was discharged on **20 February 1946** with Discharge Certificate No. 358476.\n\nA Female Relative badge (No. A.14.9.156) was issued to M. E. Smith on 3 October 1941.\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:48080/story",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "story"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Story 2 - KangarooBank Production Incident Copy",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "# Chat: P1 INC0042069 - KangarooBank Mobile App displaying negative balances as positive\n---\n\n## Chat Members\n- Bazza\n- Brenda\n- Callum\n- Damo\n- Fiona\n- Gavin\n- Hayley\n- Jono\n- Karen\n- Lachlan (known as Lachy)\n- Megan (known as Megs)\n- Neville\n- Priya\n- Rhonda\n- Shane\n- Tanya\n- Wayne\n\n## Chat Content\nTuesday 6 May 2026 9:03AM AEST\n\nHi Team,\n\nRaising a P1. KangarooBank Mobile App is showing negative balances as positive numbers for all customers. We have customers celebrating paying off their mortgage when they actually owe $450,000. Social media is going nuts.\n\nCallum Reid (AU) changed the group name to P1 INC0042069 - KangarooBank Mobile Negative Balance Display.\n\nTuesday 6 May 2026 9:06AM AEST\n\nMorning all. We are looking into it now.\n\nDamo Fitzpatrick (AU) added Priya Sharma (AU) and Lachlan O'Brien (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:08AM AEST\n\nJust to confirm the scope - this is ALL customers or just a subset?\n\nTuesday 6 May 2026 9:10AM AEST\n\nAll of them Priya. Every single one. My mum just rang me to say she's going to Bali because her credit card is showing she's $12,000 in the black.\n\nTuesday 6 May 2026 9:11AM AEST\n\nPlease tell your mum not to book anything yet\n\nToo late. She's already at the airport.\n\nCallum Reid (AU)\nBrilliant. Ok, which release went out last night?\n\nTuesday 6 May 2026 9:14AM AEST\n\nv4.7.2 went to prod at 11:45PM AEST last night. It was the currency formatting update for the new multi-currency feature.\n\nTuesday 6 May 2026 9:21AM AEST\n\nFound it. Someone changed `Math.abs()` on the balance display thinking it was fixing a formatting bug. It's literally taking the absolute value of every balance. Every negative number is now positive.\n\nDamo Fitzpatrick (AU)\nFound it. Someone changed `Math.abs()` on the balance display thinking it was fixing a formatting bug.\nYou're joking. Who approved that PR?\n\nWayne Bucket (AU) added Gavin Thornton (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:23AM AEST\n\nGavin Thornton (AU) - FYI you approved the PR for the currency formatting change. Can you jump on this please.\n\nTuesday 6 May 2026 9:25AM AEST\n\nLook I saw \"fix negative display issue\" in the PR title and the tests were green. How was I supposed to know they meant they were REMOVING the negative sign, not fixing a rendering bug?\n\nTuesday 6 May 2026 9:26AM AEST\n\nThe unit test literally says `assertEquals(450000, formatBalance(-450000))` and you thought that was CORRECT?\n\nTuesday 6 May 2026 9:27AM AEST\n\nIn my defence it was 4:30 on a Friday\n\nTanya Wells (AU) added Karen Mitchell (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:29AM AEST\n\nKaren Mitchell (AU) - Comms are asking how many customers are affected. The ABC has picked it up.\n\nFiona Xu (AU)\nKaren Mitchell (AU) - Comms are asking how many customers are affected. The ABC has picked it up.\n2.3 million active mobile app users. All of them are seeing incorrect balances.\n\nTuesday 6 May 2026 9:31AM AEST\n\nOh good lord. What's the hashtag?\n\nTuesday 6 May 2026 9:32AM AEST\n\n#KangarooBank is trending. Also #FreeMoney and #ThankYouKangaroo. Someone's made a TikTok already with 400k views.\n\nBrenda Hooper (AU) added Shane Gallagher (AU) and Rhonda Park (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:34AM AEST\n\nShane Gallagher (AU) / Rhonda Park (AU) - Contact centre update: call volumes up 3,400%. Queue time is 4 hours. Customers are calling to confirm they've paid off their home loan. One bloke in Toowoomba is at a Porsche dealership trying to get finance approved based on his app screenshot.\n\nShane Gallagher (AU)\nOne bloke in Toowoomba is at a Porsche dealership trying to get finance approved based on his app screenshot.\nCan we please focus on the fix. Damo how long to rollback?\n\nTuesday 6 May 2026 9:37AM AEST\n\nRollback is ready. Deploying v4.7.1 now. ETA 15 minutes.\n\nTuesday 6 May 2026 9:38AM AEST\n\nCan we put a banner on the app in the meantime? Something like \"Balances may be temporarily incorrect\"\n\nNeville Bruce (AU)\nCan we put a banner on the app in the meantime?\nAlready on it. Legal is reviewing the wording now.\n\nTuesday 6 May 2026 9:41AM AEST\n\nLegal came back. They don't want us to say \"incorrect\". They want us to say \"balances are currently undergoing a scheduled display refresh\"\n\nTuesday 6 May 2026 9:42AM AEST\n\nA SCHEDULED DISPLAY REFRESH? We turned everyone's debt into savings and we're calling it a SCHEDULED DISPLAY REFRESH?\n\nMegan Porter (AU)\nA SCHEDULED DISPLAY REFRESH?\nI don't write the copy Karen, I just pass it along.\n\nTuesday 6 May 2026 9:51AM AEST\n\nRollback deployed. Balances should be correcting now. Can everyone check?\n\nTuesday 6 May 2026 9:53AM AEST\n\nConfirmed. My test account is showing -$2,450.00 again as expected.\n\nPriya Sharma (AU)\nConfirmed. My test account is showing -$2,450.00 again as expected.\nSame here. Negative balances are back to negative.\n\nTuesday 6 May 2026 9:55AM AEST\n\nTwitter is now full of people saying we've stolen their money because their balance \"went down\". We can't win.\n\nJono Mackenzie (AU) added Hayley Chen (AU) to the chat and shared all chat history.\n\nTuesday 6 May 2026 9:58AM AEST\n\nHayley Chen (AU) - Compliance here. APRA are on the phone. They want to know how a `Math.abs()` call made it through our change management process.\n\nTuesday 6 May 2026 9:59AM AEST\n\nTell APRA our change management process is very thorough and this was an isolated incident\n\nTuesday 6 May 2026 10:00AM AEST\n\nGavin it literally passed through your review with a comment that said \"looks good mate, chuck it in\" at 4:47PM on a Friday\n\nBazza Wentworth (AU)\nTell APRA our change management process is very thorough\nI just want to flag that three customers have already applied for loans at other banks using screenshots of their KangarooBank \"positive\" balances as proof of savings. Fraud team is across it.\n\nTuesday 6 May 2026 10:03AM AEST\n\nUpdate from contact centre: A customer in Cairns withdrew $15,000 cash this morning before balances were corrected. She said she \"wanted to get it out before the bank realised their mistake.\" She's now at the airport.\n\nTuesday 6 May 2026 10:05AM AEST\n\nCan we get a timeline for the PIR? APRA want it by COB Friday.\n\nTuesday 6 May 2026 10:06AM AEST\n\nScheduling PIR for Thursday 8 May, 10AM AEST. All team leads please block your calendars.\n\nDamo Fitzpatrick (AU)\nRollback deployed. Balances should be correcting now.\nCan we confirm the fix is fully propagated? CDN cache?\n\nTuesday 6 May 2026 10:08AM AEST\n\nGood call. CDN cache TTL is 30 minutes. Some users might still see old values until 10:15AM AEST.\n\nTuesday 6 May 2026 10:14AM AEST\n\nConfirmed all balances are displaying correctly now. Datadog monitors are green.\n\nTuesday 6 May 2026 10:22AM AEST\n\nFinal count from contact centre: 47,000 calls received. 312 customers attempted transactions based on incorrect balances. 4 car dealership visits. 1 customer put a deposit on a boat in Airlie Beach.\n\nTuesday 6 May 2026 10:25AM AEST\n\nCan we resolve this incident?\n\nTuesday 6 May 2026 10:26AM AEST\n\nYes but I want the following actions logged:\n1. Code review process update - no more Friday afternoon approvals\n2. Unit test review - tests should not pass when they assert that negative numbers equal positive numbers\n3. Balance display changes require sign-off from Finance team\n4. Gavin to complete mandatory code review training\n\nGavin Thornton (AU)\nIn my defence it was 4:30 on a Friday\nNoted, Callum. I will also be updating my LinkedIn to \"Available for new opportunities.\"\n\nTuesday 6 May 2026 10:28AM AEST\n\nLet's not be hasty Gavin. But maybe no more Friday deploys yeah?\n\nShane Gallagher (AU)\n1 customer put a deposit on a boat in Airlie Beach.\nCan someone please follow up on the boat situation? Legal wants to know if we're liable.\n\nTuesday 6 May 2026 10:31AM AEST\n\nResolving INC0042069. PIR scheduled for Thursday 8 May. All action items logged.\n\nTuesday 6 May 2026 10:33AM AEST\n\nThanks everyone. Great work getting this sorted quickly. And Gavin - we've all been there mate.\n\nTuesday 6 May 2026 10:34AM AEST\n\nNot like this we haven't.\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:48080/story",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "story"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sonic Pi - Generate",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.jobId) {",
+              "    pm.collectionVariables.set('jobId', jsonData.jobId);",
+              "    console.log('Set jobId to: ' + jsonData.jobId);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:48080/sonic-pi?prompt=frank sinatra",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "sonic-pi"
+          ],
+          "query": [
+            {
+              "key": "prompt",
+              "value": "frank sinatra"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sonic Pi - Job Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:48080/sonic-pi/{{jobId}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "sonic-pi",
+            "{{jobId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fibonacci",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:48080/compute-fibonacci?iterations=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "48080",
+          "path": [
+            "compute-fibonacci"
+          ],
+          "query": [
+            {
+              "key": "iterations",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "jobId",
+      "value": ""
+    }
+  ]
 }
