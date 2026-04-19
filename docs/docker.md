@@ -78,7 +78,7 @@ docker pull stevendoolan/embabel-demo:latest
 **All providers (Anthropic + OpenAI):**
 
 ```bash
-docker run -d -p 48080:8080 \
+docker run -d -p 48080:48080 \
   -e ANTHROPIC_BASE_URL \
   -e ANTHROPIC_API_KEY \
   -e OPENAI_BASE_URL \
@@ -90,7 +90,7 @@ docker run -d -p 48080:8080 \
 **Anthropic:**
 
 ```bash
-docker run -d -p 48080:8080 \
+docker run -d -p 48080:48080 \
   -e ANTHROPIC_BASE_URL \
   -e ANTHROPIC_API_KEY \
   --name embabel-demo \
@@ -100,7 +100,7 @@ docker run -d -p 48080:8080 \
 **OpenAI:**
 
 ```bash
-docker run -d -p 48080:8080 \
+docker run -d -p 48080:48080 \
   -e OPENAI_BASE_URL \
   -e OPENAI_API_KEY \
   --name embabel-demo \
@@ -110,7 +110,7 @@ docker run -d -p 48080:8080 \
 **Ollama:**
 
 ```bash
-docker run -d -p 48080:8080 \
+docker run -d -p 48080:48080 \
   --name embabel-demo \
   stevendoolan/embabel-demo:latest
 ```
@@ -140,7 +140,7 @@ The Docker image defaults to `claude-sonnet-4-5` as the default LLM.
 You can override the models using environment variables:
 
 ```bash
-docker run -d -p 48080:8080 \
+docker run -d -p 48080:48080 \
   -e EMBABEL_MODELS_DEFAULT_LLM=gpt-4.1 \
   -e EMBABEL_MODELS_LLMS_BEST=gpt-4.1 \
   -e EMBABEL_MODELS_LLMS_CHEAPEST=gpt-4.1-mini \

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Integration test for the MCP server SSE endpoint.
  * Requires the application to be running on localhost.
- * Port defaults to 48080 (Docker) and can be overridden with {@code -DTEST_PORT=8080}.
+ * Port defaults to 48080 and can be overridden with {@code -DTEST_PORT=<port>}.
  */
 @Tag("e2e")
 @Timeout(30)

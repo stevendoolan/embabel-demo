@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 1. Comment out "embabel-agent-starter-shell" in pom.xml to disable the shell.
  * 2. Run the application.
  * 3. Open a browser and go to:
- * <a href="http://localhost:8080/story?about=Steven">http://localhost:8080/story?about=Steven</a>
+ * <a href="http://localhost:48080/story?about=Steven">http://localhost:48080/story?about=Steven</a>
  */
 @RestController
 public record StoryController(AgentPlatform agentPlatform) {
