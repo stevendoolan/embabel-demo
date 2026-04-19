@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+/**
+ * Represents the state of an asynchronous Sonic Pi generation job. Returned by
+ * {@link SonicPiController} as JSON, with null fields omitted. Factory methods
+ * {@link #running}, {@link #completed}, and {@link #failed} enforce valid state transitions.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SonicPiJob(
         @Nonnull String jobId,

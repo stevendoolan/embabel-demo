@@ -20,8 +20,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO Use an document-recognition LLM to read a PDF of sheet music and convert it to Sonic Pi code.
-
+/**
+ * Embabel agent that converts a free-text user prompt into a runnable Sonic Pi Ruby script through
+ * a multi-step LLM pipeline: extract metadata, generate melody, add harmony, add percussion, and
+ * combine all tracks into a single script. Each step uses Jinja templates and prompt contributors
+ * for Sonic Pi instructions and example songs (few-shot context).
+ *
+ * <p>Exposed as an MCP tool via {@code @Export} so it can be invoked remotely.
+ */
+// TODO Use a document-recognition LLM to read a PDF of sheet music and convert it to Sonic Pi code.
 @Agent(description = "Write Sonic Pi code to play a melody based on user input")
 public class SonicPiAgent {
 

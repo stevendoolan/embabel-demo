@@ -7,6 +7,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 
+/**
+ * Structured metadata extracted from a user's free-text music prompt by the LLM. Captures the
+ * musical properties (key, tempo, time signature, mood, instruments, etc.) needed to drive the
+ * multi-step Sonic Pi code generation pipeline. Produced by the {@code toSonicPiMetadata} action
+ * and consumed by every subsequent generation action in {@link com.embabel.demo.agent.SonicPiAgent}.
+ */
 public record SonicPiMetadata(
 
         @NotBlank(message = "Must not be blank.")

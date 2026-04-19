@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Contributes Sonic Pi programming instructions, available instruments, and available samples to
+ * every LLM prompt in the Sonic Pi agent pipeline. Bound from the {@code sonic-pi} configuration
+ * block in {@code application.yml} so the lists can be maintained without code changes.
+ */
 @ConfigurationProperties("sonic-pi")
 public record SonicPiPromptContributor(
         @Nonnull String instructions,

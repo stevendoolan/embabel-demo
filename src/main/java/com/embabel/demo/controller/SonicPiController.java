@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller that exposes asynchronous Sonic Pi music generation. {@code POST /sonic-pi}
+ * accepts a free-text prompt and returns a job ID immediately; the agent pipeline runs in the
+ * background. {@code GET /sonic-pi/{jobId}} polls for the result (running, completed, or failed).
+ */
 @RestController
 public class SonicPiController {
 
