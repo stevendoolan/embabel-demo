@@ -12,12 +12,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/dad-joke?topic=programming",
+					"raw": "http://localhost:48080/dad-joke?topic=programming",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"dad-joke"
 					],
@@ -37,12 +37,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/story?about=Steven",
+					"raw": "http://localhost:48080/story?about=Steven",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"story"
 					],
@@ -71,12 +71,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/story",
+					"raw": "http://localhost:48080/story",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"story"
 					]
@@ -105,12 +105,12 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/sonic-pi?prompt=frank sinatra croon",
+					"raw": "http://localhost:48080/sonic-pi?prompt=frank sinatra croon",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"sonic-pi"
 					],
@@ -130,12 +130,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/sonic-pi/{{jobId}}",
+					"raw": "http://localhost:48080/sonic-pi/{{jobId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"sonic-pi",
 						"{{jobId}}"
@@ -150,12 +150,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/compute-fibonacci?iterations=10",
+					"raw": "http://localhost:48080/compute-fibonacci?iterations=10",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "48080",
 					"path": [
 						"compute-fibonacci"
 					],

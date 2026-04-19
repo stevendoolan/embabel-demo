@@ -57,7 +57,7 @@ How to use the Fibonacci Agent using the REST endpoint:
    mvn spring-boot:run -Popenai
    ```
 
-2. Send a GET request: http://localhost:8080/compute-fibonacci?iterations=10
+2. Send a GET request: http://localhost:48080/compute-fibonacci?iterations=10
 
 How to use the Fibonacci Agent using the Shell Client:
 1. Start the service with OpenAI and shell:

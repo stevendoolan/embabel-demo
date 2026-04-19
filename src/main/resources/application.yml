@@ -1,3 +1,6 @@
+server:
+  port: 48080
+
 # Enable virtual threads for better concurrency with LLM calls
 spring:
   threads:
