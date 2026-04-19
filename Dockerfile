@@ -14,11 +14,10 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 COPY config ./config
 
-# Sonic Pi example song directories - mount from host at runtime:
-#   docker run -v /Applications/Sonic Pi.app/Contents/Resources/etc/examples:/app/sonic-pi-examples \
-#              -v ~/code/sonicpi:/app/user-songs ...
-ENV SONIC_PI_EXAMPLES_SONIC_PI_APP_DIR=/app/sonic-pi-examples
-ENV SONIC_PI_EXAMPLES_USER_DIR=/app/user-songs
+# Sonic Pi example song directories - mount from host via docker-compose volumes.
+# Spring Boot relaxed binding: hyphens are removed when mapping to env vars.
+ENV SONICPI_EXAMPLES_SONICPIAPPDIR=/app/sonic-pi-examples
+ENV SONICPI_EXAMPLES_USERDIR=/app/user-songs
 
 EXPOSE 48080
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.additional-location=file:/app/config/all/"]

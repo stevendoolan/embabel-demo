@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "48080:48080"
+    volumes:
+      - ${SONIC_PI_EXAMPLES_DIR:-/Applications/Sonic Pi.app/Contents/Resources/etc/examples}:/app/sonic-pi-examples:ro
+      - ${SONIC_PI_USER_SONGS_DIR:-~/code/sonicpi}:/app/user-songs:ro
     environment:
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
