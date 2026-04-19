@@ -17,3 +17,5 @@ embabel-agent-api/src/main/resources/mcp/**
 .mcp.json
 
 *.rb
+
+sonic-pi-examples/

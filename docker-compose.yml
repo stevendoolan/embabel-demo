@@ -6,12 +6,11 @@ services:
     ports:
       - "48080:48080"
     volumes:
-      - ${SONIC_PI_EXAMPLES_DIR:-/Applications/Sonic Pi.app/Contents/Resources/etc/examples}:/app/sonic-pi-examples:ro
-      - ${SONIC_PI_USER_SONGS_DIR:-~/code/sonicpi}:/app/user-songs:ro
+      - ./sonic-pi-examples:/app/sonic-pi-examples:ro
     environment:
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - OPENAI_BASE_URL=${OPENAI_BASE_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"sonic-pi-app-dir":"/app/sonic-pi-examples","user-dir":"/app/user-songs"}}}
+      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"sonic-pi-app-dir":"/app/sonic-pi-examples/sonic-pi-app","user-dir":"/app/sonic-pi-examples/user-songs"}}}
