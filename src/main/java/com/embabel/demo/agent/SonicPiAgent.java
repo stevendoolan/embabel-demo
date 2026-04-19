@@ -36,6 +36,10 @@ public class SonicPiAgent {
         this.sonicPiExamplesContributor = sonicPiExamplesContributor;
     }
 
+    /**
+     * The reason for the SonicPiPromptContributor here is to provide data for the instruments
+     * in the SonicPiMetadata.
+     */
     @Action
     public SonicPiMetadata toSonicPiMetadata(UserInput userInput, OperationContext context) {
         LOG.info("Converting user input to {}", userInput);
@@ -75,6 +79,7 @@ public class SonicPiAgent {
         LOG.info("Adding harmony track to {}", sonicPiScriptWithMelody);
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/add-harmony.jinja")
                 .createObject(SonicPiScriptWithHarmony.class, Map.of(
@@ -89,6 +94,7 @@ public class SonicPiAgent {
         LOG.info("Adding percussion track to {}", sonicPiScriptWithMelody);
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/add-percussion.jinja")
                 .createObject(SonicPiScriptWithPercussion.class, Map.of(
