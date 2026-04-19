@@ -12,13 +12,13 @@ This demo project showcases four agents that demonstrate what Embabel can do:
 ### Quick taste
 
 ```bash
-curl "http://localhost:8080/dad-joke?topic=cats"
+curl "http://localhost:8080/dad-joke?topic=programming"
 ```
 
 ```json
 {
-  "joke": "Why don't cats play poker? Too many cheetahs!",
-  "rating": 8
+  "joke": "Why do programmers prefer dark mode? Because light attracts bugs!",
+  "rating": 9
 }
 ```
 
