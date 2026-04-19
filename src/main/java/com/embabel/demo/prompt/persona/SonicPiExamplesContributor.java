@@ -73,7 +73,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
             return;
         }
 
-        var resolved = resolvePath(dirPath);
+        var resolved = Path.of(dirPath).toAbsolutePath().normalize();
         if (!Files.isDirectory(resolved)) {
             LOG.warn("Sonic Pi examples directory does not exist: {}", resolved);
             return;
@@ -99,13 +99,6 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
         int loaded = target.size() - countBefore;
         LOG.info("Loaded {} example songs from {}", loaded, resolved);
-    }
-
-    private static Path resolvePath(String path) {
-        if (path.startsWith("~/")) {
-            return Path.of(System.getProperty("user.home")).resolve(path.substring(2)).toAbsolutePath().normalize();
-        }
-        return Path.of(path).toAbsolutePath().normalize();
     }
 
 }

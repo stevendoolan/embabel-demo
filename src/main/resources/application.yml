@@ -37,7 +37,7 @@ spring:
 sonic-pi:
   examples:
     sonic-pi-app-dir: /Applications/Sonic Pi.app/Contents/Resources/etc/examples/
-    user-dir: ~/code/sonicpi/
+    user-dir: ${user.home}/code/sonicpi/
     max-examples: 20
 
   instructions: |
