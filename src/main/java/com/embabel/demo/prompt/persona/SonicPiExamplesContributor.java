@@ -14,6 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Loads Sonic Pi {@code .rb} example songs from configured directories at startup and contributes
+ * them to LLM prompts as few-shot context. Created because the Sonic Pi agent produces significantly
+ * richer, more idiomatic music when the LLM can learn from concrete examples of real songs.
+ *
+ * <p>Recursively scans two optional directories (Sonic Pi's built-in examples and the user's
+ * personal collection) and caps the total at {@code maxExamples} to avoid exceeding context limits.
+ * Gracefully handles missing or unreadable directories.
+ */
 @Component
 public class SonicPiExamplesContributor implements PromptContributor {
 
