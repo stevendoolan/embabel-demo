@@ -9,5 +9,7 @@ import jakarta.annotation.Nonnull;
  * @param name    relative file path within the source directory (e.g. "apprentice/bach.rb")
  * @param content the full Ruby source code of the song
  */
-public record ExampleSong(@Nonnull String name, @Nonnull String content) {
+public record ExampleSong(
+        @Nonnull String name,
+        @Nonnull String content) {
 }
