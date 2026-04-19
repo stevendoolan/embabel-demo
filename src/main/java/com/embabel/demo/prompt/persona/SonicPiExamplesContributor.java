@@ -70,10 +70,12 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
     private void loadFromDirectory(@Nullable String dirPath, @Nonnull List<ExampleSong> target) {
         if (dirPath == null || dirPath.isBlank()) {
+            LOG.info("Sonic Pi examples directory not configured (null or blank)");
             return;
         }
 
         var resolved = Path.of(dirPath).toAbsolutePath().normalize();
+        LOG.info("Loading Sonic Pi examples from: {}", resolved);
         if (!Files.isDirectory(resolved)) {
             LOG.warn("Sonic Pi examples directory does not exist: {}", resolved);
             return;
