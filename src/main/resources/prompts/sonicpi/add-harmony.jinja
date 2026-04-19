@@ -21,6 +21,10 @@ Do not include the melody again; only provide the harmony part in the harmonyScr
 Be aware of the existing instruments used in the melody to avoid clashes.
 Be aware of the key changes in the melody when composing the harmony.
 
+The harmony must sit BELOW the melody in the mix — it supports the melody, not competes with it.
+Use lower amplitudes than the melody: amp 0.3-0.6 for harmony parts.
+Never let any harmony element exceed amp: 0.6.
+
 Use audio FX to add depth and texture to the harmony:
 - `:reverb` with `room:` 0-1 creates spacious pads and atmospheric chords
 - `:echo` with `phase:` and `decay:` adds rhythmic repeats that fill out the sound
@@ -36,9 +40,9 @@ live_loop :harmony do
   with_fx :reverb, room: 1 do
     16.times do
       use_synth :dsaw
-      play 28, cutoff: 130, release: 0.1, amp: 2
+      play 28, cutoff: 130, release: 0.1, amp: 0.5
       sleep 0.125
-      play 28 + 12, cutoff: 80, release: 0.1, amp: 2
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.5
       sleep 0.125
     end
   end

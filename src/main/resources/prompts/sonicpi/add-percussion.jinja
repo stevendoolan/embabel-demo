@@ -17,7 +17,9 @@ Make the percussion track complement the existing melody.
 Do not use instruments. Only use samples.
 Create a rich, full sound using drums, bass, synths, and pads.
 Do not include the melody again; only provide the percussion part in the percussionScriptContent.
-Make the percussion louder than the melody to provide a strong rhythmic foundation.
+The percussion must sit BELOW the melody in the mix — it supports the melody, not the other way around.
+Use lower amplitudes than the melody: kicks at amp: 0.5-0.8, snares at amp: 0.4-0.7, hi-hats and fills at amp: 0.2-0.5.
+Never let any percussion sample exceed amp: 0.8.
 
 Use audio FX on percussion to add punch and character:
 - `:reverb` with `room:` 0-1 gives drums space and presence
@@ -35,9 +37,9 @@ Example of effective percussion FX:
 live_loop :drums do
   with_fx :reverb, room: 0.3 do
     2.times do
-      sample :bd_haus, amp: 4
+      sample :bd_haus, amp: 0.7
       sleep 0.5
-      sample :elec_snare, amp: 2
+      sample :elec_snare, amp: 0.5
       sleep 0.5
     end
   end
