@@ -36,7 +36,7 @@ export ANTHROPIC_API_KEY=<your-key>
 mvn spring-boot:run
 ```
 
-The service starts on `http://localhost:8080`. Once you see `Started DemoApplication`, you're ready.
+The service starts on `http://localhost:48080`. Once you see `Started DemoApplication`, you're ready.
 
 ## Try each agent
 
@@ -45,7 +45,7 @@ The service starts on `http://localhost:8080`. Once you see `Started DemoApplica
 Generates several dad jokes, rates them, and returns the best one.
 
 ```bash
-curl "http://localhost:8080/dad-joke?topic=cats"
+curl "http://localhost:48080/dad-joke?topic=cats"
 ```
 
 ### Fibonacci Agent
@@ -53,7 +53,7 @@ curl "http://localhost:8080/dad-joke?topic=cats"
 Uses an LLM to compute a Fibonacci number, then verifies the result with a tool call.
 
 ```bash
-curl "http://localhost:8080/compute-fibonacci?iterations=10"
+curl "http://localhost:48080/compute-fibonacci?iterations=10"
 ```
 
 ### Story Agent
@@ -61,7 +61,7 @@ curl "http://localhost:8080/compute-fibonacci?iterations=10"
 Writes multiple stories, reviews them, and selects the best one.
 
 ```bash
-curl "http://localhost:8080/story?about=a+brave+robot"
+curl "http://localhost:48080/story?about=a+brave+robot"
 ```
 
 ### Sonic Pi Agent
@@ -70,11 +70,11 @@ Generates Sonic Pi music code from a natural language prompt. This is an async e
 
 ```bash
 # Submit the job
-curl -X POST "http://localhost:8080/sonic-pi?prompt=play+a+happy+melody"
+curl -X POST "http://localhost:48080/sonic-pi?prompt=play+a+happy+melody"
 # Returns: {"jobId": "<id>"}
 
 # Check the result
-curl "http://localhost:8080/sonic-pi/<id>"
+curl "http://localhost:48080/sonic-pi/<id>"
 ```
 
 ## Next steps

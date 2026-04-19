@@ -12,7 +12,7 @@ This demo project showcases four agents that demonstrate what Embabel can do:
 ### Quick taste
 
 ```bash
-curl "http://localhost:8080/dad-joke?topic=programming"
+curl "http://localhost:48080/dad-joke?topic=programming"
 ```
 
 ```json
