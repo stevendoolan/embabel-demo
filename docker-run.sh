@@ -28,7 +28,7 @@ else
 fi
 
 # Build docker run arguments
-ARGS=("-p" "${PORT}:8080" "--name" "${CONTAINER_NAME}")
+ARGS=("-p" "${PORT}:${PORT}" "--name" "${CONTAINER_NAME}")
 
 # Point Ollama at the Docker host so the container can reach it
 ARGS+=("-e" "SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434")

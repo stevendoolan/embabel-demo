@@ -13,5 +13,5 @@ FROM azul/zulu-openjdk:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 COPY config ./config
-EXPOSE 8080
+EXPOSE 48080
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.additional-location=file:/app/config/all/"]
