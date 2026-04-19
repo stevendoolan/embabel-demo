@@ -53,8 +53,8 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
         var sb = new StringBuilder();
         sb.append("""
-                Here are example Sonic Pi songs to learn from. \
-                Study these examples carefully and use them as inspiration for idiomatic Sonic Pi patterns, \
+                Here are example Sonic Pi songs to learn from.
+                Study these examples carefully and use them as inspiration for idiomatic Sonic Pi patterns,
                 richer arrangements, and more musical structures:
 
                 """);
