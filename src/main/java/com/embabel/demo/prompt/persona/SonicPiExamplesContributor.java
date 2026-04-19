@@ -102,10 +102,10 @@ public class SonicPiExamplesContributor implements PromptContributor {
     }
 
     private static Path resolvePath(String path) {
-        if (path.startsWith("~")) {
-            return Path.of(System.getProperty("user.home") + path.substring(1));
+        if (path.startsWith("~/")) {
+            return Path.of(System.getProperty("user.home")).resolve(path.substring(2)).toAbsolutePath().normalize();
         }
-        return Path.of(path);
+        return Path.of(path).toAbsolutePath().normalize();
     }
 
 }
