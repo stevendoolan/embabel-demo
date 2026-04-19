@@ -71,7 +71,7 @@ public class SonicPiController {
         return switch (job.status()) {
             case RUNNING -> ResponseEntity.status(HttpStatus.ACCEPTED)
                     .headers(headers)
-                    .body(null);
+                    .body("Job is still running");
             case COMPLETED -> ResponseEntity.ok()
                     .headers(headers)
                     .body(job.result());
