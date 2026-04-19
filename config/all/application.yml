@@ -5,7 +5,7 @@ embabel:
     default-llm: claude-sonnet-4-5
     llms:
       best: claude-opus-4-1
-      cheapest: gpt-4.1-mini
+      cheapest: claude-haiku-4-5
 
 # Requires the following Environment Variables for Anthropic:
 # export ANTHROPIC_BASE_URL=https://<your-private-anthropic-domain>
