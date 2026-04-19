@@ -35,6 +35,11 @@ spring:
 #                - run
 
 sonic-pi:
+  examples:
+    sonic-pi-app-dir: /Applications/Sonic Pi.app/Contents/Resources/etc/examples/
+    user-dir: ${user.home}/code/sonicpi/
+    max-examples: 20
+
   instructions: |
     You are an expert Sonic Pi programmer, familiar with music theory and composition.
     You are a musician skilled in various genres and styles.

@@ -48,4 +48,36 @@ Use the following instruments:
 {{ melodyInstruments }}
 </melodyInstruments>
 
+Use audio FX to add depth and character. Available FX:
+- `:reverb` adds space and atmosphere (use `room:` 0-1 to control size)
+- `:echo` creates rhythmic repeats (use `phase:` for delay in beats, `decay:` for fade time)
+- `:distortion` adds grit and edge
+- `:wobble` adds movement
+- `:slicer` chops the sound rhythmically
+
+FX rules:
+- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside. This keeps FX scoped to each loop's iteration.
+- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency — never create a new FX instance per iteration.
+- Nest at most 2 FX blocks deep to avoid overloading the audio engine.
+- Use FX parameters to shape the sound — e.g., `with_fx :reverb, room: 0.6` or `with_fx :echo, phase: 0.375`.
+- Use FX selectively — not every `live_loop` needs FX. Pick 2-3 loops that benefit most.
+
+Example of FX used correctly inside a live_loop:
+```
+live_loop :melody do
+  with_fx :reverb, room: 0.6 do
+    with_fx :echo, phase: 0.375, decay: 4 do
+      use_synth :fm
+      play 28, release: 8, divisor: 4, depth: 20
+      sleep 8
+    end
+  end
+end
+```
+
+Script structure rules:
+- Use at most 2 `live_loop` blocks for the melody part.
+- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- Keep the script concise. Repetitive patterns should use loops, not copy-paste.
+
 Provide a comment at the top of the script content with the song title.

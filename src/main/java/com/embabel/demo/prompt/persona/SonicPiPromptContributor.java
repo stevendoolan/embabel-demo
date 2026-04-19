@@ -1,21 +1,25 @@
 package com.embabel.demo.prompt.persona;
 
 import com.embabel.common.ai.prompt.PromptContributor;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Contributes Sonic Pi programming instructions, available instruments, and available samples to
+ * every LLM prompt in the Sonic Pi agent pipeline. Bound from the {@code sonic-pi} configuration
+ * block in {@code application.yml} so the lists can be maintained without code changes.
+ */
 @ConfigurationProperties("sonic-pi")
 public record SonicPiPromptContributor(
-        @NotNull String instructions,
-        @NotNull List<String> instruments,
-        @NotNull List<String> samples
+        @Nonnull String instructions,
+        @Nonnull List<String> instruments,
+        @Nonnull List<String> samples
 ) implements PromptContributor {
 
-    @NotNull
     @Override
-    public String contribution() {
+    public @Nonnull String contribution() {
         return """
                 %s
                 
@@ -30,7 +34,7 @@ public record SonicPiPromptContributor(
                 toJSONList(samples));
     }
 
-    private static @NotNull String toJSONList(@NotNull List<String> items) {
+    private static @Nonnull String toJSONList(@Nonnull List<String> items) {
         return items.stream()
                 .map("\"%s\""::formatted)
                 .collect(Collectors.joining(", "));

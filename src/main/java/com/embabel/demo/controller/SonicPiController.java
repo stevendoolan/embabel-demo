@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller that exposes asynchronous Sonic Pi music generation. {@code POST /sonic-pi}
+ * accepts a free-text prompt and returns a job ID immediately; the agent pipeline runs in the
+ * background. {@code GET /sonic-pi/{jobId}} polls for the result (running, completed, or failed).
+ */
 @RestController
 public class SonicPiController {
 
@@ -52,11 +58,26 @@ public class SonicPiController {
     }
 
     @GetMapping("/sonic-pi/{jobId}")
-    public ResponseEntity<SonicPiJob> getJobStatus(@PathVariable String jobId) {
+    public ResponseEntity<String> getJobStatus(@PathVariable String jobId) {
         SonicPiJob job = jobs.get(jobId);
         if (job == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(job);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Job-Id", job.jobId());
+        headers.set("X-Job-Status", job.status().name());
+
+        return switch (job.status()) {
+            case RUNNING -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .headers(headers)
+                    .body("Job is still running");
+            case COMPLETED -> ResponseEntity.ok()
+                    .headers(headers)
+                    .body(job.result());
+            case FAILED -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .headers(headers)
+                    .body(job.error());
+        };
     }
 }

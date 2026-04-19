@@ -18,3 +18,34 @@ Do not use instruments. Only use samples.
 Create a rich, full sound using drums, bass, synths, and pads.
 Do not include the melody again; only provide the percussion part in the percussionScriptContent.
 Make the percussion louder than the melody to provide a strong rhythmic foundation.
+
+Use audio FX on percussion to add punch and character:
+- `:reverb` with `room:` 0-1 gives drums space and presence
+- `:echo` with `phase:` and `decay:` creates rhythmic ghost hits
+- `:distortion` adds weight and grit to drum samples
+- `:slicer` chops percussion into rhythmic patterns
+
+FX rules:
+- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
+- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
+- Nest at most 2 FX blocks deep. Use FX selectively — not every loop needs FX.
+
+Example of effective percussion FX:
+```
+live_loop :drums do
+  with_fx :reverb, room: 0.3 do
+    2.times do
+      sample :bd_haus, amp: 4
+      sleep 0.5
+      sample :elec_snare, amp: 2
+      sleep 0.5
+    end
+  end
+end
+```
+
+Script structure rules:
+- Use at most 3 `live_loop` blocks for the percussion part.
+- Do not duplicate drum elements across multiple loops (e.g., do not have a separate loop for kick, snare, and hi-hat when they can be combined).
+- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- Keep the script concise.
