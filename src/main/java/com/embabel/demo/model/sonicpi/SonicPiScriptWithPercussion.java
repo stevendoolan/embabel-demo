@@ -1,4 +1,6 @@
 package com.embabel.demo.model.sonicpi;
 
-public record SonicPiScriptWithPercussion(String scriptContent) {
+import jakarta.annotation.Nonnull;
+
+public record SonicPiScriptWithPercussion(@Nonnull String scriptContent) {
 }

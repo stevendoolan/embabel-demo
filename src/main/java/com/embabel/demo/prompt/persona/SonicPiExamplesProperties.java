@@ -1,5 +1,6 @@
 package com.embabel.demo.prompt.persona;
 
+import jakarta.annotation.Nullable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -13,8 +14,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties("sonic-pi.examples")
 public record SonicPiExamplesProperties(
-        String sonicPiAppDir,
-        String userDir,
+        @Nullable String sonicPiAppDir,
+        @Nullable String userDir,
         int maxExamples
 ) {
 }

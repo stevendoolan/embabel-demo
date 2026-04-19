@@ -1,13 +1,15 @@
 package com.embabel.demo.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SonicPiJob(
-        String jobId,
-        Status status,
-        String result,
-        String error) {
+        @Nonnull String jobId,
+        @Nonnull Status status,
+        @Nullable String result,
+        @Nullable String error) {
 
     public enum Status {
         RUNNING, COMPLETED, FAILED

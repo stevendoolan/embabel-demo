@@ -2,6 +2,8 @@ package com.embabel.demo.prompt.persona;
 
 import com.embabel.common.ai.prompt.PromptContributor;
 import com.embabel.demo.model.sonicpi.ExampleSong;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
     private final List<ExampleSong> examples;
 
-    public SonicPiExamplesContributor(SonicPiExamplesProperties properties) {
+    public SonicPiExamplesContributor(@Nonnull SonicPiExamplesProperties properties) {
         List<ExampleSong> loaded = new ArrayList<>();
         loadFromDirectory(properties.sonicPiAppDir(), loaded);
         loadFromDirectory(properties.userDir(), loaded);
@@ -44,9 +45,8 @@ public class SonicPiExamplesContributor implements PromptContributor {
         LOG.info("Loaded {} Sonic Pi example songs for few-shot prompting", examples.size());
     }
 
-    @NotNull
     @Override
-    public String contribution() {
+    public @Nonnull String contribution() {
         if (examples.isEmpty()) {
             return "";
         }
@@ -68,7 +68,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
         return sb.toString();
     }
 
-    private void loadFromDirectory(String dirPath, List<ExampleSong> target) {
+    private void loadFromDirectory(@Nullable String dirPath, @Nonnull List<ExampleSong> target) {
         if (dirPath == null || dirPath.isBlank()) {
             return;
         }

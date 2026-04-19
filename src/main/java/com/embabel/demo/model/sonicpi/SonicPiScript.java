@@ -1,12 +1,12 @@
 package com.embabel.demo.model.sonicpi;
 
-import org.jetbrains.annotations.NotNull;
+import jakarta.annotation.Nonnull;
 
 public record SonicPiScript(
-        SonicPiMetadata sonicPiMetadata,
-        SonicPiCompleteScript completeScript) {
+        @Nonnull SonicPiMetadata sonicPiMetadata,
+        @Nonnull SonicPiCompleteScript completeScript) {
 
-    public @NotNull String filename() {
+    public @Nonnull String filename() {
         return "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
     }
 }
