@@ -17,8 +17,20 @@ curl "http://localhost:48080/dad-joke?topic=programming"
 
 ```json
 {
-  "joke": "Why do programmers prefer dark mode? Because light attracts bugs!",
-  "rating": 9
+    "bestJoke": {
+        "joke": "I would tell you a joke about UDP, but you might not get it!",
+        "rating": {
+            "score": 4.5
+        }
+    },
+    "otherJokes": [
+        {
+            "joke": "Why do programmers prefer dark mode? Because light attracts bugs!",
+            "rating": {
+                "score": 3.5
+            }
+        }
+    ]
 }
 ```
 
