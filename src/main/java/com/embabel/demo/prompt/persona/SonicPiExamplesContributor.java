@@ -79,6 +79,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
             return;
         }
 
+        int countBefore = target.size();
         try (Stream<Path> walk = Files.walk(resolved)) {
             walk.filter(Files::isRegularFile)
                     .filter(p -> p.toString().endsWith(".rb"))
@@ -87,6 +88,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
                             var content = Files.readString(p);
                             var name = resolved.relativize(p).toString();
                             target.add(new ExampleSong(name, content));
+                            LOG.info("  Loaded example song: {}", name);
                         } catch (IOException e) {
                             LOG.warn("Failed to read example file: {}", p, e);
                         }
@@ -95,7 +97,8 @@ public class SonicPiExamplesContributor implements PromptContributor {
             LOG.warn("Failed to scan directory: {}", resolved, e);
         }
 
-        LOG.info("Loaded {} example songs from {}", target.size(), resolved);
+        int loaded = target.size() - countBefore;
+        LOG.info("Loaded {} example songs from {}", loaded, resolved);
     }
 
     private static Path resolvePath(String path) {
