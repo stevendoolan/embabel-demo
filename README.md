@@ -1,22 +1,39 @@
-> # Security Warning!
-> **This is a Demo project that is publicly available on GitHub!!**
->
-> **Public Location: https://github.com/stevendoolan/embabel-demo**
->
-> We use this project to provide the Embabel Engineers with a working example of an Embabel agent when we need help.
-> This project is not secure, and should not be used in production. It is provided for educational purposes only.
+# Embabel Demo
 
-# About this project
-This project is based on the Embabel Java Agent Template, which is available on GitHub.
-Please keep this project up to date as java-agent-template is updated.
+Build AI agents on the JVM in minutes with [Embabel](https://github.com/embabel/embabel-agent).
 
-https://github.com/embabel/java-agent-template
+This demo project showcases four agents that demonstrate what Embabel can do:
 
-## Documentation
+- **Dad Joke Agent** — generates, rates, and picks the best dad joke
+- **Fibonacci Agent** — computes Fibonacci numbers with LLM + tool verification
+- **Sonic Pi Agent** — turns natural language into music code
+- **Story Agent** — crafts multiple stories, reviews them, and selects the best
 
-- [Setup](docs/setup.md) - Prerequisites, model providers, proxy configuration, and how to build and run
-- [Docker](docs/docker.md) - Pulling from Docker Hub and MCP server via Docker
-- [Docker Push](docs/docker-push.md) - Pushing images to Docker Hub
-- [Docker Compose](docs/docker-compose.md) - Building locally with Docker Compose and MCP server setup
-- [Agent Documentation](docs/agents/index.md) - Detailed documentation for each agent
-- [Updates](docs/updates.md) - Project changelog
+### Quick taste
+
+```bash
+curl "http://localhost:8080/dad-joke?topic=cats"
+```
+
+```json
+{
+  "joke": "Why don't cats play poker? Too many cheetahs!",
+  "rating": 8
+}
+```
+
+**[Get Started](getting-started.md)** — clone, build, and run your first agent in under 5 minutes.
+
+### Learn more
+
+- [Agent Documentation](docs/agents/index.md) — how each agent works
+- [Setup Guide](docs/setup.md) — model providers, proxy config, Maven profiles
+- [Docker](docs/docker.md) — pull from Docker Hub or run as an MCP server
+- [Docker Compose](docs/docker-compose.md) — build and run locally with Compose
+- [Updates](docs/updates.md) — project changelog
+
+---
+
+> **Note:** This is a demo project for educational purposes — not for production use.
+
+Based on [embabel/java-agent-template](https://github.com/embabel/java-agent-template).
