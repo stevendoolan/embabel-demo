@@ -11,6 +11,7 @@ import com.embabel.demo.model.sonicpi.SonicPiMetadata;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithHarmony;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
+import com.embabel.demo.prompt.persona.SonicPiExamplesContributor;
 import com.embabel.demo.prompt.persona.SonicPiPromptContributor;
 import java.io.File;
 import java.time.Duration;
@@ -23,7 +24,8 @@ import org.slf4j.LoggerFactory;
 
 @Agent(description = "Write Sonic Pi code to play a melody based on user input")
 public record SonicPiAgent(
-        SonicPiPromptContributor sonicPiPromptContributor) {
+    SonicPiPromptContributor sonicPiPromptContributor,
+    SonicPiExamplesContributor sonicPiExamplesContributor) {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiAgent.class);
 
@@ -45,6 +47,7 @@ public record SonicPiAgent(
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
                 .withPromptContributor(sonicPiPromptContributor)
+                .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/create-melody.jinja")
                 .createObject(SonicPiScriptWithMelody.class, Map.of(
                         "style", sonicPiMetadata.style(),
@@ -65,6 +68,7 @@ public record SonicPiAgent(
         LOG.info("Adding harmony track to {}", sonicPiScriptWithMelody);
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/add-harmony.jinja")
                 .createObject(SonicPiScriptWithHarmony.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
@@ -78,6 +82,7 @@ public record SonicPiAgent(
         LOG.info("Adding percussion track to {}", sonicPiScriptWithMelody);
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/add-percussion.jinja")
                 .createObject(SonicPiScriptWithPercussion.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
@@ -104,6 +109,7 @@ public record SonicPiAgent(
         var scriptContent = context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
+                .withPromptContributor(sonicPiExamplesContributor)
                 .withTemplate("sonicpi/combine-all-parts.jinja")
                 .createObject(String.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),

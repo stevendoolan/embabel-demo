@@ -15,3 +15,5 @@ embabel-agent-api/src/main/resources/mcp/**
 .ai/
 
 .mcp.json
+
+*.rb
