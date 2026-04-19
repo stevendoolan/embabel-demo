@@ -1,6 +1,7 @@
 package com.embabel.demo.prompt.persona;
 
 import com.embabel.common.ai.prompt.PromptContributor;
+import com.embabel.demo.model.sonicpi.ExampleSong;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -95,6 +96,4 @@ public class SonicPiExamplesContributor implements PromptContributor {
         return Path.of(path);
     }
 
-    private record ExampleSong(String name, String content) {
-    }
 }

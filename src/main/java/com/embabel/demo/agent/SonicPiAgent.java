@@ -23,11 +23,18 @@ import org.slf4j.LoggerFactory;
 // TODO Use an document-recognition LLM to read a PDF of sheet music and convert it to Sonic Pi code.
 
 @Agent(description = "Write Sonic Pi code to play a melody based on user input")
-public record SonicPiAgent(
-    SonicPiPromptContributor sonicPiPromptContributor,
-    SonicPiExamplesContributor sonicPiExamplesContributor) {
+public class SonicPiAgent {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiAgent.class);
+
+    private final SonicPiPromptContributor sonicPiPromptContributor;
+    private final SonicPiExamplesContributor sonicPiExamplesContributor;
+
+    public SonicPiAgent(SonicPiPromptContributor sonicPiPromptContributor,
+                        SonicPiExamplesContributor sonicPiExamplesContributor) {
+        this.sonicPiPromptContributor = sonicPiPromptContributor;
+        this.sonicPiExamplesContributor = sonicPiExamplesContributor;
+    }
 
     @Action
     public SonicPiMetadata toSonicPiMetadata(UserInput userInput, OperationContext context) {
