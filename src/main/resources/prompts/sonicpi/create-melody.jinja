@@ -48,4 +48,28 @@ Use the following instruments:
 {{ melodyInstruments }}
 </melodyInstruments>
 
+Use audio FX liberally to add depth and character. Wrap sections in `with_fx` blocks:
+- `:reverb` adds space and atmosphere (use `room:` 0-1 to control size)
+- `:echo` creates rhythmic repeats (use `phase:` for delay in beats, `decay:` for fade time)
+- `:distortion` adds grit and edge
+- `:wobble` adds movement
+- `:slicer` chops the sound rhythmically
+
+FX rules:
+- Wrap `with_fx` OUTSIDE loops for efficiency — never create a new FX instance per iteration.
+- Nest multiple FX blocks to chain effects (inner FX processes first, outer processes the result).
+- Use FX parameters to shape the sound — e.g., `with_fx :reverb, room: 1` or `with_fx :echo, phase: 0.375`.
+
+Example of FX used well:
+```
+with_fx :echo, phase: 0.375 do
+  sample :arovane_beat_c, beat_stretch: 8, amp: 4
+end
+
+with_fx :reverb, room: 1 do
+  use_synth :fm
+  play 28, release: 8, divisor: 4, depth: 20
+end
+```
+
 Provide a comment at the top of the script content with the song title.
