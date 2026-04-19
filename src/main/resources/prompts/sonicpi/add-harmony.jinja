@@ -24,18 +24,28 @@ Be aware of the key changes in the melody when composing the harmony.
 Use audio FX to add depth and texture to the harmony:
 - `:reverb` with `room:` 0-1 creates spacious pads and atmospheric chords
 - `:echo` with `phase:` and `decay:` adds rhythmic repeats that fill out the sound
-- Nest FX blocks to chain effects (e.g., reverb around echo for a lush, spacious delay)
-- Always wrap `with_fx` OUTSIDE loops — never create a new FX per iteration
+
+FX rules:
+- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
+- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
+- Nest at most 2 FX blocks deep. Use FX selectively — not every loop needs FX.
 
 Example of effective harmony FX:
 ```
-with_fx :reverb, room: 1 do
-  16.times do
-    use_synth :dsaw
-    play 28, cutoff: 130, release: 0.1, amp: 2
-    sleep 0.125
-    play 28 + 12, cutoff: 80, release: 0.1, amp: 2
-    sleep 0.125
+live_loop :harmony do
+  with_fx :reverb, room: 1 do
+    16.times do
+      use_synth :dsaw
+      play 28, cutoff: 130, release: 0.1, amp: 2
+      sleep 0.125
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 2
+      sleep 0.125
+    end
   end
 end
 ```
+
+Script structure rules:
+- Use at most 3 `live_loop` blocks for the harmony part.
+- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- Keep the script concise.
