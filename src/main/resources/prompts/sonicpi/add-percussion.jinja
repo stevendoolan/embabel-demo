@@ -24,27 +24,39 @@ Never let any percussion sample exceed amp: 0.8.
 Use audio FX sparingly on percussion — drums often sound best dry:
 - `:reverb` with `room:` 0.2-0.3, `mix:` 0.2-0.3 gives subtle space without muddying the beat
 - `:echo` with `phase:`, `decay:` 1-2, `mix:` 0.2 creates light ghost hits
+- `:hpf` with `cutoff:` 80-120 removes subsonic mud from drum samples
+- `:lpf` with `cutoff:` 90-110 tames harsh highs on cymbals and hi-hats
+- `:compressor` with `pre_amp:` 20-40 controls dynamics on bass-heavy drum loops
 - Do NOT use `:distortion` — it causes crackling and audio clipping on drum samples.
 
 FX rules:
-- Always set a `mix:` parameter on every FX to control wet/dry blend.
+- Always set a `mix:` parameter on every FX that supports it.
 - Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
 - Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
 - Use FX on at most 1 percussion loop. Most percussion loops should have no FX.
 
-Example of effective percussion FX:
+When using loop-based samples (e.g. `:loop_industrial`, `:loop_amen`), always use `beat_stretch:` to align the sample to the tempo.
+
+Example of effective percussion with filtering:
 ```
 live_loop :drums do
-  with_fx :reverb, room: 0.2, mix: 0.25 do
-    2.times do
-      sample :bd_haus, amp: 0.7
-      sleep 0.5
-      sample :elec_snare, amp: 0.5
-      sleep 0.5
+  with_fx :hpf, cutoff: 100 do
+    with_fx :reverb, room: 0.2, mix: 0.25 do
+      2.times do
+        sample :bd_haus, amp: 0.7
+        sleep 0.5
+        sample :elec_snare, amp: 0.5
+        sleep 0.5
+      end
     end
   end
 end
 ```
+
+Idiomatic patterns for percussion:
+- `spread(3, 8)` for euclidean rhythms: distributes 3 hits across 8 steps.
+- `one_in(n)` for probabilistic fills: `sample :elec_blip, amp: 0.3 if one_in(4)`.
+- `ring()` for cycling through variations: `sample (ring :bd_haus, :bd_fat, :bd_tek).tick`.
 
 Script structure rules:
 - Use at most 3 `live_loop` blocks for the percussion part.

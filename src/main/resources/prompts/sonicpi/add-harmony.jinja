@@ -28,14 +28,20 @@ Never let any harmony element exceed amp: 0.6.
 Use audio FX sparingly to add depth and texture to the harmony:
 - `:reverb` with `room:` 0.3-0.5, `mix:` 0.3-0.5 creates spacious pads without muddiness
 - `:echo` with `phase:`, `decay:` 1-2, `mix:` 0.2-0.3 adds subtle rhythmic repeats
+- `:lpf` with `cutoff:` 80-110 prevents harmony from competing with the melody's brightness
 
 FX rules:
-- Always set a `mix:` parameter on every FX to control wet/dry blend.
+- Always set a `mix:` parameter on every FX that supports it.
 - Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
 - Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
 - Use FX on at most 1 harmony loop. Harmony already fills the frequency space — too much FX creates mud.
 
-Example of effective harmony FX:
+Synth parameter rules — always set `cutoff:` and `release:` on every `play` call:
+- Use `cutoff:` in the 80-130 range for harmonic clarity.
+- Use short `release: 0.1` for fast arpeggiated chords, longer `release: 4-8` for pads.
+- Modulate cutoff over time: `cutoff: (line 80, 120, steps: 16).look` for evolving texture.
+
+Example of effective harmony (inspired by Sam Aaron):
 ```
 live_loop :harmony do
   with_fx :reverb, room: 0.4, mix: 0.4 do
@@ -49,6 +55,11 @@ live_loop :harmony do
   end
 end
 ```
+
+Idiomatic patterns for harmony:
+- `knit()` for chord progressions: `chords = knit(chord(:c4, :major), 4, chord(:f4, :major), 4)`.
+- `ring()` for cycling: `play (ring :c3, :e3, :g3).tick, cutoff: 90, release: 0.5`.
+- `scale()` for arpeggios: `play scale(:c3, :major).tick, release: 0.2`.
 
 Script structure rules:
 - Use at most 3 `live_loop` blocks for the harmony part.

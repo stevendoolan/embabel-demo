@@ -32,6 +32,8 @@ Remove any `:distortion` FX — it causes crackling.
 Ensure all `with_fx` blocks are INSIDE `live_loop` blocks, not wrapping them from outside.
 Add `use_debug false` as the very first line of the script.
 Wrap all `live_loop` blocks inside `with_fx :level, amp: 0.8 do ... end` as a master limiter to prevent clipping.
+Ensure every synth `play` call has a `cutoff:` parameter (80-130 range) and a `release:` parameter. This is critical for clean audio.
+Any loop-based samples must use `beat_stretch:` to align with the BPM.
 The combined script must have at most 8 `live_loop` blocks total. Merge similar loops if needed to stay within this limit.
 Remove any duplicate drum or percussion loops — consolidate into fewer loops.
 Use `.times do` loops for repeating patterns — do not write out every bar individually. Keep the script concise.

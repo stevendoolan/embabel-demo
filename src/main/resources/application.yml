@@ -77,9 +77,26 @@ sonic-pi:
     - Keep reverb `room:` values between 0.2 and 0.5. Higher values create excessive reflections that cause crackling.
     - Keep echo `decay:` values at 2 or less. Long decay tails accumulate and cause audio clipping.
     - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
-    - Avoid nesting more than 2 FX blocks. Each FX adds audio processing load.
+    - Avoid nesting more than 3 FX blocks. Each FX adds audio processing load.
     - Set `release:` on synth notes (e.g., `release: 0.3`) to prevent overlapping note tails that muddy the mix.
+    - Use `:lpf` (low-pass filter) to tame harsh highs: `with_fx :lpf, cutoff: 90`. Keep cutoff between 50 and 130.
+    - Use `:hpf` (high-pass filter) to remove subsonic mud from drums: `with_fx :hpf, cutoff: 100`.
+    - Use `:compressor` with `pre_amp:` to control dynamics on bass-heavy loops: `with_fx :compressor, pre_amp: 40`.
+    - Keep synth `cutoff:` values in the 50-130 range. Values below 20 or above 200 sound harsh or inaudible.
+    - Keep resonance (`res:`) at 0.9-0.95 max. Higher values cause ringing and harshness.
     </audioQualityRules>
+
+    Idiomatic Sonic Pi patterns — use these for musical, clean code:
+    <idiomaticPatterns>
+    - Use `ring()` for repeating sequences: `(ring :c4, :e4, :g4, :c5).tick` steps through the ring each loop iteration.
+    - Use `.tick` to advance and return the next element, `.look` to return the current element without advancing.
+    - Use `knit()` for controlled repetition of values: `knit(:c4, 4, :e4, 2, :g4, 2)` plays C 4 times, E twice, G twice.
+    - Use `line()` for smooth ramps: `(line 60, 120, steps: 16).tick` ramps cutoff from 60 to 120 over 16 steps.
+    - Use `scale()` and `chord()` with `.choose` for melodic variation: `scale(:e3, :minor_pentatonic).choose`.
+    - Use `rrand()` for constrained randomness: `cutoff: rrand(70, 120)` — always constrain the range.
+    - Use `spread()` for euclidean rhythms: `spread(3, 8)` distributes 3 hits across 8 steps.
+    - Use `one_in(n)` for probabilistic variation: `sample :elec_blip if one_in(4)`.
+    </idiomaticPatterns>
 
     To write a sharp note, use `s` (e.g. `:cs4` for C#4). Do not use '#' in note names.
     All sharp notes: `cs`, `ds`, `fs`, `gs`, `as` (e.g. `:cs4`, `:ds4`, `:fs4`, `:gs4`, `:as4`).

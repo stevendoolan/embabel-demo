@@ -51,29 +51,44 @@ Use the following instruments:
 Use audio FX sparingly to add depth and character. Available FX:
 - `:reverb` adds space and atmosphere (use `room:` 0.2-0.5, `mix:` 0.3-0.5)
 - `:echo` creates rhythmic repeats (use `phase:` for delay in beats, `decay:` 1-2, `mix:` 0.2-0.4)
+- `:lpf` tames harsh highs (use `cutoff:` 70-120)
 - `:wobble` adds movement
 - `:slicer` chops the sound rhythmically
 
 FX rules:
-- Always set a `mix:` parameter on every FX to control wet/dry blend — never omit it.
+- Always set a `mix:` parameter on every `with_fx` that supports it — never omit it.
 - Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
 - Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency — never create a new FX instance per iteration.
-- Nest at most 2 FX blocks deep to avoid overloading the audio engine.
+- Nest at most 3 FX blocks deep. Prefer this order: lpf (outer) → reverb (middle) → echo (inner).
 - Use FX on at most 1-2 loops — not every loop needs FX.
 - Do NOT use `:distortion` FX — it causes crackling and audio clipping.
 
-Example of FX used correctly inside a live_loop:
+Synth parameter rules — always set `cutoff:` and `release:` on synth play calls:
+- Use `cutoff:` in the 80-130 range to shape tone. Vary it across notes for movement (e.g., `cutoff: rrand(80, 120)`).
+- Use short `release: 0.1` for fast melodic runs, longer `release: 4-8` for sustained notes.
+- Use `(line 80, 130, steps: 16).tick` to modulate cutoff smoothly over time instead of static values.
+
+Example of FX and synth patterns used correctly (inspired by Sam Aaron):
 ```
 live_loop :melody do
   with_fx :reverb, room: 0.4, mix: 0.4 do
-    with_fx :echo, phase: 0.375, decay: 2, mix: 0.3 do
-      use_synth :fm
-      play 28, release: 4, divisor: 4, depth: 20
-      sleep 8
+    use_synth :fm
+    16.times do
+      play 28, cutoff: 110, release: 0.1, amp: 1.2
+      sleep 0.125
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 1.0
+      sleep 0.125
     end
   end
 end
 ```
+
+Idiomatic Sonic Pi patterns — use these for musical variation:
+- `ring()` for repeating note sequences: `notes = (ring :c4, :e4, :g4, :c5)` then `play notes.tick`
+- `knit()` for controlled repetition: `knit(:c4, 4, :e4, 2, :g4, 2)` plays C four times, E twice, G twice.
+- `scale()` with `.choose` for melodic variety: `play scale(:e3, :minor_pentatonic).choose`
+- `line()` for smooth parameter ramps: `cutoff: (line 80, 130, steps: 16).tick`
+- `spread()` for euclidean rhythms: `spread(3, 8)` distributes 3 hits across 8 steps.
 
 Amplitude rules — the melody is the LEAD VOICE in the final mix:
 - Use amp: 1.0-1.5 for melody notes so they are clearly prominent above harmony and percussion.
