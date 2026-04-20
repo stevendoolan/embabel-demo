@@ -96,7 +96,11 @@ sonic-pi:
       play_chord [:c4, :e4, :g4]
     </incorrectPlayChordExample>
     
-    To change a chord, do not write ':maj7'. Instead write ':major7'.  Full range of C chords:
+    IMPORTANT: NEVER use ':maj7' for major 7th chords. ':maj7' is NOT a valid chord type in Sonic Pi.
+    Always use ':major7' instead. For example: `chord(:f3, :major7)` NOT `chord(:f3, :maj7)`.
+    This applies to all major 7th chords regardless of root note.
+
+    Full range of C chords:
     <cChords>
       chord(:C, '1')
       chord(:C, '5')
