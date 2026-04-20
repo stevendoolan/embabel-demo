@@ -69,6 +69,18 @@ sonic-pi:
     
     Always set the tempo using `use_bpm <tempoBpm>`.
 
+    Audio quality rules — prevent crackling and clipping:
+    <audioQualityRules>
+    - Always add `use_debug false` at the very top of the script to reduce audio engine overhead.
+    - Always add `with_fx :level, amp: 0.8 do` as an outer wrapper around ALL live_loops. This acts as a master limiter to prevent clipping.
+    - Always set a `mix:` parameter on every `with_fx` call to control wet/dry blend. Use `mix: 0.3-0.5` for reverb, `mix: 0.2-0.4` for echo. Never use `mix: 1` on reverb — it removes the dry signal and sounds washed out.
+    - Keep reverb `room:` values between 0.2 and 0.5. Higher values create excessive reflections that cause crackling.
+    - Keep echo `decay:` values at 2 or less. Long decay tails accumulate and cause audio clipping.
+    - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
+    - Avoid nesting more than 2 FX blocks. Each FX adds audio processing load.
+    - Set `release:` on synth notes (e.g., `release: 0.3`) to prevent overlapping note tails that muddy the mix.
+    </audioQualityRules>
+
     To write a sharp note, use `s` (e.g. `:cs4` for C#4). Do not use '#' in note names.
     All sharp notes: `cs`, `ds`, `fs`, `gs`, `as` (e.g. `:cs4`, `:ds4`, `:fs4`, `:gs4`, `:as4`).
     Do not write `:bes4` for Bb4. Instead, write `:as4` for A#4, which is enharmonically equivalent to Bb4.

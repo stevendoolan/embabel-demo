@@ -26,8 +26,12 @@ Do not duplicate any parts; ensure each section is included only once.
 Ensure the BPM is set once for the entire script.
 Ensure the different instruments are applied correctly to their respective parts.
 Write a comment above each section to identify what the section contains.
-Preserve all `with_fx` blocks from the individual parts — do not strip FX when combining.
+Preserve `with_fx` blocks from the individual parts — but ensure every FX has a `mix:` parameter set.
+If any FX is missing `mix:`, add it: `mix: 0.3-0.5` for reverb, `mix: 0.2-0.4` for echo.
+Remove any `:distortion` FX — it causes crackling.
 Ensure all `with_fx` blocks are INSIDE `live_loop` blocks, not wrapping them from outside.
+Add `use_debug false` as the very first line of the script.
+Wrap all `live_loop` blocks inside `with_fx :level, amp: 0.8 do ... end` as a master limiter to prevent clipping.
 The combined script must have at most 8 `live_loop` blocks total. Merge similar loops if needed to stay within this limit.
 Remove any duplicate drum or percussion loops — consolidate into fewer loops.
 Use `.times do` loops for repeating patterns — do not write out every bar individually. Keep the script concise.

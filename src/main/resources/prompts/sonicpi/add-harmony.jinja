@@ -25,19 +25,20 @@ The harmony must sit BELOW the melody in the mix — it supports the melody, not
 Use lower amplitudes than the melody: amp 0.3-0.6 for harmony parts.
 Never let any harmony element exceed amp: 0.6.
 
-Use audio FX to add depth and texture to the harmony:
-- `:reverb` with `room:` 0-1 creates spacious pads and atmospheric chords
-- `:echo` with `phase:` and `decay:` adds rhythmic repeats that fill out the sound
+Use audio FX sparingly to add depth and texture to the harmony:
+- `:reverb` with `room:` 0.3-0.5, `mix:` 0.3-0.5 creates spacious pads without muddiness
+- `:echo` with `phase:`, `decay:` 1-2, `mix:` 0.2-0.3 adds subtle rhythmic repeats
 
 FX rules:
+- Always set a `mix:` parameter on every FX to control wet/dry blend.
 - Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
 - Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
-- Nest at most 2 FX blocks deep. Use FX selectively — not every loop needs FX.
+- Use FX on at most 1 harmony loop. Harmony already fills the frequency space — too much FX creates mud.
 
 Example of effective harmony FX:
 ```
 live_loop :harmony do
-  with_fx :reverb, room: 1 do
+  with_fx :reverb, room: 0.4, mix: 0.4 do
     16.times do
       use_synth :dsaw
       play 28, cutoff: 130, release: 0.1, amp: 0.5
