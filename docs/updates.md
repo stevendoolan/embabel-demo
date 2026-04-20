@@ -16,7 +16,7 @@ docker pull stevendoolan/embabel-demo:latest
 See [Docker](docker.md) for full instructions.
 
 ## Update 7 DEC 2025:
-Combined Embabel with Sonic Pi by Sam Aaron to create music using AI!
+Combined Embabel with Sonic Pi to create music using AI!
 
 See the new Agent:
 - [SonicPiAgent.java](../src/main/java/com/embabel/demo/agent/SonicPiAgent.java)

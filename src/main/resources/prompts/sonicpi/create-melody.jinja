@@ -68,7 +68,7 @@ Synth parameter rules — always set `cutoff:` and `release:` on synth play call
 - Use short `release: 0.1` for fast melodic runs, longer `release: 4-8` for sustained notes.
 - Use `(line 80, 130, steps: 16).tick` to modulate cutoff smoothly over time instead of static values.
 
-Example of FX and synth patterns used correctly (inspired by Sam Aaron):
+Example of FX and synth patterns used correctly:
 ```
 live_loop :melody do
   with_fx :reverb, room: 0.4, mix: 0.4 do

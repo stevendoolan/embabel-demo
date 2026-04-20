@@ -41,7 +41,7 @@ Synth parameter rules — always set `cutoff:` and `release:` on every `play` ca
 - Use short `release: 0.1` for fast arpeggiated chords, longer `release: 4-8` for pads.
 - Modulate cutoff over time: `cutoff: (line 80, 120, steps: 16).look` for evolving texture.
 
-Example of effective harmony (inspired by Sam Aaron):
+Example of effective harmony:
 ```
 live_loop :harmony do
   with_fx :reverb, room: 0.4, mix: 0.4 do
