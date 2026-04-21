@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 @Tag("e2e")
 @Timeout(600)
+@Execution(ExecutionMode.CONCURRENT)
 class SonicPiControllerE2EIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiControllerE2EIntegrationTest.class);
