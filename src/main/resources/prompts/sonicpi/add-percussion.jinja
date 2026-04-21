@@ -26,29 +26,43 @@ Use audio FX sparingly on percussion — drums often sound best dry:
 - `:echo` with `phase:`, `decay:` 1-2, `mix:` 0.2 creates light ghost hits
 - `:hpf` with `cutoff:` 80-120 removes subsonic mud from drum samples
 - `:lpf` with `cutoff:` 90-110 tames harsh highs on cymbals and hi-hats
-- `:compressor` with `pre_amp:` 20-40 controls dynamics on bass-heavy drum loops
+- `:compressor` with `pre_amp:` 10-25 controls dynamics on bass-heavy drum sections
 - Do NOT use `:distortion` — it causes crackling and audio clipping on drum samples.
 
 FX rules:
 - Always set a `mix:` parameter on every FX that supports it.
-- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
-- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
-- Use FX on at most 1 percussion loop. Most percussion loops should have no FX.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content.
+- Use FX on at most 1 percussion section. Most percussion sections should have no FX.
 
 When using loop-based samples (e.g. `:loop_industrial`, `:loop_amen`), always use `beat_stretch:` to align the sample to the tempo.
 
-Example of effective percussion with filtering:
+Example of effective percussion as sequential sections:
 ```
-live_loop :drums do
+# Percussion section 1 — simple beat
+2.times do
   with_fx :hpf, cutoff: 100 do
-    with_fx :reverb, room: 0.2, mix: 0.25 do
-      2.times do
-        sample :bd_haus, amp: 0.7
-        sleep 0.5
-        sample :elec_snare, amp: 0.5
-        sleep 0.5
-      end
+    4.times do
+      sample :bd_haus, amp: 0.5
+      sleep 0.5
+      sample :elec_snare, amp: 0.4
+      sleep 0.5
     end
+  end
+end
+
+# Percussion section 2 — more complex, builds intensity
+2.times do
+  4.times do
+    sample :bd_haus, amp: 0.6
+    sample :hat_zild, amp: 0.2
+    sleep 0.25
+    sample :hat_zild, amp: 0.15
+    sleep 0.25
+    sample :elec_snare, amp: 0.5
+    sample :hat_zild, amp: 0.2
+    sleep 0.25
+    sample :hat_zild, amp: 0.15
+    sleep 0.25
   end
 end
 ```
@@ -59,7 +73,10 @@ Idiomatic patterns for percussion:
 - `ring()` for cycling through variations: `sample (ring :bd_haus, :bd_fat, :bd_tek).tick`.
 
 Script structure rules:
-- Use at most 3 `live_loop` blocks for the percussion part.
-- Do not duplicate drum elements across multiple loops (e.g., do not have a separate loop for kick, snare, and hi-hat when they can be combined).
-- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- NEVER use `live_loop`. Structure the percussion as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Match the number and pacing of sections to the melody — the percussion sections should align with the melody sections.
+- Evolve the percussion across sections — add more layers, change patterns, build intensity.
+- Combine kick, snare, and hi-hat within the same section — do not separate them.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise.

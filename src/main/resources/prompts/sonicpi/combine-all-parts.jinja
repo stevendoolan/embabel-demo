@@ -13,27 +13,34 @@ Return ONLY the Sonic Pi Ruby script code. No explanation, no markdown fences, n
 {{ percussionScriptContent }}
 </percussionScriptContent>
 
+Song structure — use sequential `N.times do` sections, NEVER `live_loop`:
+- Weave melody, harmony, and percussion together into integrated sequential sections.
+- Each section is a `N.times do` block where melody, harmony, and percussion all play together within the block.
+- The song should have 3-5 sections that progress and evolve over time.
+- Each section repeats 2-4 times before moving to the next.
+- Add transition elements between sections: a single synth `play` + `sleep` to bridge sections musically.
+- Evolve the music across sections — build intensity, change instruments, introduce new patterns.
+
 Mix balance — the melody is the LEAD VOICE and must be the most prominent element:
-- Melody: amp 1.0-1.5 — loudest, clearly audible as the part listeners can hum along to.
-- Harmony: amp 0.3-0.6 — sits below the melody, providing support without competing.
-- Percussion: amp 0.5-0.8 for kicks, lower for other hits — provides rhythmic foundation without overpowering.
+- Melody: amp 0.7-1.0 — loudest, clearly audible as the part listeners can hum along to.
+- Harmony: amp 0.2-0.4 — sits below the melody, providing support without competing.
+- Percussion: amp 0.3-0.6 for kicks, lower for other hits — provides rhythmic foundation without overpowering.
 If the input parts have amplitudes that violate this balance, adjust them so the melody is always on top.
 
 Ensure the combined code is ready to run in Sonic Pi without any modifications.
 Provide a comment at the top of the script content with the song title.
 Do not write the composer's name in the script.  Only ever write the style and mood as a comment on the script.
 Do not duplicate any parts; ensure each section is included only once.
-Ensure the BPM is set once for the entire script.
+Ensure the BPM is set once at the top of the script using `use_bpm`.
 Ensure the different instruments are applied correctly to their respective parts.
 Write a comment above each section to identify what the section contains.
 Preserve `with_fx` blocks from the individual parts — but ensure every FX has a `mix:` parameter set.
-If any FX is missing `mix:`, add it: `mix: 0.3-0.5` for reverb, `mix: 0.2-0.4` for echo.
+If any FX is missing `mix:`, add it: `mix: 0.2-0.35` for reverb, `mix: 0.15-0.3` for echo.
 Remove any `:distortion` FX — it causes crackling.
-Ensure all `with_fx` blocks are INSIDE `live_loop` blocks, not wrapping them from outside.
+Ensure all `with_fx` blocks are INSIDE `N.times do` blocks, not wrapping them from outside.
 Add `use_debug false` as the very first line of the script.
-Wrap all `live_loop` blocks inside `with_fx :level, amp: 0.8 do ... end` as a master limiter to prevent clipping.
-Ensure every synth `play` call has a `cutoff:` parameter (80-130 range) and a `release:` parameter. This is critical for clean audio.
+Wrap ALL sections inside `with_fx :level, amp: 0.5 do` and `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` as a master limiter and compressor to prevent clipping.
+Ensure every synth `play` call has a `cutoff:` parameter (80-120 range) and a `release:` parameter. This is critical for clean audio.
 Any loop-based samples must use `beat_stretch:` to align with the BPM.
-The combined script must have at most 8 `live_loop` blocks total. Merge similar loops if needed to stay within this limit.
-Remove any duplicate drum or percussion loops — consolidate into fewer loops.
 Use `.times do` loops for repeating patterns — do not write out every bar individually. Keep the script concise.
+If any input part uses `live_loop`, convert it to a sequential `N.times do` section.

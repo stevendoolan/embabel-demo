@@ -32,27 +32,36 @@ Use audio FX sparingly to add depth and texture to the harmony:
 
 FX rules:
 - Always set a `mix:` parameter on every FX that supports it.
-- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
-- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
-- Use FX on at most 1 harmony loop. Harmony already fills the frequency space — too much FX creates mud.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content.
+- Use FX on at most 1 harmony section. Harmony already fills the frequency space — too much FX creates mud.
 
 Synth parameter rules — always set `cutoff:` and `release:` on every `play` call:
 - Use `cutoff:` in the 80-130 range for harmonic clarity.
 - Use short `release: 0.1` for fast arpeggiated chords, longer `release: 4-8` for pads.
 - Modulate cutoff over time: `cutoff: (line 80, 120, steps: 16).look` for evolving texture.
 
-Example of effective harmony:
+Example of effective harmony as sequential sections:
 ```
-live_loop :harmony do
-  with_fx :reverb, room: 0.4, mix: 0.4 do
+# Harmony section 1
+2.times do
+  with_fx :reverb, room: 0.25, mix: 0.3 do
+    use_synth :dsaw
     16.times do
-      use_synth :dsaw
-      play 28, cutoff: 130, release: 0.1, amp: 0.5
+      play 28, cutoff: 110, release: 0.1, amp: 0.4
       sleep 0.125
-      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.5
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.3
       sleep 0.125
     end
   end
+end
+
+# Harmony section 2 — evolve with different chord voicing
+2.times do
+  use_synth :hollow
+  play_chord chord(:c3, :major), cutoff: 90, release: 4, amp: 0.3
+  sleep 4
+  play_chord chord(:f3, :major), cutoff: 90, release: 4, amp: 0.3
+  sleep 4
 end
 ```
 
@@ -62,6 +71,9 @@ Idiomatic patterns for harmony:
 - `scale()` for arpeggios: `play scale(:c3, :major).tick, release: 0.2`.
 
 Script structure rules:
-- Use at most 3 `live_loop` blocks for the harmony part.
-- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- NEVER use `live_loop`. Structure the harmony as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Match the number and pacing of sections to the melody — the harmony sections should align with the melody sections.
+- Evolve the harmony across sections — change chords, voicings, or synths.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise.

@@ -57,10 +57,9 @@ Use audio FX sparingly to add depth and character. Available FX:
 
 FX rules:
 - Always set a `mix:` parameter on every `with_fx` that supports it — never omit it.
-- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
-- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency — never create a new FX instance per iteration.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content — never create a new FX instance per inner iteration.
 - Nest at most 2 FX blocks deep. Prefer this order: lpf (outer) → reverb (inner).
-- Use FX on at most 1-2 loops — not every loop needs FX.
+- Use FX on at most 1-2 sections — not every section needs FX.
 - Do NOT use `:distortion` FX — it causes crackling and audio clipping.
 
 Synth parameter rules — always set `cutoff:` and `release:` on synth play calls:
@@ -68,9 +67,10 @@ Synth parameter rules — always set `cutoff:` and `release:` on synth play call
 - Use short `release: 0.1` for fast melodic runs, longer `release: 2-4` for sustained notes. Avoid release values above 4 — long tails overlap and cause muddiness.
 - Use `(line 80, 120, steps: 16).tick` to modulate cutoff smoothly over time instead of static values.
 
-Example of FX and synth patterns used correctly:
+Example of sequential sections with FX used correctly:
 ```
-live_loop :melody do
+# Section 1: gentle opening
+2.times do
   with_fx :reverb, room: 0.25, mix: 0.3 do
     use_synth :fm
     16.times do
@@ -79,6 +79,22 @@ live_loop :melody do
       play 28 + 12, cutoff: 80, release: 0.1, amp: 0.7
       sleep 0.125
     end
+  end
+end
+
+# Transition
+use_synth :prophet
+play 28, cutoff: 90, release: 4, amp: 0.6
+sleep 4
+
+# Section 2: builds intensity with different synth
+2.times do
+  use_synth :dsaw
+  16.times do
+    play 28, cutoff: 110, release: 0.1, amp: 0.9
+    sleep 0.125
+    play 28 + 12, cutoff: 80, release: 0.1, amp: 0.8
+    sleep 0.125
   end
 end
 ```
@@ -91,12 +107,15 @@ Idiomatic Sonic Pi patterns — use these for musical variation:
 - `spread()` for euclidean rhythms: `spread(3, 8)` distributes 3 hits across 8 steps.
 
 Amplitude rules — the melody is the LEAD VOICE in the final mix:
-- Use amp: 1.0-1.5 for melody notes so they are clearly prominent above harmony and percussion.
-- Never drop melody amplitude below 1.0.
+- Use amp: 0.7-1.0 for melody notes so they are clearly prominent above harmony and percussion.
+- Never drop melody amplitude below 0.7.
 
 Script structure rules:
-- Use at most 2 `live_loop` blocks for the melody part.
-- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- NEVER use `live_loop`. Structure the melody as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Add a transition element (a single synth `play` + `sleep`) between sections.
+- Evolve the melody across sections — change synth, octave, intensity, or cutoff.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise. Repetitive patterns should use loops, not copy-paste.
 
 Provide a comment at the top of the script content with the song title.
