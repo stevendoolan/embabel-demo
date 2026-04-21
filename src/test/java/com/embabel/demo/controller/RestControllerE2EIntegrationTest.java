@@ -2,12 +2,6 @@ package com.embabel.demo.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,19 +18,18 @@ import org.slf4j.LoggerFactory;
  */
 @Tag("e2e")
 @Timeout(240)
-class RestControllerIntegrationTest {
+class RestControllerE2EIntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RestControllerIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestControllerE2EIntegrationTest.class);
 
     private static final String BASE_URL = "http://localhost:" + System.getProperty("TEST_PORT", "48080");
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     void shouldGetDadJoke() throws Exception {
         LOG.info("Calling GET /dad-joke?topic=programming ...");
-        var json = getJson(BASE_URL + "/dad-joke?topic=programming");
+        var json = E2ETestHelper.getJson(BASE_URL + "/dad-joke?topic=programming");
 
-        LOG.info("Response: {}", MAPPER.writeValueAsString(json));
+        LOG.info("Response: {}", E2ETestHelper.mapper().writeValueAsString(json));
 
         // Verify best joke
         assertThat(json.has("bestJoke")).as("response has 'bestJoke' field").isTrue();
@@ -77,9 +70,9 @@ class RestControllerIntegrationTest {
     @Test
     void shouldComputeFibonacci() throws Exception {
         LOG.info("Calling GET /compute-fibonacci?iterations=10 ...");
-        var json = getJson(BASE_URL + "/compute-fibonacci?iterations=10");
+        var json = E2ETestHelper.getJson(BASE_URL + "/compute-fibonacci?iterations=10");
 
-        LOG.info("Response: {}", MAPPER.writeValueAsString(json));
+        LOG.info("Response: {}", E2ETestHelper.mapper().writeValueAsString(json));
 
         assertThat(json.has("fibonacciNumber")).as("response has 'fibonacciNumber'").isTrue();
         assertThat(json.get("fibonacciNumber").asLong()).as("fibonacci(10) = 55").isEqualTo(55L);
@@ -93,7 +86,7 @@ class RestControllerIntegrationTest {
     @Test
     void shouldWriteAStory() throws Exception {
         LOG.info("Calling GET /story?about=a+brave+robot ...");
-        var json = getJson(BASE_URL + "/story?about=a+brave+robot");
+        var json = E2ETestHelper.getJson(BASE_URL + "/story?about=a+brave+robot");
 
         LOG.debug("Response:\n\n{}\n\n", json);
 
@@ -121,7 +114,7 @@ class RestControllerIntegrationTest {
     void shouldWriteAStoryFromPost() throws Exception {
         var story = Files.readString(Path.of("src/test/resources/Incident Chat.md"), StandardCharsets.UTF_8);
         LOG.info("Calling POST /story with {} chars ...", story.length());
-        var json = postTextForJson(BASE_URL + "/story", story);
+        var json = E2ETestHelper.postTextForJson(BASE_URL + "/story", story);
 
         LOG.debug("Response:\n\n{}\n\n", json);
 
@@ -143,107 +136,5 @@ class RestControllerIntegrationTest {
 
         LOG.info("Review: Rating: {}/10\nExplanation:\n\n{}\n\n",
                 review.get("rating").asInt(), review.get("explanation").asText());
-    }
-
-    @Test
-    @Timeout(600)
-    void shouldGenerateSonicPiScript() throws Exception {
-        // Submit async job
-        LOG.info("Calling POST /sonic-pi?prompt=upbeat+jazz+tune ...");
-        var submitResponse = postForJson(BASE_URL + "/sonic-pi?prompt=upbeat+jazz+tune");
-        assertThat(submitResponse.has("jobId")).as("response has 'jobId'").isTrue();
-        var jobId = submitResponse.get("jobId").asText();
-        LOG.info("Job submitted: {}", jobId);
-
-        // Poll for completion
-        JsonNode json = null;
-        String status = "RUNNING";
-        while ("RUNNING".equals(status)) {
-            Thread.sleep(5000);
-            json = getJson(BASE_URL + "/sonic-pi/" + jobId);
-            status = json.get("status").asText();
-            LOG.info("Job {} status: {}", jobId, status);
-        }
-
-        assertThat(status).as("job completed successfully").isEqualTo("COMPLETED");
-        LOG.info("Response: {}", MAPPER.writeValueAsString(json));
-
-        // Verify result is a non-blank script string
-        assertThat(json.has("result")).as("response has 'result'").isTrue();
-        var result = json.get("result").asText();
-        assertThat(result).as("result script is not blank").isNotBlank();
-
-        LOG.info("Sonic Pi script:\n\n{}\n\n", result);
-    }
-
-    // --- Helper methods ---
-
-    private static JsonNode postForJson(String url) throws IOException {
-        LOG.info("POST {}", url);
-
-        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(30_000);
-
-        int status = connection.getResponseCode();
-        LOG.info("Response status: {}", status);
-        assertThat(status).as("HTTP status is 202 Accepted").isEqualTo(202);
-
-        try (var in = connection.getInputStream()) {
-            var body = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            return MAPPER.readTree(body);
-        } finally {
-            connection.disconnect();
-        }
-    }
-
-    private static JsonNode postTextForJson(String url, String body) throws IOException {
-        LOG.info("POST {} ({} chars)", url, body.length());
-
-        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setDoOutput(true);
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(120_000);
-
-        try (OutputStream os = connection.getOutputStream()) {
-            os.write(body.getBytes(StandardCharsets.UTF_8));
-        }
-
-        int status = connection.getResponseCode();
-        LOG.info("Response status: {}", status);
-        assertThat(status).as("HTTP status is 200 OK").isEqualTo(200);
-
-        try (var in = connection.getInputStream()) {
-            var responseBody = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            return MAPPER.readTree(responseBody);
-        } finally {
-            connection.disconnect();
-        }
-    }
-
-    private static JsonNode getJson(String url) throws IOException {
-        LOG.info("GET {}", url);
-
-        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(120_000);
-
-        int status = connection.getResponseCode();
-        LOG.info("Response status: {}", status);
-        assertThat(status).as("HTTP status is 200 OK").isEqualTo(200);
-
-        try (var in = connection.getInputStream()) {
-            var body = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            return MAPPER.readTree(body);
-        } finally {
-            connection.disconnect();
-        }
     }
 }

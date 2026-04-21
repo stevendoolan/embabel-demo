@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
  */
 @Tag("e2e")
 @Timeout(30)
-class McpServerIntegrationTest {
+class McpServerE2EIntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(McpServerIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(McpServerE2EIntegrationTest.class);
 
     private static final String BASE_URL = "http://localhost:" + System.getProperty("TEST_PORT", "48080");
     private static final String SSE_URL = BASE_URL + "/sse";
