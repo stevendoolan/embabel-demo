@@ -12,14 +12,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * End-to-end integration test for the Sonic Pi controller.
- * Generates a Sonic Pi script via the async API and saves it to
+ * Generates Sonic Pi scripts via the async API and saves them to
  * {@code docs/sonic-pi/YYYYMMDD-HHmmss/}.
  *
  * <p>Requires the application to be running on localhost.
@@ -43,14 +44,20 @@ class SonicPiControllerE2EIntegrationTest {
         LOG.info("Sonic Pi scripts will be saved to: {}", outputDir);
     }
 
-    @Test
-    void shouldGenerateSonicPiScript() throws Exception {
-        var prompt = "upbeat jazz tune";
-
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(strings = {
+            "Electronic Classical Fusion",
+            "Electronic Dreams",
+            "Feed the Birds EDM Remix",
+            "Java User Group Dance Anthem",
+            "Smooth Croon"
+    })
+    void shouldGenerateSonicPiScript(String prompt) throws Exception {
         // Submit async job
         LOG.info("Calling POST /sonic-pi?prompt={} ...", prompt);
+        var encodedPrompt = prompt.replace(" ", "+");
         var submitResponse = E2ETestHelper.postForJson(
-                BASE_URL + "/sonic-pi?prompt=" + prompt.replace(" ", "+"), 202);
+                BASE_URL + "/sonic-pi?prompt=" + encodedPrompt, 202);
         assertThat(submitResponse.has("jobId")).as("response has 'jobId'").isTrue();
         var jobId = submitResponse.get("jobId").asText();
         LOG.info("Job submitted: {}", jobId);
@@ -73,34 +80,10 @@ class SonicPiControllerE2EIntegrationTest {
 
         LOG.info("Sonic Pi script:\n\n{}\n\n", script);
 
-        // Extract song title from first comment line and save to file
-        var title = extractTitle(script);
-        var fileName = title + ".rb";
-        var outputFile = outputDir.resolve(fileName);
+        // Save using the prompt name as the filename
+        var outputFile = outputDir.resolve(prompt + ".rb");
         Files.writeString(outputFile, script, StandardCharsets.UTF_8);
         LOG.info("Saved Sonic Pi script to: {}", outputFile);
-    }
-
-    /**
-     * Extracts the song title from the first {@code # Title} comment line in the script.
-     * Falls back to "Untitled" if no title comment is found.
-     */
-    static String extractTitle(String script) {
-        for (var line : script.lines().toList()) {
-            var trimmed = line.trim();
-            if (trimmed.startsWith("#") && !trimmed.startsWith("#!")) {
-                var title = trimmed.substring(1).trim();
-                if (!title.isBlank()) {
-                    // Sanitise for use as a filename
-                    return title.replaceAll("[/\\\\:*?\"<>|]", "_");
-                }
-            }
-            // Stop looking once we hit non-comment, non-blank lines
-            if (!trimmed.isEmpty() && !trimmed.startsWith("#")) {
-                break;
-            }
-        }
-        return "Untitled";
     }
 
     // --- Helper methods ---
