@@ -18,7 +18,8 @@ Song structure — use sequential `N.times do` sections, NEVER `live_loop`:
 - Each section is a `N.times do` block where melody, harmony, and percussion all play together within the block.
 - The song should have 3-5 sections that progress and evolve over time.
 - Each section repeats 2-4 times before moving to the next.
-- Add transition elements between sections: a single synth `play` + `sleep` to bridge sections musically.
+- There must NEVER be silence between sections. Always add a transition drone between sections: a long sustained synth note (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`) that bridges one section into the next. The drone's release should be long enough to overlap with the start of the next section.
+- Each section should start with a long drone note (release: 8-16) or ambient sample that sustains underneath the melodic action, ensuring continuous sound.
 - Evolve the music across sections — build intensity, change instruments, introduce new patterns.
 
 Mix balance — the melody is the LEAD VOICE and must be the most prominent element:

@@ -64,15 +64,18 @@ FX rules:
 
 Synth parameter rules — always set `cutoff:` and `release:` on synth play calls:
 - Use `cutoff:` in the 80-120 range to shape tone. Vary it across notes for movement (e.g., `cutoff: rrand(80, 110)`).
-- Use short `release: 0.1` for fast melodic runs, longer `release: 2-4` for sustained notes. Avoid release values above 4 — long tails overlap and cause muddiness.
+- Use short `release: 0.1` for fast melodic runs.
+- Use long `release: 4-16` for drone/pad notes that sustain underneath the melodic action. Every section should start with a long drone note (e.g., `play 28, release: 8, cutoff: 90, amp: 0.6`) to create atmosphere.
 - Use `(line 80, 120, steps: 16).tick` to modulate cutoff smoothly over time instead of static values.
 
-Example of sequential sections with FX used correctly:
+Example of sequential sections with drones and FX used correctly:
 ```
-# Section 1: gentle opening
+# Section 1: atmospheric opening with drone underneath
 2.times do
+  sample :ambi_lunar_land, rate: -1, amp: 0.6
   with_fx :reverb, room: 0.25, mix: 0.3 do
     use_synth :fm
+    play 28, release: 8, divisor: 4, depth: 20, amp: 0.5
     16.times do
       play 28, cutoff: 100, release: 0.1, amp: 0.8
       sleep 0.125
@@ -82,13 +85,15 @@ Example of sequential sections with FX used correctly:
   end
 end
 
-# Transition
+# Transition — long drone bridges to next section
 use_synth :prophet
-play 28, cutoff: 90, release: 4, amp: 0.6
+play 28, cutoff: 90, release: 8, amp: 0.6
 sleep 4
 
-# Section 2: builds intensity with different synth
+# Section 2: builds intensity with different synth, drone sustains underneath
 2.times do
+  use_synth :fm
+  play 28, release: 8, cutoff: 90, amp: 0.4
   use_synth :dsaw
   16.times do
     play 28, cutoff: 110, release: 0.1, amp: 0.9
@@ -113,7 +118,8 @@ Amplitude rules — the melody is the LEAD VOICE in the final mix:
 Script structure rules:
 - NEVER use `live_loop`. Structure the melody as 2-3 sequential `N.times do` sections.
 - Each section should repeat 2-4 times before progressing to the next.
-- Add a transition element (a single synth `play` + `sleep`) between sections.
+- Start each section with a long drone note (release: 8-16) or ambient sample that sustains underneath the melodic action.
+- There must NEVER be silence between sections. Always add a long drone transition (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`). The drone's release must overlap into the next section so there are no gaps.
 - Evolve the melody across sections — change synth, octave, intensity, or cutoff.
 - Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise. Repetitive patterns should use loops, not copy-paste.

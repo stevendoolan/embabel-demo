@@ -37,14 +37,17 @@ FX rules:
 
 Synth parameter rules — always set `cutoff:` and `release:` on every `play` call:
 - Use `cutoff:` in the 80-130 range for harmonic clarity.
-- Use short `release: 0.1` for fast arpeggiated chords, longer `release: 4-8` for pads.
+- Use short `release: 0.1` for fast arpeggiated chords.
+- Use long `release: 8-16` for drone/pad notes that sustain underneath the section. Every harmony section should include at least one long sustained drone chord or note to create depth and atmosphere.
 - Modulate cutoff over time: `cutoff: (line 80, 120, steps: 16).look` for evolving texture.
 
-Example of effective harmony as sequential sections:
+Example of effective harmony with drones as sequential sections:
 ```
-# Harmony section 1
+# Harmony section 1 — drone pad underneath arpeggiated chords
 2.times do
   with_fx :reverb, room: 0.25, mix: 0.3 do
+    use_synth :hollow
+    play_chord chord(:c3, :major), cutoff: 90, release: 8, amp: 0.3
     use_synth :dsaw
     16.times do
       play 28, cutoff: 110, release: 0.1, amp: 0.4
@@ -55,12 +58,12 @@ Example of effective harmony as sequential sections:
   end
 end
 
-# Harmony section 2 — evolve with different chord voicing
+# Harmony section 2 — sustained pad chords
 2.times do
   use_synth :hollow
-  play_chord chord(:c3, :major), cutoff: 90, release: 4, amp: 0.3
+  play_chord chord(:f3, :major), cutoff: 90, release: 8, amp: 0.3
   sleep 4
-  play_chord chord(:f3, :major), cutoff: 90, release: 4, amp: 0.3
+  play_chord chord(:g3, :major), cutoff: 90, release: 8, amp: 0.3
   sleep 4
 end
 ```

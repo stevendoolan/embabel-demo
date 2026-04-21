@@ -48,7 +48,7 @@ sonic-pi:
     Write Sonic Pi code to play melodies based on user input.
     Structure songs as sequential sections using `N.times do` blocks — NOT `live_loop`.
     Each section repeats N times, then the song progresses to the next section.
-    Add transition elements (a single synth `play` + `sleep`) between sections to bridge them musically.
+    There must NEVER be silence between sections. Always add a long drone transition (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`) between sections. The drone's release must overlap into the next section so there are no gaps in the music.
 
     Sonic Pi does not have a time signature command. Do not write `use_time_signature`.
     Instead, structure the code using `N.times do` blocks and `sleep` statements to reflect the time signature.
@@ -81,7 +81,8 @@ sonic-pi:
     - Keep echo `decay:` values at 2 or less. Long decay tails accumulate and cause audio clipping.
     - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
     - Avoid nesting more than 2 FX blocks per section. Each FX adds audio processing load and amplifies signal peaks.
-    - Set `release:` on synth notes (e.g., `release: 0.2`) to prevent overlapping note tails that muddy the mix. Prefer shorter release values (0.1-0.3) over longer ones.
+    - Set `release:` on synth notes to control note duration. Use short `release: 0.1-0.3` for fast melodic runs. Use long `release: 4-16` for drone/pad notes that sustain underneath a section — these create atmosphere and depth.
+    - Each section should have at least one long sustained drone note (release: 8-16) playing underneath the melodic action, like the FM or Prophet synth drones in Sam Aaron's compositions.
     - Use `:lpf` (low-pass filter) to tame harsh highs: `with_fx :lpf, cutoff: 90`. Keep cutoff between 50 and 130.
     - Use `:hpf` (high-pass filter) to remove subsonic mud from drums: `with_fx :hpf, cutoff: 100`.
     - Use `:compressor` with `pre_amp:` to control dynamics on bass-heavy loops: `with_fx :compressor, pre_amp: 20`. Keep pre_amp at 10-25 — higher values boost the signal too much and cause clipping.
