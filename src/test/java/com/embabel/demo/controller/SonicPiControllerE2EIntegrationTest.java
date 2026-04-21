@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 @Tag("e2e")
 @Timeout(600)
-@Execution(ExecutionMode.CONCURRENT)
 class SonicPiControllerE2EIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiControllerE2EIntegrationTest.class);
