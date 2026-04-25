@@ -73,7 +73,7 @@ sonic-pi:
 
     Audio quality rules — prevent crackling and clipping:
     <audioQualityRules>
-    - Always add `use_debug false` at the very top of the script to reduce audio engine overhead.
+    - Always add `use_debug false` at the very top of the script to reduce audio engine overhead, below any comments.
     - Always add `with_fx :level, amp: 0.5 do` as an outer wrapper around the entire script (after `use_bpm` and `use_debug`). This acts as a master limiter to prevent clipping.
     - Inside the master level wrapper, add `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` to tame peaks automatically. All `N.times do` sections go inside this compressor.
     - Always set a `mix:` parameter on every `with_fx` call to control wet/dry blend. Use `mix: 0.2-0.35` for reverb, `mix: 0.15-0.3` for echo. Never use `mix: 1` on reverb — it removes the dry signal and sounds washed out.
