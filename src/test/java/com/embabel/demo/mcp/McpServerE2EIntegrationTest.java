@@ -255,9 +255,12 @@ class McpServerE2EIntegrationTest {
         var text = firstContent.get("text").asText();
         LOG.info("story response text:\n\n{}\n\n", text);
 
-        assertThat(text).as("response contains story section").contains("# Story");
-        assertThat(text).as("response contains review section").contains("# Review");
-        assertThat(text).as("response contains rating").containsPattern("Rating: \\d+/10");
+        assertThat(text).as("response is the best story text and is not empty")
+                .isNotBlank();
+        assertThat(text).as("response should not contain review section")
+                .doesNotContain("# Review");
+        assertThat(text).as("response should not contain rating")
+                .doesNotContainPattern("Rating: \\d+/10");
     }
 
     // --- Helper methods ---
