@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
  */
 @Tag("e2e")
 @Timeout(30)
-class McpServerIntegrationTest {
+class McpServerE2EIntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(McpServerIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(McpServerE2EIntegrationTest.class);
 
     private static final String BASE_URL = "http://localhost:" + System.getProperty("TEST_PORT", "48080");
     private static final String SSE_URL = BASE_URL + "/sse";
@@ -255,9 +255,12 @@ class McpServerIntegrationTest {
         var text = firstContent.get("text").asText();
         LOG.info("story response text:\n\n{}\n\n", text);
 
-        assertThat(text).as("response contains story section").contains("# Story");
-        assertThat(text).as("response contains review section").contains("# Review");
-        assertThat(text).as("response contains rating").containsPattern("Rating: \\d+/10");
+        assertThat(text).as("response is the best story text and is not empty")
+                .isNotBlank();
+        assertThat(text).as("response should not contain review section")
+                .doesNotContain("# Review");
+        assertThat(text).as("response should not contain rating")
+                .doesNotContainPattern("Rating: \\d+/10");
     }
 
     // --- Helper methods ---

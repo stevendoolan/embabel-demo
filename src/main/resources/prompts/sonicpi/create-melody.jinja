@@ -48,36 +48,80 @@ Use the following instruments:
 {{ melodyInstruments }}
 </melodyInstruments>
 
-Use audio FX to add depth and character. Available FX:
-- `:reverb` adds space and atmosphere (use `room:` 0-1 to control size)
-- `:echo` creates rhythmic repeats (use `phase:` for delay in beats, `decay:` for fade time)
-- `:distortion` adds grit and edge
+Use audio FX sparingly to add depth and character. Available FX:
+- `:reverb` adds space and atmosphere (use `room:` 0.2-0.3, `mix:` 0.2-0.35)
+- `:echo` creates rhythmic repeats (use `phase:` for delay in beats, `decay:` 1-2, `mix:` 0.15-0.3)
+- `:lpf` tames harsh highs (use `cutoff:` 70-120)
 - `:wobble` adds movement
 - `:slicer` chops the sound rhythmically
 
 FX rules:
-- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside. This keeps FX scoped to each loop's iteration.
-- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency — never create a new FX instance per iteration.
-- Nest at most 2 FX blocks deep to avoid overloading the audio engine.
-- Use FX parameters to shape the sound — e.g., `with_fx :reverb, room: 0.6` or `with_fx :echo, phase: 0.375`.
-- Use FX selectively — not every `live_loop` needs FX. Pick 2-3 loops that benefit most.
+- Always set a `mix:` parameter on every `with_fx` that supports it — never omit it.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content — never create a new FX instance per inner iteration.
+- Nest at most 2 FX blocks deep. Prefer this order: lpf (outer) → reverb (inner).
+- Use FX on at most 1-2 sections — not every section needs FX.
+- Do NOT use `:distortion` FX — it causes crackling and audio clipping.
 
-Example of FX used correctly inside a live_loop:
+Synth parameter rules — always set `cutoff:` and `release:` on synth play calls:
+- Use `cutoff:` in the 80-120 range to shape tone. Vary it across notes for movement (e.g., `cutoff: rrand(80, 110)`).
+- Use short `release: 0.1` for fast melodic runs.
+- Use long `release: 4-16` for drone/pad notes that sustain underneath the melodic action. Every section should start with a long drone note (e.g., `play 28, release: 8, cutoff: 90, amp: 0.6`) to create atmosphere.
+- Use `(line 80, 120, steps: 16).tick` to modulate cutoff smoothly over time instead of static values.
+
+Example of sequential sections with drones and FX used correctly:
 ```
-live_loop :melody do
-  with_fx :reverb, room: 0.6 do
-    with_fx :echo, phase: 0.375, decay: 4 do
-      use_synth :fm
-      play 28, release: 8, divisor: 4, depth: 20
-      sleep 8
+# Section 1: atmospheric opening with drone underneath
+2.times do
+  sample :ambi_lunar_land, rate: -1, amp: 0.6
+  with_fx :reverb, room: 0.25, mix: 0.3 do
+    use_synth :fm
+    play 28, release: 8, divisor: 4, depth: 20, amp: 0.5
+    16.times do
+      play 28, cutoff: 100, release: 0.1, amp: 0.8
+      sleep 0.125
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.7
+      sleep 0.125
     end
+  end
+end
+
+# Transition — long drone bridges to next section
+use_synth :prophet
+play 28, cutoff: 90, release: 8, amp: 0.6
+sleep 4
+
+# Section 2: builds intensity with different synth, drone sustains underneath
+2.times do
+  use_synth :fm
+  play 28, release: 8, cutoff: 90, amp: 0.4
+  use_synth :dsaw
+  16.times do
+    play 28, cutoff: 110, release: 0.1, amp: 0.9
+    sleep 0.125
+    play 28 + 12, cutoff: 80, release: 0.1, amp: 0.8
+    sleep 0.125
   end
 end
 ```
 
+Idiomatic Sonic Pi patterns — use these for musical variation:
+- `ring()` for repeating note sequences: `notes = (ring :c4, :e4, :g4, :c5)` then `play notes.tick`
+- `knit()` for controlled repetition: `knit(:c4, 4, :e4, 2, :g4, 2)` plays C four times, E twice, G twice.
+- `scale()` with `.choose` for melodic variety: `play scale(:e3, :minor_pentatonic).choose`
+- `line()` for smooth parameter ramps: `cutoff: (line 80, 130, steps: 16).tick`
+- `spread()` for euclidean rhythms: `spread(3, 8)` distributes 3 hits across 8 steps.
+
+Amplitude rules — the melody is the LEAD VOICE in the final mix:
+- Use amp: 0.8-1.0 for melody notes so they are clearly prominent above harmony and percussion.
+- Never drop melody amplitude below 0.8.
+
 Script structure rules:
-- Use at most 2 `live_loop` blocks for the melody part.
-- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- NEVER use `live_loop`. Structure the melody as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Start each section with a long drone note (release: 8-16) or ambient sample that sustains underneath the melodic action.
+- There must NEVER be silence between sections. Always add a long drone transition (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`). The drone's release must overlap into the next section so there are no gaps.
+- Evolve the melody across sections — change synth, octave, intensity, or cutoff.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise. Repetitive patterns should use loops, not copy-paste.
 
 Provide a comment at the top of the script content with the song title.

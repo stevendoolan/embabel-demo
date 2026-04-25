@@ -21,31 +21,62 @@ Do not include the melody again; only provide the harmony part in the harmonyScr
 Be aware of the existing instruments used in the melody to avoid clashes.
 Be aware of the key changes in the melody when composing the harmony.
 
-Use audio FX to add depth and texture to the harmony:
-- `:reverb` with `room:` 0-1 creates spacious pads and atmospheric chords
-- `:echo` with `phase:` and `decay:` adds rhythmic repeats that fill out the sound
+The harmony must sit BELOW the melody in the mix — it supports the melody, not competes with it.
+Use lower amplitudes than the melody: amp 0.5-0.8 for harmony parts.
+Never let any harmony element exceed amp: 0.8.
+
+Use audio FX sparingly to add depth and texture to the harmony:
+- `:reverb` with `room:` 0.3-0.5, `mix:` 0.3-0.5 creates spacious pads without muddiness
+- `:echo` with `phase:`, `decay:` 1-2, `mix:` 0.2-0.3 adds subtle rhythmic repeats
+- `:lpf` with `cutoff:` 80-110 prevents harmony from competing with the melody's brightness
 
 FX rules:
-- Place `with_fx` INSIDE `live_loop` blocks, not wrapping them from outside.
-- Wrap `with_fx` outside inner loops (e.g., `N.times do`) for efficiency.
-- Nest at most 2 FX blocks deep. Use FX selectively — not every loop needs FX.
+- Always set a `mix:` parameter on every FX that supports it.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content.
+- Use FX on at most 1 harmony section. Harmony already fills the frequency space — too much FX creates mud.
 
-Example of effective harmony FX:
+Synth parameter rules — always set `cutoff:` and `release:` on every `play` call:
+- Use `cutoff:` in the 80-130 range for harmonic clarity.
+- Use short `release: 0.1` for fast arpeggiated chords.
+- Use long `release: 8-16` for drone/pad notes that sustain underneath the section. Every harmony section should include at least one long sustained drone chord or note to create depth and atmosphere.
+- Modulate cutoff over time: `cutoff: (line 80, 120, steps: 16).look` for evolving texture.
+
+Example of effective harmony with drones as sequential sections:
 ```
-live_loop :harmony do
-  with_fx :reverb, room: 1 do
+# Harmony section 1 — drone pad underneath arpeggiated chords
+2.times do
+  with_fx :reverb, room: 0.25, mix: 0.3 do
+    use_synth :hollow
+    play_chord chord(:c3, :major), cutoff: 90, release: 8, amp: 0.5
+    use_synth :dsaw
     16.times do
-      use_synth :dsaw
-      play 28, cutoff: 130, release: 0.1, amp: 2
+      play 28, cutoff: 110, release: 0.1, amp: 0.6
       sleep 0.125
-      play 28 + 12, cutoff: 80, release: 0.1, amp: 2
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.5
       sleep 0.125
     end
   end
 end
+
+# Harmony section 2 — sustained pad chords
+2.times do
+  use_synth :hollow
+  play_chord chord(:f3, :major), cutoff: 90, release: 8, amp: 0.5
+  sleep 4
+  play_chord chord(:g3, :major), cutoff: 90, release: 8, amp: 0.5
+  sleep 4
+end
 ```
 
+Idiomatic patterns for harmony:
+- `knit()` for chord progressions: `chords = knit(chord(:c4, :major), 4, chord(:f4, :major), 4)`.
+- `ring()` for cycling: `play (ring :c3, :e3, :g3).tick, cutoff: 90, release: 0.5`.
+- `scale()` for arpeggios: `play scale(:c3, :major).tick, release: 0.2`.
+
 Script structure rules:
-- Use at most 3 `live_loop` blocks for the harmony part.
-- Use `.times do` loops inside `live_loop` to repeat patterns — do not write out every bar individually.
+- NEVER use `live_loop`. Structure the harmony as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Match the number and pacing of sections to the melody — the harmony sections should align with the melody sections.
+- Evolve the harmony across sections — change chords, voicings, or synths.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
 - Keep the script concise.
