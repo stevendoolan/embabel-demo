@@ -74,6 +74,52 @@ final class E2ETestHelper {
         }
     }
 
+    static String getText(String url) throws IOException {
+        LOG.info("GET {}", url);
+
+        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "text/plain");
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(120_000);
+
+        int status = connection.getResponseCode();
+        LOG.info("Response status: {}", status);
+        assertThat(status).as("HTTP status is 200 OK").isEqualTo(200);
+
+        try (var in = connection.getInputStream()) {
+            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    static String postTextForText(String url, String body) throws IOException {
+        LOG.info("POST {} ({} chars)", url, body.length());
+
+        var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
+        connection.setRequestProperty("Accept", "text/plain");
+        connection.setDoOutput(true);
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(120_000);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            os.write(body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        int status = connection.getResponseCode();
+        LOG.info("Response status: {}", status);
+        assertThat(status).as("HTTP status is 200 OK").isEqualTo(200);
+
+        try (var in = connection.getInputStream()) {
+            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        } finally {
+            connection.disconnect();
+        }
+    }
+
     static JsonNode postForJson(String url, int expectedStatus) throws IOException {
         LOG.info("POST {}", url);
 

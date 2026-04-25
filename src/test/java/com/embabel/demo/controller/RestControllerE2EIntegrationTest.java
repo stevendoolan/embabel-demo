@@ -86,55 +86,21 @@ class RestControllerE2EIntegrationTest {
     @Test
     void shouldWriteAStory() throws Exception {
         LOG.info("Calling GET /story?about=a+brave+robot ...");
-        var json = E2ETestHelper.getJson(BASE_URL + "/story?about=a+brave+robot");
+        var text = E2ETestHelper.getText(BASE_URL + "/story?about=a+brave+robot");
 
-        LOG.debug("Response:\n\n{}\n\n", json);
+        LOG.info("Story text:\n\n{}\n\n", text);
 
-        assertThat(json.has("story")).as("response has 'story'").isTrue();
-        var story = json.get("story");
-        assertThat(story.has("text")).as("story has 'text'").isTrue();
-        assertThat(story.get("text").asText()).as("story text is not blank").isNotBlank();
-
-        LOG.info("Story text:\n\n{}\n\n", story.get("text").asText());
-
-        assertThat(json.has("review")).as("response has 'review'").isTrue();
-        var review = json.get("review");
-        assertThat(review.has("rating")).as("review has 'rating'").isTrue();
-        assertThat(review.get("rating").asInt()).as("review rating is between 1 and 10").isBetween(1, 10);
-        assertThat(review.has("explanation")).as("review has 'explanation'").isTrue();
-        assertThat(review.get("explanation").asText()).as("review explanation is not blank").isNotBlank();
-
-        assertThat(json.has("reviewer")).as("response has 'reviewer'").isTrue();
-
-        LOG.info("Review: Rating: {}/10\nExplanation:\n\n{}\n\n",
-                review.get("rating").asInt(), review.get("explanation").asText());
+        assertThat(text).as("response is the best story text and is not empty").isNotBlank();
     }
 
     @Test
     void shouldWriteAStoryFromPost() throws Exception {
         var story = Files.readString(Path.of("src/test/resources/Incident Chat.md"), StandardCharsets.UTF_8);
         LOG.info("Calling POST /story with {} chars ...", story.length());
-        var json = E2ETestHelper.postTextForJson(BASE_URL + "/story", story);
+        var text = E2ETestHelper.postTextForText(BASE_URL + "/story", story);
 
-        LOG.debug("Response:\n\n{}\n\n", json);
+        LOG.info("Story text:\n\n{}\n\n", text);
 
-        assertThat(json.has("story")).as("response has 'story'").isTrue();
-        var storyNode = json.get("story");
-        assertThat(storyNode.has("text")).as("story has 'text'").isTrue();
-        assertThat(storyNode.get("text").asText()).as("story text is not blank").isNotBlank();
-
-        LOG.info("Story text:\n\n{}\n\n", storyNode.get("text").asText());
-
-        assertThat(json.has("review")).as("response has 'review'").isTrue();
-        var review = json.get("review");
-        assertThat(review.has("rating")).as("review has 'rating'").isTrue();
-        assertThat(review.get("rating").asInt()).as("review rating is between 1 and 10").isBetween(1, 10);
-        assertThat(review.has("explanation")).as("review has 'explanation'").isTrue();
-        assertThat(review.get("explanation").asText()).as("review explanation is not blank").isNotBlank();
-
-        assertThat(json.has("reviewer")).as("response has 'reviewer'").isTrue();
-
-        LOG.info("Review: Rating: {}/10\nExplanation:\n\n{}\n\n",
-                review.get("rating").asInt(), review.get("explanation").asText());
+        assertThat(text).as("response is the best story text and is not empty").isNotBlank();
     }
 }
