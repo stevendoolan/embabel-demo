@@ -55,13 +55,11 @@ class SonicPiControllerE2EIntegrationTest {
             "Smooth Croon"
     })
     void shouldGenerateSonicPiScript(String prompt) throws Exception {
-        // Submit async job
-        LOG.info("Calling POST /sonic-pi?prompt={} ...", prompt);
         var encodedPrompt = prompt.replace(" ", "+");
-        var submitResponse = E2ETestHelper.postForJson(
-                BASE_URL + "/sonic-pi?prompt=" + encodedPrompt, 202);
-        assertThat(submitResponse.has("jobId")).as("response has 'jobId'").isTrue();
-        var jobId = submitResponse.get("jobId").asText();
+        var url = BASE_URL + "/sonic-pi?prompt=" + encodedPrompt;
+
+        // Submit async job, retrying on 503 while the indexer is still loading
+        var jobId = submitJobWithRetry(url);
         LOG.info("Job submitted: {}", jobId);
 
         // Poll for completion using HTTP status code and X-Job-Status header
@@ -89,6 +87,46 @@ class SonicPiControllerE2EIntegrationTest {
     }
 
     // --- Helper methods ---
+
+    /**
+     * POSTs to the given URL, retrying every 5 seconds (up to 5 minutes) if the server returns
+     * 503 because the example indexer is still loading. Returns the job ID on success.
+     */
+    private static String submitJobWithRetry(String url) throws Exception {
+        int maxAttempts = 60;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            LOG.info("POST {} (attempt {})", url, attempt);
+
+            var connection = (HttpURLConnection) URI.create(url).toURL().openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(30_000);
+
+            try {
+                int status = connection.getResponseCode();
+                if (status == 202) {
+                    try (var in = connection.getInputStream()) {
+                        var body = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                        var json = E2ETestHelper.mapper().readTree(body);
+                        assertThat(json.has("jobId")).as("response has 'jobId'").isTrue();
+                        return json.get("jobId").asText();
+                    }
+                }
+                if (status == 503) {
+                    LOG.info("Indexer not ready (attempt {}/{}) — retrying in 5s...", attempt, maxAttempts);
+                } else {
+                    throw new AssertionError("Unexpected HTTP status " + status + " from POST " + url);
+                }
+            } finally {
+                connection.disconnect();
+            }
+
+            Thread.sleep(5000);
+        }
+
+        throw new AssertionError("Sonic Pi indexer did not become ready within 5 minutes");
+    }
 
     private record JobPollResult(String status, String body) {}
 

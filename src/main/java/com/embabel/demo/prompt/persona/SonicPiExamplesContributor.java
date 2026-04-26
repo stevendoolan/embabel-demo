@@ -1,53 +1,116 @@
 package com.embabel.demo.prompt.persona;
 
+import com.embabel.agent.api.common.Ai;
 import com.embabel.common.ai.prompt.PromptContributor;
-import com.embabel.demo.model.sonicpi.ExampleSong;
+import com.embabel.demo.model.sonicpi.SonicPiExampleStoreEntry;
+import com.embabel.demo.model.sonicpi.SonicPiMetadata;
+import com.embabel.demo.service.SonicPiExampleIndexer;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * Loads Sonic Pi {@code .rb} example songs from configured directories at startup and contributes
- * them to LLM prompts as few-shot context. Created because the Sonic Pi agent produces significantly
- * richer, more idiomatic music when the LLM can learn from concrete examples of real songs.
+ * Contributes Sonic Pi example songs to LLM prompts as few-shot context. Uses the
+ * {@link SonicPiExampleStore} for metadata and the {@link SonicPiExampleIndexer} for file content.
  *
- * <p>Recursively scans two optional directories (Sonic Pi's built-in examples and the user's
- * personal collection) and caps the total at {@code maxExamples} to avoid exceeding context limits.
- * Gracefully handles missing or unreadable directories.
+ * <p>The {@link #contributionFor(SonicPiMetadata)} method performs LLM-based loose matching to
+ * select only the examples whose musical characteristics are relevant to the current generation
+ * request. The {@link #contribution()} method provides a fallback that includes all allowed examples.
  */
 @Component
 public class SonicPiExamplesContributor implements PromptContributor {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiExamplesContributor.class);
 
-    private final List<ExampleSong> examples;
+    private final SonicPiExampleStore store;
+    private final SonicPiExampleIndexer indexer;
+    private final SonicPiExamplesProperties properties;
+    private final Ai ai;
+    private final ObjectMapper objectMapper;
 
-    public SonicPiExamplesContributor(@Nonnull SonicPiExamplesProperties properties) {
-        List<ExampleSong> loaded = new ArrayList<>();
-        loadFromDirectory(properties.sonicPiAppDir(), loaded);
-        loadFromDirectory(properties.userDir(), loaded);
-
-        if (loaded.size() > properties.maxExamples()) {
-            Collections.shuffle(loaded);
-            loaded = loaded.subList(0, properties.maxExamples());
-        }
-
-        this.examples = List.copyOf(loaded);
-        LOG.info("Loaded {} Sonic Pi example songs for few-shot prompting", examples.size());
+    public SonicPiExamplesContributor(@Nonnull SonicPiExampleStore store,
+                                     @Nonnull SonicPiExampleIndexer indexer,
+                                     @Nonnull SonicPiExamplesProperties properties,
+                                     @Nonnull Ai ai) {
+        this.store = store;
+        this.indexer = indexer;
+        this.properties = properties;
+        this.ai = ai;
+        this.objectMapper = new ObjectMapper();
     }
 
+    /**
+     * Fallback contribution that includes all allowed examples (used by actions without metadata).
+     */
     @Override
     public @Nonnull String contribution() {
-        if (examples.isEmpty()) {
+        List<SonicPiExampleStoreEntry> allowed = getAllowedEntries();
+        return formatExamples(allowed);
+    }
+
+    /**
+     * Selects examples that loosely match the given metadata using an LLM call, then returns
+     * the formatted prompt contribution containing only the matching examples' file content.
+     *
+     * <p>Falls back to all allowed examples if the LLM matching call fails.
+     */
+    public @Nonnull String contributionFor(@Nonnull SonicPiMetadata targetMetadata) {
+        List<SonicPiExampleStoreEntry> allowed = getAllowedEntries();
+        if (allowed.isEmpty()) {
+            return "";
+        }
+
+        try {
+            List<String> matchingPaths = selectMatchingExamples(targetMetadata, allowed);
+            List<SonicPiExampleStoreEntry> matched = allowed.stream()
+                    .filter(entry -> matchingPaths.contains(entry.relativePath()))
+                    .toList();
+
+            LOG.info("LLM selected {} matching examples out of {} allowed", matched.size(), allowed.size());
+            return formatExamples(matched);
+        } catch (Exception e) {
+            LOG.warn("LLM example selection failed — falling back to all allowed examples", e);
+            return formatExamples(allowed);
+        }
+    }
+
+    private @Nonnull List<SonicPiExampleStoreEntry> getAllowedEntries() {
+        return store.getEntries().stream()
+                .filter(SonicPiExampleStoreEntry::allowedToUse)
+                .toList();
+    }
+
+    private @Nonnull List<String> selectMatchingExamples(
+            @Nonnull SonicPiMetadata targetMetadata,
+            @Nonnull List<SonicPiExampleStoreEntry> candidates) throws IOException {
+
+        String response = ai.withDefaultLlm()
+                .withTemplate("sonicpi/select-matching-examples.jinja")
+                .createObject(String.class, Map.of(
+                        "targetStyle", targetMetadata.style(),
+                        "targetMood", targetMetadata.mood(),
+                        "targetTempoBpm", String.valueOf(targetMetadata.tempoBpm()),
+                        "targetKey", targetMetadata.key(),
+                        "targetMelodyInstruments", String.join(", ", targetMetadata.melodyInstruments()),
+                        "targetHarmonyInstruments", String.join(", ", targetMetadata.harmonyInstruments()),
+                        "targetPercussionSamples", String.join(", ", targetMetadata.percussionSamples()),
+                        "examples", candidates,
+                        "maxExamples", String.valueOf(properties.maxExamples())));
+
+        return objectMapper.readValue(response, new TypeReference<>() {
+        });
+    }
+
+    private @Nonnull String formatExamples(@Nonnull List<SonicPiExampleStoreEntry> entries) {
+        Map<String, String> contentMap = indexer.getFileContentMap();
+        if (entries.isEmpty() || contentMap.isEmpty()) {
             return "";
         }
 
@@ -59,48 +122,28 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
                 """);
 
-        for (var example : examples) {
-            sb.append("<example name=\"%s\">\n".formatted(example.name()));
-            sb.append(example.content());
+        int count = 0;
+        for (var entry : entries) {
+            if (count >= properties.maxExamples()) {
+                break;
+            }
+
+            String content = contentMap.get("./" + entry.relativePath());
+            if (content == null) {
+                LOG.debug("No file content found for {}", entry.relativePath());
+                continue;
+            }
+
+            sb.append("<example name=\"%s\" style=\"%s\" mood=\"%s\" tempo=\"%d\">\n".formatted(
+                    entry.relativePath(),
+                    entry.sonicPiMetadata().style(),
+                    entry.sonicPiMetadata().mood(),
+                    entry.sonicPiMetadata().tempoBpm()));
+            sb.append(content);
             sb.append("\n</example>\n\n");
+            count++;
         }
 
         return sb.toString();
     }
-
-    private void loadFromDirectory(@Nullable String dirPath, @Nonnull List<ExampleSong> target) {
-        if (dirPath == null || dirPath.isBlank()) {
-            LOG.info("Sonic Pi examples directory not configured (null or blank)");
-            return;
-        }
-
-        var resolved = Path.of(dirPath).toAbsolutePath().normalize();
-        LOG.info("Loading Sonic Pi examples from: {}", resolved);
-        if (!Files.isDirectory(resolved)) {
-            LOG.warn("Sonic Pi examples directory does not exist: {}", resolved);
-            return;
-        }
-
-        int countBefore = target.size();
-        try (Stream<Path> walk = Files.walk(resolved)) {
-            walk.filter(Files::isRegularFile)
-                    .filter(p -> p.toString().endsWith(".rb"))
-                    .forEach(p -> {
-                        try {
-                            var content = Files.readString(p);
-                            var name = resolved.relativize(p).toString();
-                            target.add(new ExampleSong(name, content));
-                            LOG.info("  Loaded example song: {}", name);
-                        } catch (IOException e) {
-                            LOG.warn("Failed to read example file: {}", p, e);
-                        }
-                    });
-        } catch (IOException e) {
-            LOG.warn("Failed to scan directory: {}", resolved, e);
-        }
-
-        int loaded = target.size() - countBefore;
-        LOG.info("Loaded {} example songs from {}", loaded, resolved);
-    }
-
 }

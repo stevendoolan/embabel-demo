@@ -8,14 +8,14 @@ import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
-import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithHarmony;
+import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
 import com.embabel.demo.prompt.persona.SonicPiExamplesContributor;
 import com.embabel.demo.prompt.persona.SonicPiPromptContributor;
 import java.io.File;
-import java.time.Duration;
 import java.io.FileWriter;
+import java.time.Duration;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,11 @@ import org.slf4j.LoggerFactory;
  * a multi-step LLM pipeline: extract metadata, generate melody, add harmony, add percussion, and
  * combine all tracks into a single script. Each step uses Jinja templates and prompt contributors
  * for Sonic Pi instructions and example songs (few-shot context).
+ *
+ * <p>Actions that have access to {@link SonicPiMetadata} use
+ * {@link SonicPiExamplesContributor#contributionFor(SonicPiMetadata)} for LLM-based example
+ * selection. The {@code toSonicPiMetadata} action (which doesn't have metadata yet) uses only
+ * the Sonic Pi instructions contributor.
  *
  * <p>Exposed as an MCP tool via {@code @Export} so it can be invoked remotely.
  */
@@ -65,7 +70,7 @@ public class SonicPiAgent {
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
                 .withPromptContributor(sonicPiPromptContributor)
-                .withPromptContributor(sonicPiExamplesContributor)
+                .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/create-melody.jinja")
                 .createObject(SonicPiScriptWithMelody.class, Map.of(
                         "style", sonicPiMetadata.style(),
@@ -87,7 +92,7 @@ public class SonicPiAgent {
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
                 .withPromptContributor(sonicPiPromptContributor)
-                .withPromptContributor(sonicPiExamplesContributor)
+                .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/add-harmony.jinja")
                 .createObject(SonicPiScriptWithHarmony.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
@@ -102,7 +107,7 @@ public class SonicPiAgent {
         return context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
                 .withPromptContributor(sonicPiPromptContributor)
-                .withPromptContributor(sonicPiExamplesContributor)
+                .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/add-percussion.jinja")
                 .createObject(SonicPiScriptWithPercussion.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
@@ -129,7 +134,7 @@ public class SonicPiAgent {
         var scriptContent = context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
-                .withPromptContributor(sonicPiExamplesContributor)
+                .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/combine-all-parts.jinja")
                 .createObject(String.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
