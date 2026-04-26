@@ -24,8 +24,9 @@ import org.springframework.stereotype.Component;
  * immutable list (copy-on-write pattern) so that readers always see a consistent snapshot while
  * the indexer can atomically swap in updated entries.
  *
- * <p>Loads from and persists to {@code store.json} in the {@code sonic-pi-examples/} directory.
- * Creates a timestamped backup before each save.
+ * <p>Loads from and persists to a {@code store.json} file. By default this lives inside the
+ * examples directory, but a separate writable path can be configured via {@code storeFile}
+ * for read-only environments (e.g. Docker volumes). Creates a timestamped backup before each save.
  */
 @Component
 public class SonicPiExampleStore {
@@ -35,13 +36,21 @@ public class SonicPiExampleStore {
     private static final DateTimeFormatter BACKUP_TIMESTAMP = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     private final ObjectMapper objectMapper;
-    private final Path storePath;
+    private final Path storeFilePath;
 
     private volatile List<SonicPiExampleStoreEntry> entries = List.of();
 
     public SonicPiExampleStore(@Nonnull SonicPiExamplesProperties properties) {
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        this.storePath = Path.of(properties.storeDir()).toAbsolutePath().normalize();
+        this.storeFilePath = resolveStoreFilePath(properties);
+        LOG.info("Store file path: {}", storeFilePath);
+    }
+
+    private static @Nonnull Path resolveStoreFilePath(@Nonnull SonicPiExamplesProperties properties) {
+        if (properties.storeFile() != null && !properties.storeFile().isBlank()) {
+            return Path.of(properties.storeFile()).toAbsolutePath().normalize();
+        }
+        return Path.of(properties.storeDir()).toAbsolutePath().normalize().resolve(STORE_FILENAME);
     }
 
     /**
@@ -60,16 +69,15 @@ public class SonicPiExampleStore {
      * @param changed        whether the store actually changed (controls backup/save)
      */
     public void updateAndSave(@Nonnull List<SonicPiExampleStoreEntry> updatedEntries, boolean changed) {
-        this.entries = List.copyOf(updatedEntries);
+        entries = List.copyOf(updatedEntries);
 
         if (!changed) {
             LOG.info("Store unchanged — skipping backup and save");
             return;
         }
 
-        var storeFile = storePath.resolve(STORE_FILENAME);
-        backupIfExists(storeFile);
-        save(storeFile);
+        backupIfExists(storeFilePath);
+        save(storeFilePath);
     }
 
     /**
@@ -77,46 +85,46 @@ public class SonicPiExampleStore {
      * exist (first run).
      */
     public @Nonnull List<SonicPiExampleStoreEntry> loadFromDisk() {
-        var storeFile = storePath.resolve(STORE_FILENAME);
-        if (!Files.exists(storeFile)) {
-            LOG.info("No existing store.json found at {} — starting with empty store", storeFile);
+        if (!Files.exists(storeFilePath)) {
+            LOG.info("No existing store.json found at {} — starting with empty store", storeFilePath);
             return new ArrayList<>();
         }
 
         try {
             List<SonicPiExampleStoreEntry> loaded = objectMapper.readValue(
-                    storeFile.toFile(),
+                    storeFilePath.toFile(),
                     new TypeReference<>() {
                     });
-            LOG.info("Loaded {} entries from {}", loaded.size(), storeFile);
+            LOG.info("Loaded {} entries from {}", loaded.size(), storeFilePath);
             return new ArrayList<>(loaded);
         } catch (IOException e) {
-            LOG.warn("Failed to read store.json at {} — starting with empty store", storeFile, e);
+            LOG.warn("Failed to read store.json at {} — starting with empty store", storeFilePath, e);
             return new ArrayList<>();
         }
     }
 
-    private void backupIfExists(@Nonnull Path storeFile) {
-        if (!Files.exists(storeFile)) {
+    private void backupIfExists(@Nonnull Path fileToBackup) {
+        if (!Files.exists(fileToBackup)) {
             return;
         }
 
         var timestamp = LocalDateTime.now().format(BACKUP_TIMESTAMP);
-        var backupFile = storePath.resolve(STORE_FILENAME + ".backup." + timestamp);
+        var backupFile = fileToBackup.resolveSibling(STORE_FILENAME + ".backup." + timestamp);
         try {
-            Files.copy(storeFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(fileToBackup, backupFile, StandardCopyOption.REPLACE_EXISTING);
             LOG.info("Backed up store.json to {}", backupFile);
         } catch (IOException e) {
             LOG.warn("Failed to create backup at {}", backupFile, e);
         }
     }
 
-    private void save(@Nonnull Path storeFile) {
+    private void save(@Nonnull Path targetFile) {
         try {
-            objectMapper.writeValue(storeFile.toFile(), entries);
-            LOG.info("Saved {} entries to {}", entries.size(), storeFile);
+            Files.createDirectories(targetFile.getParent());
+            objectMapper.writeValue(targetFile.toFile(), entries);
+            LOG.info("Saved {} entries to {}", entries.size(), targetFile);
         } catch (IOException e) {
-            LOG.error("Failed to save store.json to {}", storeFile, e);
+            LOG.error("Failed to save store.json to {}", targetFile, e);
         }
     }
 }

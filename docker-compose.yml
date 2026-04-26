@@ -13,4 +13,4 @@ services:
       - OPENAI_BASE_URL=${OPENAI_BASE_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"sonic-pi-app-dir":"/app/sonic-pi-examples/sonic-pi-app","user-dir":"/app/sonic-pi-examples/user-songs"}}}
+      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"store-dir":"/app/sonic-pi-examples","store-file":"/tmp/store.json"}}}
