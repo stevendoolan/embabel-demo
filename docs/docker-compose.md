@@ -42,6 +42,37 @@ You only need to set the ones for your chosen provider — any
 variables you have not exported will be passed as empty strings,
 which is safe because the application ignores empty values.
 
+## Sonic Pi examples setup
+
+The Sonic Pi agent uses `.rb` example songs as few-shot context. Before
+running Docker Compose, copy the examples into the `sonic-pi-examples/`
+directory (which is mounted as a read-only volume):
+
+```bash
+./copy-sonic-pi-examples.sh
+```
+
+This copies `.rb` files from the Sonic Pi application directory and your
+personal song collection into `sonic-pi-examples/`. The script skips any
+source directories that don't exist. The destination directory is
+gitignored to avoid committing copyrighted material.
+
+On first startup the application indexes all `.rb` files via LLM calls
+and writes the metadata to `store.json`. In Docker, the store is written
+to a named volume (`store-data`) because the examples volume is
+read-only. To copy the generated `store.json` back to your local
+`sonic-pi-examples/` directory (for use in non-Docker runs):
+
+```bash
+./copy-store-from-docker.sh
+```
+
+Run this while the container is up. On subsequent startups the cached
+`store.json` is loaded from the Docker volume — no LLM calls are needed
+unless new `.rb` files are added.
+
+## Build and run
+
 Build and start the service:
 
 ```bash
