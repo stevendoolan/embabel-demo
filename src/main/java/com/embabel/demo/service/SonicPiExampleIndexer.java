@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,8 @@ public class SonicPiExampleIndexer {
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiExampleIndexer.class);
 
     private final SonicPiExampleStore store;
-    private final SonicPiExamplesProperties properties;
     private final Ai ai;
-    private final Path storeDir;
+    private final Path storePath;
 
     private final AtomicBoolean ready = new AtomicBoolean(false);
     private volatile Map<String, String> fileContentMap = Map.of();
@@ -49,9 +49,8 @@ public class SonicPiExampleIndexer {
                                  @Nonnull SonicPiExamplesProperties properties,
                                  @Nonnull Ai ai) {
         this.store = store;
-        this.properties = properties;
         this.ai = ai;
-        this.storeDir = Path.of(properties.storeDir()).toAbsolutePath().normalize();
+        this.storePath = Path.of(properties.storeDir()).toAbsolutePath().normalize();
     }
 
     /**
@@ -89,9 +88,13 @@ public class SonicPiExampleIndexer {
     }
 
     /**
-     * Periodic rescan every 5 minutes. Only runs after the initial indexing has completed.
+     * Periodic rescan for new {@code .rb} files. Only runs after the initial indexing has completed.
+     * Rate and initial delay are configurable via {@code sonic-pi.examples.rescan-fixed-rate}
+     * and {@code sonic-pi.examples.rescan-initial-delay} in {@code application.yml}.
      */
-    @Scheduled(fixedRate = 300_000, initialDelay = 300_000)
+    @Scheduled(
+            fixedRateString = "${sonic-pi.examples.rescan-fixed-rate:300000}",
+            initialDelayString = "${sonic-pi.examples.rescan-initial-delay:300000}")
     public void periodicRescan() {
         if (!ready.get()) {
             LOG.debug("Skipping periodic rescan — initial indexing not yet complete");
@@ -110,33 +113,32 @@ public class SonicPiExampleIndexer {
         List<SonicPiExampleStoreEntry> currentEntries = store.loadFromDisk();
         Set<String> knownPaths = currentEntries.stream()
                 .map(SonicPiExampleStoreEntry::relativePath)
-                .collect(java.util.stream.Collectors.toSet());
+                .collect(Collectors.toSet());
 
         List<Path> rbFiles = scanRbFiles();
-        LOG.info("Found {} .rb files under {}", rbFiles.size(), storeDir);
+        LOG.info("Found {} .rb files under {}", rbFiles.size(), storePath);
 
         Map<String, String> newContentMap = new ConcurrentHashMap<>();
         List<SonicPiExampleStoreEntry> newEntries = new ArrayList<>();
 
         for (Path rbFile : rbFiles) {
-            String relativePath = storeDir.relativize(rbFile).toString();
+            String relativePath = storePath.relativize(rbFile).toString();
             String content = readFileContent(rbFile);
-            if (content == null) {
-                continue;
-            }
 
-            newContentMap.put("./" + relativePath, content);
+            if (content != null) {
+                newContentMap.put("./" + relativePath, content);
 
-            if (!knownPaths.contains(relativePath)) {
-                LOG.info("New file detected: {} — extracting metadata via LLM", relativePath);
-                SonicPiMetadata metadata = extractMetadata(relativePath, content);
-                if (metadata != null) {
-                    newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
+                if (!knownPaths.contains(relativePath)) {
+                    LOG.info("New file detected: {} — extracting metadata via LLM", relativePath);
+                    SonicPiMetadata metadata = extractMetadata(relativePath, content);
+                    if (metadata != null) {
+                        newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
+                    }
                 }
             }
         }
 
-        this.fileContentMap = Map.copyOf(newContentMap);
+        fileContentMap = Map.copyOf(newContentMap);
         LOG.info("File content map updated with {} entries", newContentMap.size());
 
         boolean changed = !newEntries.isEmpty();
@@ -149,17 +151,17 @@ public class SonicPiExampleIndexer {
     }
 
     private @Nonnull List<Path> scanRbFiles() {
-        if (!Files.isDirectory(storeDir)) {
-            LOG.warn("Store directory does not exist: {}", storeDir);
+        if (!Files.isDirectory(storePath)) {
+            LOG.warn("Store directory does not exist: {}", storePath);
             return List.of();
         }
 
-        try (Stream<Path> walk = Files.walk(storeDir)) {
+        try (Stream<Path> walk = Files.walk(storePath)) {
             return walk.filter(Files::isRegularFile)
                     .filter(p -> p.toString().endsWith(".rb"))
                     .toList();
         } catch (IOException e) {
-            LOG.error("Failed to scan directory: {}", storeDir, e);
+            LOG.error("Failed to scan directory: {}", storePath, e);
             return List.of();
         }
     }
