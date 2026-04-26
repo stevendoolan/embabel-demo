@@ -6,6 +6,7 @@ import com.embabel.demo.model.sonicpi.SonicPiMetadata;
 import com.embabel.demo.prompt.persona.SonicPiExampleStore;
 import com.embabel.demo.prompt.persona.SonicPiExamplesProperties;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -166,7 +167,7 @@ public class SonicPiExampleIndexer {
         }
     }
 
-    private String readFileContent(@Nonnull Path path) {
+    private @Nullable String readFileContent(@Nonnull Path path) {
         try {
             return Files.readString(path);
         } catch (IOException e) {
@@ -175,7 +176,7 @@ public class SonicPiExampleIndexer {
         }
     }
 
-    private SonicPiMetadata extractMetadata(@Nonnull String relativePath, @Nonnull String content) {
+    private @Nullable SonicPiMetadata extractMetadata(@Nonnull String relativePath, @Nonnull String content) {
         try {
             return ai.withDefaultLlm()
                     .withTemplate("sonicpi/extract-example-metadata.jinja")
