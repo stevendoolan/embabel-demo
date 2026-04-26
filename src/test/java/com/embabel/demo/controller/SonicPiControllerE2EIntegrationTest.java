@@ -39,11 +39,45 @@ class SonicPiControllerE2EIntegrationTest {
     private static Path outputDir;
 
     @BeforeAll
-    static void setupOutputDir() throws IOException {
+    static void setupOutputDir() throws Exception {
         var timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         outputDir = Path.of("docs/sonic-pi", timestamp);
         Files.createDirectories(outputDir);
         LOG.info("Sonic Pi scripts will be saved to: {}", outputDir);
+
+        waitForIndexerReady();
+    }
+
+    /**
+     * Polls the Sonic Pi endpoint until it stops returning 503 (indexer not ready).
+     * Retries every 5 seconds for up to 5 minutes.
+     */
+    private static void waitForIndexerReady() throws Exception {
+        int maxAttempts = 60;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            var connection = (HttpURLConnection) URI.create(BASE_URL + "/sonic-pi?prompt=healthcheck")
+                    .toURL().openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            try {
+                int status = connection.getResponseCode();
+                if (status != 503) {
+                    LOG.info("Sonic Pi indexer ready after {} attempts", attempt);
+                    return;
+                }
+                LOG.info("Indexer not ready (attempt {}/{}) — retrying in 5s...", attempt, maxAttempts);
+            } catch (IOException e) {
+                LOG.info("Connection failed (attempt {}/{}) — retrying in 5s...", attempt, maxAttempts);
+            } finally {
+                connection.disconnect();
+            }
+
+            Thread.sleep(5000);
+        }
+
+        throw new AssertionError("Sonic Pi indexer did not become ready within 5 minutes");
     }
 
     @ParameterizedTest(name = "{0}")
