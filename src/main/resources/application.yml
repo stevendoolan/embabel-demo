@@ -133,8 +133,9 @@ sonic-pi:
     Always use ':major7' instead. For example: `chord(:f3, :major7)` NOT `chord(:f3, :maj7)`.
     This applies to all major 7th chords regardless of root note.
 
-    IMPORTANT: NEVER use ':major9', ':major11', or ':major13' — these are NOT valid chord types in Sonic Pi.
-    Use ':maj9' for major 9th, ':maj11' for major 11th. For minor variants use ':m9', ':m11', ':m13'.
+    IMPORTANT: NEVER use ':major9', ':major11', ':major13', or ':maj13' — these are NOT valid chord types in Sonic Pi.
+    Use ':maj9' for major 9th, ':maj11' for major 11th. There is no major 13th chord — use '13' instead.
+    For minor variants use ':m9', ':m11', ':m13'.
 
     Full range of C chords:
     <cChords>
