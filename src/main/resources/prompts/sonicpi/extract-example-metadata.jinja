@@ -1,0 +1,26 @@
+You are a music analysis expert. Analyse the following Sonic Pi Ruby script and extract structured metadata about the song.
+
+<sonicPiScript>
+{{ scriptContent }}
+</sonicPiScript>
+
+The file is located at: {{ relativePath }}
+
+Extract the following metadata:
+- songTitle: A descriptive title for the song (infer from comments, filename, or the music itself)
+- composerName: The composer if mentioned in comments, otherwise "Unknown"
+- key: The musical key (e.g. "C major", "A minor", "E minor"). Infer from the notes used.
+- keyChange: Any key changes, or "none" if the song stays in one key
+- tempoBpm: The tempo in BPM (look for use_bpm, or estimate from sleep values)
+- timeSignature: The time signature (e.g. "4/4", "3/4", "6/8"). Infer from the rhythmic structure.
+- measures: The approximate number of measures/bars
+- mood: The overall mood (e.g. "energetic", "calm", "dark", "playful")
+- melodyInstruments: List of synth instruments used for melody (e.g. [":piano", ":saw"])
+- harmonyInstruments: List of synth instruments used for harmony/chords (e.g. [":prophet", ":hollow"])
+- percussionSamples: List of drum/percussion samples used (e.g. [":drum_heavy_kick", ":drum_cymbal_closed"])
+- style: The musical style/genre (e.g. "ambient", "acid house", "drum and bass", "classical")
+- melodyDescription: A brief description of the melody approach
+- harmonyDescription: A brief description of the harmony/chord approach
+- percussionDescription: A brief description of the percussion/rhythm approach
+
+If the script does not contain a particular element (e.g. no percussion), use an empty list for instrument/sample fields and "none" for description fields.
