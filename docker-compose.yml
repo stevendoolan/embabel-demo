@@ -7,10 +7,14 @@ services:
       - "48080:48080"
     volumes:
       - ./sonic-pi-examples:/app/sonic-pi-examples:ro
+      - store-data:/app/store-data
     environment:
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - OPENAI_BASE_URL=${OPENAI_BASE_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"store-dir":"/app/sonic-pi-examples","store-file":"/tmp/store.json"}}}
+      - SPRING_APPLICATION_JSON={"sonic-pi":{"examples":{"store-dir":"/app/sonic-pi-examples","store-file":"/app/store-data/store.json"}}}
+
+volumes:
+  store-data:
