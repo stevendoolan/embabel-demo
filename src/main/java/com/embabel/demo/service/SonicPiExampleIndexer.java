@@ -51,7 +51,7 @@ public class SonicPiExampleIndexer {
                                  @Nonnull Ai ai) {
         this.store = store;
         this.ai = ai;
-        this.storePath = Path.of(properties.storeDir()).toAbsolutePath().normalize();
+        this.storePath = Path.of(properties.storeDirectory()).toAbsolutePath().normalize();
     }
 
     /**

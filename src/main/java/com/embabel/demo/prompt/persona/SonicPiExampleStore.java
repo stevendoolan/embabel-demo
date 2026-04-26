@@ -50,7 +50,7 @@ public class SonicPiExampleStore {
         if (properties.storeFile() != null && !properties.storeFile().isBlank()) {
             return Path.of(properties.storeFile()).toAbsolutePath().normalize();
         }
-        return Path.of(properties.storeDir()).toAbsolutePath().normalize().resolve(STORE_FILENAME);
+        return Path.of(properties.storeDirectory()).toAbsolutePath().normalize().resolve(STORE_FILENAME);
     }
 
     /**

@@ -36,7 +36,7 @@ spring:
 
 sonic-pi:
   examples:
-    store-dir: sonic-pi-examples
+    store-directory: sonic-pi-examples
     max-examples: 20
 
   instructions: |
