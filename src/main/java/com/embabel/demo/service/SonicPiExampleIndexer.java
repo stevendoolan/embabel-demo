@@ -142,10 +142,14 @@ public class SonicPiExampleIndexer {
         for (int i = 0; i < totalNew; i++) {
             String relativePath = newFilePaths.get(i);
             LOG.info("Extracting metadata via LLM ({} of {}): {}", i + 1, totalNew, relativePath);
-            String content = newContentMap.get("./" + relativePath);
-            SonicPiMetadata metadata = extractMetadata(relativePath, content);
-            if (metadata != null) {
-                newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
+            try {
+                String content = newContentMap.get("./" + relativePath);
+                SonicPiMetadata metadata = extractMetadata(relativePath, content);
+                if (metadata != null) {
+                    newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
+                }
+            } catch (Exception e) {
+                LOG.error("Failed to index {} — skipping", relativePath, e);
             }
         }
 
