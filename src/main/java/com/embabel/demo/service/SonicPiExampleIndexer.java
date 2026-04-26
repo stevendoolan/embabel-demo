@@ -159,7 +159,7 @@ public class SonicPiExampleIndexer {
 
         try (Stream<Path> walk = Files.walk(storePath)) {
             return walk.filter(Files::isRegularFile)
-                    .filter(p -> p.toString().endsWith(".rb"))
+                    .filter(p -> p.getFileName().toString().endsWith(".rb"))
                     .toList();
         } catch (IOException e) {
             LOG.error("Failed to scan directory: {}", storePath, e);
