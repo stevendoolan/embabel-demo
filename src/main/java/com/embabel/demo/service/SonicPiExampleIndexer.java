@@ -120,7 +120,7 @@ public class SonicPiExampleIndexer {
         LOG.info("Found {} .rb files under {}", rbFiles.size(), storePath);
 
         Map<String, String> newContentMap = new ConcurrentHashMap<>();
-        List<SonicPiExampleStoreEntry> newEntries = new ArrayList<>();
+        List<String> newFilePaths = new ArrayList<>();
 
         for (Path rbFile : rbFiles) {
             String relativePath = storePath.relativize(rbFile).toString();
@@ -130,12 +130,22 @@ public class SonicPiExampleIndexer {
                 newContentMap.put("./" + relativePath, content);
 
                 if (!knownPaths.contains(relativePath)) {
-                    LOG.info("New file detected: {} — extracting metadata via LLM", relativePath);
-                    SonicPiMetadata metadata = extractMetadata(relativePath, content);
-                    if (metadata != null) {
-                        newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
-                    }
+                    newFilePaths.add(relativePath);
                 }
+            }
+        }
+
+        List<SonicPiExampleStoreEntry> newEntries = new ArrayList<>();
+        int totalNew = newFilePaths.size();
+        LOG.info("{} new files to index", totalNew);
+
+        for (int i = 0; i < totalNew; i++) {
+            String relativePath = newFilePaths.get(i);
+            LOG.info("Extracting metadata via LLM ({} of {}): {}", i + 1, totalNew, relativePath);
+            String content = newContentMap.get("./" + relativePath);
+            SonicPiMetadata metadata = extractMetadata(relativePath, content);
+            if (metadata != null) {
+                newEntries.add(new SonicPiExampleStoreEntry(relativePath, metadata, true));
             }
         }
 
