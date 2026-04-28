@@ -13,9 +13,13 @@ Return ONLY the Sonic Pi Ruby script code. No explanation, no markdown fences, n
 {{ percussionScriptContent }}
 </percussionScriptContent>
 
+<bassScriptContent>
+{{ bassScriptContent }}
+</bassScriptContent>
+
 Song structure — use sequential `N.times do` sections, NEVER `live_loop`:
-- Weave melody, harmony, and percussion together into integrated sequential sections.
-- Each section is a `N.times do` block where melody, harmony, and percussion all play together within the block.
+- Weave melody, harmony, bass, and percussion together into integrated sequential sections.
+- Each section is a `N.times do` block where melody, harmony, bass, and percussion all play together within the block.
 - The song should have 3-5 sections that progress and evolve over time.
 - Each section repeats 2-4 times before moving to the next.
 - There must NEVER be silence between sections. Always add a transition drone between sections: a long sustained synth note (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`) that bridges one section into the next. The drone's release should be long enough to overlap with the start of the next section.
@@ -25,6 +29,7 @@ Song structure — use sequential `N.times do` sections, NEVER `live_loop`:
 Mix balance — the melody is the LEAD VOICE and must be the most prominent element:
 - Melody: amp 0.8-1.0 — loudest, clearly audible as the part listeners can hum along to.
 - Harmony: amp 0.5-0.8 — sits below the melody, providing audible chord support.
+- Bass: amp 0.5-0.8 — low-end foundation, uses cutoff 60-90 (low) while harmony uses cutoff 80-130 (mid-high).
 - Percussion: amp 0.4-0.7 for kicks, lower for other hits — provides rhythmic foundation without overpowering.
 If the input parts have amplitudes that violate this balance, adjust them so the melody is always on top.
 
