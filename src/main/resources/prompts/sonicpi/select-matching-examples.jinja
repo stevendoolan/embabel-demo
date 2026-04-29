@@ -15,11 +15,11 @@ Here are the available example songs with their metadata:
 <examples>
 {% for example in examples %}
 - Path: {{ example.relativePath }}
-  Style: {{ example.sonicPiMetadata.style }}
-  Mood: {{ example.sonicPiMetadata.mood }}
-  Tempo: {{ example.sonicPiMetadata.tempoBpm }} BPM
-  Key: {{ example.sonicPiMetadata.key }}
-  Melody instruments: {{ example.sonicPiMetadata.melodyInstruments }}
+  Style: {{ example.style }}
+  Mood: {{ example.mood }}
+  Tempo: {{ example.tempoBpm }} BPM
+  Key: {{ example.key }}
+  Melody instruments: {{ example.melodyInstruments }}
 {% endfor %}
 </examples>
 

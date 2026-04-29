@@ -93,6 +93,16 @@ public class SonicPiExamplesContributor implements PromptContributor {
             @Nonnull SonicPiMetadata targetMetadata,
             @Nonnull List<SonicPiExampleStoreEntry> candidates) {
 
+        List<Map<String, Object>> candidatePayload = candidates.stream()
+                .map(entry -> Map.<String, Object>of(
+                        "relativePath", entry.relativePath(),
+                        "style", entry.sonicPiMetadata().style(),
+                        "mood", entry.sonicPiMetadata().mood(),
+                        "tempoBpm", entry.sonicPiMetadata().tempoBpm(),
+                        "key", entry.sonicPiMetadata().key(),
+                        "melodyInstruments", String.join(", ", entry.sonicPiMetadata().melodyInstruments())))
+                .toList();
+
         MatchingExamples selection = ai.withDefaultLlm()
                 .withTemplate("sonicpi/select-matching-examples.jinja")
                 .createObject(MatchingExamples.class, Map.of(
@@ -103,7 +113,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
                         "targetMelodyInstruments", String.join(", ", targetMetadata.melodyInstruments()),
                         "targetHarmonyInstruments", String.join(", ", targetMetadata.harmonyInstruments()),
                         "targetPercussionSamples", String.join(", ", targetMetadata.percussionSamples()),
-                        "examples", candidates,
+                        "examples", candidatePayload,
                         "maxExamples", String.valueOf(properties.maxExamples())));
 
         return selection.matchingPaths() == null ? List.of() : selection.matchingPaths();
