@@ -109,6 +109,7 @@ sonic-pi:
     
     Drums/percussion must be played using `sample`, and not using `play_pattern_timed`.
     NEVER use `live_loop`. Always use sequential `N.times do` blocks to structure songs.
+    NEVER use the `:fm` synth (`use_synth :fm` or `play <note>` after it). It is banned. Some example songs use `:fm` — ignore those usages and pick a different synth (e.g. `:prophet`, `:hollow`, `:dark_ambience`, `:dsaw`). Do not pass `divisor:` or `depth:` opts (those are `:fm`-only). The related synth `:mod_fm` is allowed if needed.
     Ensure the code is ready to run in Sonic Pi without any modifications.
 
     Do not use built-in function names as variable names:
@@ -218,7 +219,6 @@ sonic-pi:
     - dsaw
     - dtri
     - dull_bell
-    - fm
     - gabberkick
     - gnoise
     - growl
