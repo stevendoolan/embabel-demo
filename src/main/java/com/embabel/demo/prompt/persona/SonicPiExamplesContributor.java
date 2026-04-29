@@ -2,6 +2,7 @@ package com.embabel.demo.prompt.persona;
 
 import com.embabel.agent.api.common.Ai;
 import com.embabel.common.ai.prompt.PromptContributor;
+import com.embabel.demo.model.sonicpi.MatchingExamples;
 import com.embabel.demo.model.sonicpi.SonicPiExampleStoreEntry;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
 import com.embabel.demo.service.SonicPiExampleIndexer;
@@ -38,14 +39,6 @@ public class SonicPiExamplesContributor implements PromptContributor {
         this.indexer = indexer;
         this.properties = properties;
         this.ai = ai;
-    }
-
-    /**
-     * Structured response from the LLM example-selection prompt. Wrapping the list in a record
-     * forces the framework's structured-output mode to return a JSON object matching this schema,
-     * which prevents the LLM from wrapping the list in prose like "I have selected: [...]".
-     */
-    public record MatchingExamples(@Nonnull List<String> matchingPaths) {
     }
 
     /**
