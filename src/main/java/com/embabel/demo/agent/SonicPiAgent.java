@@ -8,6 +8,7 @@ import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
+import com.embabel.demo.model.sonicpi.SonicPiScriptWithBass;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithHarmony;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
@@ -115,6 +116,21 @@ public class SonicPiAgent {
                         "percussionSamples", String.join(", ", sonicPiMetadata.percussionSamples())));
     }
 
+    @Action
+    public SonicPiScriptWithBass addBass(
+            SonicPiScriptWithMelody sonicPiScriptWithMelody, SonicPiMetadata sonicPiMetadata, OperationContext context) {
+        LOG.info("Adding bass track to {}", sonicPiScriptWithMelody);
+        return context.ai()
+                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withPromptContributor(sonicPiPromptContributor)
+                .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
+                .withTemplate("sonicpi/add-bass.jinja")
+                .createObject(SonicPiScriptWithBass.class, Map.of(
+                        "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
+                        "bassDescription", sonicPiMetadata.bassDescription(),
+                        "bassInstruments", String.join(", ", sonicPiMetadata.bassInstruments())));
+    }
+
     @AchievesGoal(
             description = "Sonic Pi code has been generated based on user input",
             export = @Export(remote = true, name = "sonicPiCode", startingInputTypes = {UserInput.class}))
@@ -124,12 +140,14 @@ public class SonicPiAgent {
             SonicPiScriptWithMelody sonicPiScriptWithMelody,
             SonicPiScriptWithHarmony sonicPiScriptWithHarmony,
             SonicPiScriptWithPercussion sonicPiScriptWithPercussion,
+            SonicPiScriptWithBass sonicPiScriptWithBass,
             OperationContext context) {
 
         LOG.info("Combining all Sonic Pi scripts into one final script from the following parts:");
         LOG.info("{}", sonicPiScriptWithMelody.scriptContent());
         LOG.info("{}", sonicPiScriptWithHarmony.scriptContent());
         LOG.info("{}", sonicPiScriptWithPercussion.scriptContent());
+        LOG.info("{}", sonicPiScriptWithBass.scriptContent());
 
         var scriptContent = context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
@@ -139,7 +157,8 @@ public class SonicPiAgent {
                 .createObject(String.class, Map.of(
                         "melodyScriptContent", sonicPiScriptWithMelody.scriptContent(),
                         "harmonyScriptContent", sonicPiScriptWithHarmony.scriptContent(),
-                        "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent()));
+                        "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent(),
+                        "bassScriptContent", sonicPiScriptWithBass.scriptContent()));
 
         var filename = "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
         writeFile(filename, scriptContent);

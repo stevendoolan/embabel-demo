@@ -49,6 +49,9 @@ public record SonicPiMetadata(
         @NotEmpty(message = "At least one sample must be specified.")
         List<String> percussionSamples,
 
+        @NotEmpty(message = "At least one instrument must be specified.")
+        List<String> bassInstruments,
+
         @NotBlank(message = "Must not be blank.")
         String style,
 
@@ -59,5 +62,8 @@ public record SonicPiMetadata(
         String harmonyDescription,
 
         @NotBlank(message = "Must not be blank.")
-        String percussionDescription) {
+        String percussionDescription,
+
+        @NotBlank(message = "Must not be blank.")
+        String bassDescription) {
 }
