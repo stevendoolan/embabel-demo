@@ -1,0 +1,83 @@
+Write a bass track for this existing Sonic Pi melody script:
+<melodyScriptContent>
+{{ melodyScriptContent }}
+</melodyScriptContent>
+
+Add a bass line as per this description:
+<bassDescription>
+{{ bassDescription }}
+</bassDescription>
+
+Use the following instruments:
+<bassInstruments>
+{{ bassInstruments }}
+</bassInstruments>
+
+The bass provides the LOW-REGISTER FOUNDATION — root notes and fifths that anchor the harmony.
+Use LOW OCTAVES (`:c2`, `:e2`, `:g2` range — octave 1-3) to sit well below the melody and harmony.
+Think BASS GUITAR or ELECTRONIC SUB BASS — not kick drums, not chords, not pads.
+
+Ensure the code is ready to run in Sonic Pi without any modifications.
+Provide a comment at the top of the script content with the song title.
+Do not include the melody again; only provide the bass part in the scriptContent.
+Be aware of the existing instruments used in the melody to avoid clashes.
+Be aware of the key changes in the melody when composing the bass.
+
+The bass must sit BELOW the melody in the mix — it provides audible low-end weight without competing.
+Use amplitudes in the range amp 0.5-0.8 for bass parts.
+Never let any bass element exceed amp: 0.8.
+
+Use `cutoff: 60-90` to keep the bass warm and round without competing with melody brightness.
+
+FX rules — bass needs to be clean and tight:
+- `:lpf` with `cutoff: 60-90` to keep it warm.
+- `:compressor` sparingly to even out dynamics.
+- Avoid `:reverb` and `:echo` on bass — they muddy the low end.
+- Always set a `mix:` parameter on every FX that supports it.
+- Place `with_fx` INSIDE `N.times do` blocks, wrapping the inner content.
+- Use FX on at most 1 bass section. Bass needs clarity — too much FX creates mud.
+
+Synth parameter rules — always set `cutoff:` and `release:` on every `play` call:
+- Use `cutoff:` in the 60-90 range for warm, round bass.
+- Use long `release: 4-8` for droning bass notes that sustain under sections.
+- Use shorter `release: 0.3-1` for rhythmic walking bass lines.
+- Each bass section should include at least one long sustained root note.
+
+Notes should be HELD FOR LONGER DURATIONS than the melody:
+- `release: 2-8` for sustained bass notes.
+- `release: 0.5-1` for walking bass patterns.
+
+Example of effective bass sections:
+```
+# Bass section 1 — sustained root notes
+2.times do
+  use_synth :bass_foundation
+  play :c2, cutoff: 70, release: 4, amp: 0.7
+  sleep 4
+  play :g2, cutoff: 75, release: 4, amp: 0.6
+  sleep 4
+end
+
+# Bass section 2 — walking bass line
+2.times do
+  use_synth :bass_highend
+  bass_notes = (ring :c2, :e2, :g2, :f2)
+  8.times do
+    play bass_notes.tick, cutoff: 80, release: 0.5, amp: 0.65
+    sleep 1
+  end
+end
+```
+
+Idiomatic patterns for bass:
+- `ring()` for cycling root notes: `play (ring :c2, :f2, :g2).tick, cutoff: 70, release: 2`.
+- `knit()` for weighted note choices: `notes = knit(:c2, 4, :g2, 2, :f2, 2)`.
+- `scale()` for walking bass: `play scale(:c2, :major).tick, release: 0.5`.
+
+Script structure rules:
+- NEVER use `live_loop`. Structure the bass as 2-3 sequential `N.times do` sections.
+- Each section should repeat 2-4 times before progressing to the next.
+- Match the number and pacing of sections to the melody — the bass sections should align with the melody sections.
+- Evolve the bass across sections — move through chord roots, change rhythmic density.
+- Use inner `.times do` loops within sections to repeat patterns — do not write out every bar individually.
+- Keep the script concise.
