@@ -81,7 +81,7 @@ sonic-pi:
     - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
     - Avoid nesting more than 2 FX blocks per section. Each FX adds audio processing load and amplifies signal peaks.
     - Set `release:` on synth notes to control note duration. Use short `release: 0.1-0.3` for fast melodic runs. Use long `release: 4-16` for drone/pad notes that sustain underneath a section — these create atmosphere and depth.
-    - Each section should have at least one long sustained drone note (release: 8-16) playing underneath the melodic action, like the FM or Prophet synth drones in Sam Aaron's compositions.
+    - Each section should have at least one long sustained drone note (release: 8-16) playing underneath the melodic action, like the Prophet synth drones in Sam Aaron's compositions.
     - Use `:lpf` (low-pass filter) to tame harsh highs: `with_fx :lpf, cutoff: 90`. Keep cutoff between 50 and 130.
     - Use `:hpf` (high-pass filter) to remove subsonic mud from drums: `with_fx :hpf, cutoff: 100`.
     - Use `:compressor` with `pre_amp:` to control dynamics on bass-heavy loops: `with_fx :compressor, pre_amp: 20`. Keep pre_amp at 10-25 — higher values boost the signal too much and cause clipping.
@@ -109,6 +109,7 @@ sonic-pi:
     
     Drums/percussion must be played using `sample`, and not using `play_pattern_timed`.
     NEVER use `live_loop`. Always use sequential `N.times do` blocks to structure songs.
+    NEVER use the `:fm` synth (`use_synth :fm` or `play <note>` after it). It is banned. Some example songs use `:fm` — ignore those usages and pick a different synth (e.g. `:prophet`, `:hollow`, `:dark_ambience`, `:dsaw`). Do not pass `divisor:` or `depth:` opts (those are `:fm`-only). The related synth `:mod_fm` is allowed if needed.
     Ensure the code is ready to run in Sonic Pi without any modifications.
 
     Do not use built-in function names as variable names:
@@ -218,7 +219,6 @@ sonic-pi:
     - dsaw
     - dtri
     - dull_bell
-    - fm
     - gabberkick
     - gnoise
     - growl
