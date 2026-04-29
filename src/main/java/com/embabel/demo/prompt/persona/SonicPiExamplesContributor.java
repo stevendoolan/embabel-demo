@@ -5,13 +5,9 @@ import com.embabel.common.ai.prompt.PromptContributor;
 import com.embabel.demo.model.sonicpi.SonicPiExampleStoreEntry;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
 import com.embabel.demo.service.SonicPiExampleIndexer;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nonnull;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,7 +29,6 @@ public class SonicPiExamplesContributor implements PromptContributor {
     private final SonicPiExampleIndexer indexer;
     private final SonicPiExamplesProperties properties;
     private final Ai ai;
-    private final ObjectMapper objectMapper;
 
     public SonicPiExamplesContributor(@Nonnull SonicPiExampleStore store,
                                      @Nonnull SonicPiExampleIndexer indexer,
@@ -43,7 +38,14 @@ public class SonicPiExamplesContributor implements PromptContributor {
         this.indexer = indexer;
         this.properties = properties;
         this.ai = ai;
-        this.objectMapper = new ObjectMapper();
+    }
+
+    /**
+     * Structured response from the LLM example-selection prompt. Wrapping the list in a record
+     * forces the framework's structured-output mode to return a JSON object matching this schema,
+     * which prevents the LLM from wrapping the list in prose like "I have selected: [...]".
+     */
+    public record MatchingExamples(@Nonnull List<String> matchingPaths) {
     }
 
     /**
@@ -89,11 +91,11 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
     private @Nonnull List<String> selectMatchingExamples(
             @Nonnull SonicPiMetadata targetMetadata,
-            @Nonnull List<SonicPiExampleStoreEntry> candidates) throws IOException {
+            @Nonnull List<SonicPiExampleStoreEntry> candidates) {
 
-        String response = ai.withDefaultLlm()
+        MatchingExamples selection = ai.withDefaultLlm()
                 .withTemplate("sonicpi/select-matching-examples.jinja")
-                .createObject(String.class, Map.of(
+                .createObject(MatchingExamples.class, Map.of(
                         "targetStyle", targetMetadata.style(),
                         "targetMood", targetMetadata.mood(),
                         "targetTempoBpm", String.valueOf(targetMetadata.tempoBpm()),
@@ -104,8 +106,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
                         "examples", candidates,
                         "maxExamples", String.valueOf(properties.maxExamples())));
 
-        return objectMapper.readValue(response, new TypeReference<>() {
-        });
+        return selection.matchingPaths() == null ? List.of() : selection.matchingPaths();
     }
 
     private @Nonnull String formatExamples(@Nonnull List<SonicPiExampleStoreEntry> entries) {
