@@ -41,3 +41,9 @@ classical, jazz, rock, pop, hip-hop, electronic, folk, blues, reggae, country, m
 grunge, ambient, techno, house, trance, dubstep, drum and bass, swing, bossa nova, salsa, tango, bluegrass, Celtic
 flamenco, calypso, zydeco, surf, psychedelic, experimental
 </styles>
+
+Instrument and sample selection — MUST follow these rules:
+- `melodyInstruments`, `harmonyInstruments`, and `bassInstruments` MUST be SYNTH names chosen from the available `instruments` list provided above. These will be played with `use_synth :name`.
+- `percussionSamples` MUST be SAMPLE names chosen from the available `samples` list provided above. These will be played with `sample :name`.
+- A name appearing in the `samples` list is a SAMPLE, even if it has "bass" in its name (e.g. `bass_voxy_c`, `bass_dnb_f`, `bass_drop_c`). Never place a sample name in `bassInstruments` — it will fail because samples cannot be invoked as synths.
+- For bass synths, prefer names like `bass_foundation`, `bass_highend`, `chipbass`, `subpulse`, `tb303`, `fm`, `saw`, `dsaw`, or `tri` from the `instruments` list.

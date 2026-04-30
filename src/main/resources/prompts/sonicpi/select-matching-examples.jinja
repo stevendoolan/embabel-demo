@@ -23,18 +23,22 @@ Here are the available example songs with their metadata:
 {% endfor %}
 </examples>
 
-Select the examples that LOOSELY match the target song. Consider:
-- Similar style or genre family (e.g. "techno" matches "electronic", "blues" matches "jazz")
-- Compatible mood (e.g. "energetic" matches "vibrant", "calm" matches "serene")
-- Roughly similar tempo range (within +/- 40 BPM)
-- Overlapping instruments or instrument families
-- Compatible key or mode (e.g. minor keys match other minor keys)
+Select ONLY examples that are a STRONG match for the target. Be strict and selective — irrelevant examples mislead the LLM more than they help. An example qualifies only if it satisfies ALL of the following:
 
-Be generous with matching — include examples that could provide useful inspiration even if they don't match every criterion. Select up to {{ maxExamples }} examples.
+1. Same or directly adjacent style/genre. "Techno" matches "house" or "electronic"; it does NOT match "classical", "blues", or "ambient". If unsure, reject.
+2. Compatible mood. "Energetic" matches "vibrant" or "driving"; it does NOT match "calm" or "melancholic".
+3. Tempo within ±15 BPM of the target.
+4. Same mode (major matches major, minor matches minor). Different modes are a reject.
+5. At least one shared melody instrument or instrument family.
+
+Rank the qualifying examples by how closely they match and return at most {{ maxExamples }}. Prefer fewer strong matches over padding the list with weaker ones.
+
+If NO examples qualify under these rules, return an empty array. Do NOT fall back to returning unrelated examples.
 
 Respond with a JSON object containing a single field `matchingPaths` whose value is the array of selected relative paths. Do not include any prose, commentary, or explanation — only the JSON object.
 
 Example response:
 {"matchingPaths": ["sonic-pi-app/magician/acid.rb", "user-songs/sonic-pi-demo/Examples/Crazy Beat.rb"]}
 
-If no examples match at all, return all available paths (up to {{ maxExamples }}) inside `matchingPaths`.
+Empty response when nothing qualifies:
+{"matchingPaths": []}

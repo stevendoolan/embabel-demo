@@ -13,6 +13,8 @@ Use the following instruments:
 {{ bassInstruments }}
 </bassInstruments>
 
+Every name in <bassInstruments> is a SYNTH. Always invoke them with `use_synth :name` — NEVER with `sample :name`. Do not invent or reach for sample names (e.g. `bass_voxy_c`, `bass_dnb_f`) — those are samples, not synths, and Sonic Pi will fail if they appear after `use_synth`. The bass track must be entirely synth-driven; percussion is handled by a separate track.
+
 The bass provides the LOW-REGISTER FOUNDATION — root notes and fifths that anchor the harmony.
 Use LOW OCTAVES (`:c2`, `:e2`, `:g2` range — octave 1-3) to sit well below the melody and harmony.
 Think BASS GUITAR or ELECTRONIC SUB BASS — not kick drums, not chords, not pads.
