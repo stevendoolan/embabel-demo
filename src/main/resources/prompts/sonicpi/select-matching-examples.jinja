@@ -15,11 +15,11 @@ Here are the available example songs with their metadata:
 <examples>
 {% for example in examples %}
 - Path: {{ example.relativePath }}
-  Style: {{ example.sonicPiMetadata.style }}
-  Mood: {{ example.sonicPiMetadata.mood }}
-  Tempo: {{ example.sonicPiMetadata.tempoBpm }} BPM
-  Key: {{ example.sonicPiMetadata.key }}
-  Melody instruments: {{ example.sonicPiMetadata.melodyInstruments }}
+  Style: {{ example.style }}
+  Mood: {{ example.mood }}
+  Tempo: {{ example.tempoBpm }} BPM
+  Key: {{ example.key }}
+  Melody instruments: {{ example.melodyInstruments }}
 {% endfor %}
 </examples>
 
@@ -32,7 +32,9 @@ Select the examples that LOOSELY match the target song. Consider:
 
 Be generous with matching — include examples that could provide useful inspiration even if they don't match every criterion. Select up to {{ maxExamples }} examples.
 
-Return ONLY a JSON array of the matching relative paths, e.g.:
-["sonic-pi-app/magician/acid.rb", "user-songs/sonic-pi-demo/Examples/Crazy Beat.rb"]
+Respond with a JSON object containing a single field `matchingPaths` whose value is the array of selected relative paths. Do not include any prose, commentary, or explanation — only the JSON object.
 
-If no examples match at all, return all available paths (up to {{ maxExamples }}).
+Example response:
+{"matchingPaths": ["sonic-pi-app/magician/acid.rb", "user-songs/sonic-pi-demo/Examples/Crazy Beat.rb"]}
+
+If no examples match at all, return all available paths (up to {{ maxExamples }}) inside `matchingPaths`.
