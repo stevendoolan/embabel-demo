@@ -68,7 +68,22 @@ public class SonicPiExamplesContributor implements PromptContributor {
                     .filter(entry -> matchingPaths.contains(entry.relativePath()))
                     .toList();
 
-            LOG.info("LLM selected {} matching examples out of {} allowed", matched.size(), allowed.size());
+            if (matched.isEmpty()) {
+                LOG.info(
+                        "LLM found no matching examples out of {} allowed. To improve future generations, add examples with: style='{}', mood='{}', tempo~{} BPM, key='{}', melody instruments=[{}], harmony instruments=[{}], percussion samples=[{}]",
+                        allowed.size(),
+                        targetMetadata.style(),
+                        targetMetadata.mood(),
+                        targetMetadata.tempoBpm(),
+                        targetMetadata.key(),
+                        String.join(", ", targetMetadata.melodyInstruments()),
+                        String.join(", ", targetMetadata.harmonyInstruments()),
+                        String.join(", ", targetMetadata.percussionSamples()));
+            } else {
+                List<String> matchedPaths = matched.stream().map(SonicPiExampleStoreEntry::relativePath).toList();
+                LOG.info("LLM selected {} matching examples out of {} allowed: {}",
+                        matched.size(), allowed.size(), matchedPaths);
+            }
             return formatExamples(matched);
         } catch (Exception e) {
             LOG.warn("LLM example selection failed — falling back to all allowed examples", e);
