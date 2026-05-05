@@ -14,11 +14,11 @@ import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
 import com.embabel.demo.prompt.persona.SonicPiExamplesContributor;
 import com.embabel.demo.prompt.persona.SonicPiPromptContributor;
+import com.embabel.demo.util.MarkdownFences;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.Duration;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +40,6 @@ import org.slf4j.LoggerFactory;
 public class SonicPiAgent {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiAgent.class);
-
-    // The combine-all-parts prompt asks the LLM not to wrap the script in markdown
-    // fences, but the model ignores that some of the time, so strip them defensively.
-    private static final Pattern MARKDOWN_FENCE = Pattern.compile(
-            "\\A\\s*```(?:[A-Za-z0-9_+-]*)\\s*\\R(.*?)\\R\\s*```\\s*\\z",
-            Pattern.DOTALL);
 
     private final SonicPiPromptContributor sonicPiPromptContributor;
     private final SonicPiExamplesContributor sonicPiExamplesContributor;
@@ -167,22 +161,15 @@ public class SonicPiAgent {
                         "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent(),
                         "bassScriptContent", sonicPiScriptWithBass.scriptContent()));
 
-        var scriptContent = stripMarkdownFences(rawScriptContent);
+        // The combine-all-parts prompt asks the LLM not to wrap the script in markdown
+        // fences, but the model ignores that some of the time, so strip them defensively.
+        var scriptContent = MarkdownFences.strip(rawScriptContent);
+        if (rawScriptContent != null && !rawScriptContent.equals(scriptContent)) {
+            LOG.info("Stripped markdown fences from generated Sonic Pi script");
+        }
 
         var filename = "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
         writeFile(filename, scriptContent);
-        return scriptContent;
-    }
-
-    static String stripMarkdownFences(String scriptContent) {
-        if (scriptContent == null) {
-            return null;
-        }
-        var matcher = MARKDOWN_FENCE.matcher(scriptContent);
-        if (matcher.matches()) {
-            LOG.info("Stripped markdown fences from generated Sonic Pi script");
-            return matcher.group(1);
-        }
         return scriptContent;
     }
 
