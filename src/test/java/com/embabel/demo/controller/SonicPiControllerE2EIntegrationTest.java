@@ -44,6 +44,11 @@ class SonicPiControllerE2EIntegrationTest {
         outputDir = Path.of("docs/sonic-pi", timestamp);
         Files.createDirectories(outputDir);
         LOG.info("Sonic Pi scripts will be saved to: {}", outputDir);
+
+        var latestLink = Path.of("docs/sonic-pi", "latest");
+        Files.deleteIfExists(latestLink);
+        Files.createSymbolicLink(latestLink, Path.of(timestamp));
+        LOG.info("Updated symlink {} -> {}", latestLink, timestamp);
     }
 
     @ParameterizedTest(name = "{0}")
