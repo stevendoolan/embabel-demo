@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.Duration;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,12 @@ import org.slf4j.LoggerFactory;
 public class SonicPiAgent {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiAgent.class);
+
+    // The combine-all-parts prompt asks the LLM not to wrap the script in markdown
+    // fences, but the model ignores that some of the time, so strip them defensively.
+    private static final Pattern MARKDOWN_FENCE = Pattern.compile(
+            "\\A\\s*```(?:[A-Za-z0-9_+-]*)\\s*\\R(.*?)\\R\\s*```\\s*\\z",
+            Pattern.DOTALL);
 
     private final SonicPiPromptContributor sonicPiPromptContributor;
     private final SonicPiExamplesContributor sonicPiExamplesContributor;
@@ -149,7 +156,7 @@ public class SonicPiAgent {
         LOG.info("{}", sonicPiScriptWithPercussion.scriptContent());
         LOG.info("{}", sonicPiScriptWithBass.scriptContent());
 
-        var scriptContent = context.ai()
+        var rawScriptContent = context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
@@ -160,8 +167,22 @@ public class SonicPiAgent {
                         "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent(),
                         "bassScriptContent", sonicPiScriptWithBass.scriptContent()));
 
+        var scriptContent = stripMarkdownFences(rawScriptContent);
+
         var filename = "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
         writeFile(filename, scriptContent);
+        return scriptContent;
+    }
+
+    static String stripMarkdownFences(String scriptContent) {
+        if (scriptContent == null) {
+            return null;
+        }
+        var matcher = MARKDOWN_FENCE.matcher(scriptContent);
+        if (matcher.matches()) {
+            LOG.info("Stripped markdown fences from generated Sonic Pi script");
+            return matcher.group(1);
+        }
         return scriptContent;
     }
 
