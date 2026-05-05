@@ -2,9 +2,9 @@
 # The default LLM is Anthropic, but all providers are available.
 embabel:
   models:
-    default-llm: claude-sonnet-4-5
+    default-llm: claude-sonnet-4-6
     llms:
-      best: claude-opus-4-1
+      best: claude-opus-4-7
       cheapest: claude-haiku-4-5
 
 # Requires the following Environment Variables for Anthropic:
