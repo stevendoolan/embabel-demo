@@ -23,10 +23,10 @@ public record SonicPiPromptContributor(
         return """
                 %s
                 
-                Only these instruments are available in Sonic Pi:
+                Only these instruments are available in Sonic Pi. Do NOT use any instrument name not in this list:
                 {"instruments":[%s]}
-                
-                Only these samples are available in Sonic Pi:
+
+                Only these samples are available in Sonic Pi. Do NOT use any sample name not in this list — inventing a sample name (e.g. `:elec_snap`) will cause the script to fail at runtime:
                 {"samples":[%s]}
                 """.formatted(
                 instructions,

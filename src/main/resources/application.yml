@@ -137,6 +137,8 @@ sonic-pi:
     Use ':maj9' for major 9th, ':maj11' for major 11th. There is no major 13th chord — use '13' instead.
     For minor variants use ':m9', ':m11', ':m13'.
 
+    IMPORTANT: NEVER invent sample names. Every `sample :name` call MUST use a name that appears verbatim in the allowed samples list above. Do NOT guess, abbreviate, or extrapolate plausible-sounding names from the patterns you see (e.g. because `:elec_snare` exists, do not assume `:elec_snap` exists — it does NOT). If the exact sample you want is not in the list, choose the closest one that IS in the list. Common hallucinations to avoid: `:elec_snap`, `:elec_kick`, `:drum_kick`, `:hat_closed`, `:hat_open` — none of these exist.
+
     Full range of C chords:
     <cChords>
       chord(:C, '1')
