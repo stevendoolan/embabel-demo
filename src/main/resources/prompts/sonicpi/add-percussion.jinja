@@ -42,7 +42,7 @@ Example of effective percussion as sequential sections:
 2.times do
   with_fx :hpf, cutoff: 100 do
     4.times do
-      sample :bd_haus, amp: 1.0
+      sample :bd_tek, amp: 1.0
       sleep 0.5
       sample :elec_snare, amp: 0.8
       sleep 0.5
@@ -53,7 +53,7 @@ end
 # Percussion section 2 — more complex, builds intensity
 2.times do
   4.times do
-    sample :bd_haus, amp: 1.2
+    sample :bd_tek, amp: 1.2
     sample :hat_zild, amp: 0.4
     sleep 0.25
     sample :hat_zild, amp: 0.3
@@ -70,7 +70,7 @@ end
 Idiomatic patterns for percussion:
 - `spread(3, 8)` for euclidean rhythms: distributes 3 hits across 8 steps.
 - `one_in(n)` for probabilistic fills: `sample :elec_blip, amp: 0.6 if one_in(4)`.
-- `ring()` for cycling through variations: `sample (ring :bd_haus, :bd_fat, :bd_tek).tick`.
+- `ring()` for cycling through variations: `sample (ring :bd_pure, :bd_fat, :bd_tek).tick`.
 
 Script structure rules:
 - NEVER use `live_loop`. Structure the percussion as 2-3 sequential `N.times do` sections.

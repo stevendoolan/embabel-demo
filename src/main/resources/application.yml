@@ -79,6 +79,7 @@ sonic-pi:
     - Keep reverb `room:` values between 0.2 and 0.35. Higher values create excessive reflections that cause crackling.
     - Keep echo `decay:` values at 2 or less. Long decay tails accumulate and cause audio clipping.
     - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
+    - NEVER use `sample :bd_haus` — it crackles audibly even at low amp. Use other kick samples (e.g. `:bd_tek`, `:bd_fat`, `:bd_pure`, `:bd_808`) instead.
     - Avoid nesting more than 2 FX blocks per section. Each FX adds audio processing load and amplifies signal peaks.
     - Set `release:` on synth notes to control note duration. Use short `release: 0.1-0.3` for fast melodic runs. Use long `release: 4-16` for drone/pad notes that sustain underneath a section — these create atmosphere and depth.
     - Each section should have at least one long sustained drone note (release: 8-16) playing underneath the melodic action, like the FM or Prophet synth drones in Sam Aaron's compositions.
@@ -260,7 +261,6 @@ sonic-pi:
     - bd_zum
     - bd_gas
     - bd_sone
-    - bd_haus
     - bd_zome
     - bd_boom
     - bd_klub
