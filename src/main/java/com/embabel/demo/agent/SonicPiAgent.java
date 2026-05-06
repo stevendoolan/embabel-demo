@@ -14,6 +14,7 @@ import com.embabel.demo.model.sonicpi.SonicPiScriptWithMelody;
 import com.embabel.demo.model.sonicpi.SonicPiScriptWithPercussion;
 import com.embabel.demo.prompt.persona.SonicPiExamplesContributor;
 import com.embabel.demo.prompt.persona.SonicPiPromptContributor;
+import com.embabel.demo.util.MarkdownFences;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.Duration;
@@ -149,7 +150,7 @@ public class SonicPiAgent {
         LOG.info("{}", sonicPiScriptWithPercussion.scriptContent());
         LOG.info("{}", sonicPiScriptWithBass.scriptContent());
 
-        var scriptContent = context.ai()
+        var rawScriptContent = context.ai()
                 .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
@@ -159,6 +160,13 @@ public class SonicPiAgent {
                         "harmonyScriptContent", sonicPiScriptWithHarmony.scriptContent(),
                         "percussionScriptContent", sonicPiScriptWithPercussion.scriptContent(),
                         "bassScriptContent", sonicPiScriptWithBass.scriptContent()));
+
+        // The combine-all-parts prompt asks the LLM not to wrap the script in markdown
+        // fences, but the model ignores that some of the time, so strip them defensively.
+        var scriptContent = MarkdownFences.strip(rawScriptContent);
+        if (rawScriptContent != null && !rawScriptContent.equals(scriptContent)) {
+            LOG.info("Stripped markdown fences from generated Sonic Pi script");
+        }
 
         var filename = "sonic_pi_script_%s.rb".formatted(System.currentTimeMillis());
         writeFile(filename, scriptContent);
