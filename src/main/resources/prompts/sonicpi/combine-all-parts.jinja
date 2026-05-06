@@ -22,15 +22,15 @@ Song structure — use sequential `N.times do` sections, NEVER `live_loop`:
 - Each section is a `N.times do` block where melody, harmony, bass, and percussion all play together within the block.
 - The song should have 3-5 sections that progress and evolve over time.
 - Each section repeats 2-4 times before moving to the next.
-- There must NEVER be silence between sections. Always add a transition drone between sections: a long sustained synth note (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`) that bridges one section into the next. The drone's release should be long enough to overlap with the start of the next section.
+- There must NEVER be silence between sections. Always add a transition drone between sections: a long sustained synth note (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 1.2; sleep 4`) that bridges one section into the next. The drone's release should be long enough to overlap with the start of the next section.
 - Each section should start with a long drone note (release: 8-16) or ambient sample that sustains underneath the melodic action, ensuring continuous sound.
 - Evolve the music across sections — build intensity, change instruments, introduce new patterns.
 
 Mix balance — the melody is the LEAD VOICE and must be the most prominent element:
-- Melody: amp 0.8-1.0 — loudest, clearly audible as the part listeners can hum along to.
-- Harmony: amp 0.5-0.8 — sits below the melody, providing audible chord support.
-- Bass: amp 0.5-0.8 — low-end foundation, uses cutoff 60-90 (low) while harmony uses cutoff 80-130 (mid-high).
-- Percussion: amp 0.4-0.7 for kicks, lower for other hits — provides rhythmic foundation without overpowering.
+- Melody: amp 1.6-2.0 — loudest, clearly audible as the part listeners can hum along to.
+- Harmony: amp 0.75-1.2 — sits below the melody, providing audible chord support.
+- Bass: amp 0.75-1.2 — low-end foundation, uses cutoff 60-90 (low) while harmony uses cutoff 80-130 (mid-high).
+- Percussion: amp 0.8-1.4 for kicks, lower for other hits — provides rhythmic foundation without overpowering.
 If the input parts have amplitudes that violate this balance, adjust them so the melody is always on top.
 
 Ensure the combined code is ready to run in Sonic Pi without any modifications.
@@ -45,7 +45,7 @@ If any FX is missing `mix:`, add it: `mix: 0.2-0.35` for reverb, `mix: 0.15-0.3`
 Remove any `:distortion` FX — it causes crackling.
 Ensure all `with_fx` blocks are INSIDE `N.times do` blocks, not wrapping them from outside.
 Add `use_debug false` as the very first line of the script.
-Wrap ALL sections inside `with_fx :level, amp: 0.5 do` and `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` as a master limiter and compressor to prevent clipping. Never raise the master `amp:` above 0.5 — this is the most common cause of static and crackling.
+Wrap ALL sections inside `with_fx :level, amp: 1.0 do` and `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` as a master limiter and compressor to prevent clipping. Never raise the master `amp:` above 1.0 — this is the most common cause of static and crackling.
 Ensure every synth `play` call has a `cutoff:` parameter (80-120 range) and a `release:` parameter. This is critical for clean audio.
 Any loop-based samples must use `beat_stretch:` to align with the BPM.
 Use `.times do` loops for repeating patterns — do not write out every bar individually. Keep the script concise.

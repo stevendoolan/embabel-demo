@@ -22,8 +22,8 @@ Be aware of the existing instruments used in the melody to avoid clashes.
 Be aware of the key changes in the melody when composing the harmony.
 
 The harmony must sit BELOW the melody in the mix — it supports the melody, not competes with it.
-Use lower amplitudes than the melody: amp 0.5-0.8 for harmony parts.
-Never let any harmony element exceed amp: 0.8.
+Use lower amplitudes than the melody: amp 0.75-1.2 for harmony parts.
+Never let any harmony element exceed amp: 1.2.
 
 Use audio FX sparingly to add depth and texture to the harmony:
 - `:reverb` with `room:` 0.3-0.5, `mix:` 0.3-0.5 creates spacious pads without muddiness
@@ -47,12 +47,12 @@ Example of effective harmony with drones as sequential sections:
 2.times do
   with_fx :reverb, room: 0.25, mix: 0.3 do
     use_synth :hollow
-    play_chord chord(:c3, :major), cutoff: 90, release: 8, amp: 0.5
+    play_chord chord(:c3, :major), cutoff: 90, release: 8, amp: 0.75
     use_synth :dsaw
     16.times do
-      play 28, cutoff: 110, release: 0.1, amp: 0.6
+      play 28, cutoff: 110, release: 0.1, amp: 0.9
       sleep 0.125
-      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.5
+      play 28 + 12, cutoff: 80, release: 0.1, amp: 0.75
       sleep 0.125
     end
   end
@@ -61,9 +61,9 @@ end
 # Harmony section 2 — sustained pad chords
 2.times do
   use_synth :hollow
-  play_chord chord(:f3, :major), cutoff: 90, release: 8, amp: 0.5
+  play_chord chord(:f3, :major), cutoff: 90, release: 8, amp: 0.75
   sleep 4
-  play_chord chord(:g3, :major), cutoff: 90, release: 8, amp: 0.5
+  play_chord chord(:g3, :major), cutoff: 90, release: 8, amp: 0.75
   sleep 4
 end
 ```

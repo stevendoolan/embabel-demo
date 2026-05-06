@@ -26,8 +26,8 @@ Be aware of the existing instruments used in the melody to avoid clashes.
 Be aware of the key changes in the melody when composing the bass.
 
 The bass must sit BELOW the melody in the mix — it provides audible low-end weight without competing.
-Use amplitudes in the range amp 0.5-0.8 for bass parts.
-Never let any bass element exceed amp: 0.8.
+Use amplitudes in the range amp 0.75-1.2 for bass parts.
+Never let any bass element exceed amp: 1.2.
 
 Use `cutoff: 60-90` to keep the bass warm and round without competing with melody brightness.
 
@@ -54,9 +54,9 @@ Example of effective bass sections:
 # Bass section 1 — sustained root notes
 2.times do
   use_synth :bass_foundation
-  play :c2, cutoff: 70, release: 4, amp: 0.7
+  play :c2, cutoff: 70, release: 4, amp: 1.05
   sleep 4
-  play :g2, cutoff: 75, release: 4, amp: 0.6
+  play :g2, cutoff: 75, release: 4, amp: 0.9
   sleep 4
 end
 
@@ -65,7 +65,7 @@ end
   use_synth :bass_highend
   bass_notes = (ring :c2, :e2, :g2, :f2)
   8.times do
-    play bass_notes.tick, cutoff: 80, release: 0.5, amp: 0.65
+    play bass_notes.tick, cutoff: 80, release: 0.5, amp: 0.975
     sleep 1
   end
 end
