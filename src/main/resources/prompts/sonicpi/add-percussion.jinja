@@ -18,8 +18,9 @@ Do not use instruments. Only use samples.
 Create a rich, full sound using drums, bass, synths, and pads.
 Do not include the melody again; only provide the percussion part in the percussionScriptContent.
 The percussion must sit BELOW the melody in the mix — it supports the melody, not the other way around.
-Use lower amplitudes than the melody: kicks at amp: 0.6-0.9, snares at amp: 0.5-0.8, hi-hats and fills at amp: 0.3-0.6.
-Never let any percussion sample exceed amp: 0.9.
+Use lower amplitudes than the melody: kicks at amp: 1.2-1.8, snares at amp: 1.0-1.6, hi-hats and fills at amp: 0.6-1.2.
+EXCEPTION: all `:bd_*` kick samples (`:bd_haus`, `:bd_fat`, `:bd_tek`, `:bd_pure`, `:bd_808`, etc.) crackle at high amp — always play them at low amp around 0.5, never above. For louder kicks use `:drum_heavy_kick`, `:elec_soft_kick`, or `:elec_hollow_kick`.
+Never let any percussion sample exceed amp: 1.8.
 
 Use audio FX sparingly on percussion — drums often sound best dry:
 - `:reverb` with `room:` 0.2-0.3, `mix:` 0.2-0.3 gives subtle space without muddying the beat
@@ -42,9 +43,9 @@ Example of effective percussion as sequential sections:
 2.times do
   with_fx :hpf, cutoff: 100 do
     4.times do
-      sample :bd_haus, amp: 0.5
+      sample :bd_tek, amp: 0.5
       sleep 0.5
-      sample :elec_snare, amp: 0.4
+      sample :elec_snare, amp: 0.8
       sleep 0.5
     end
   end
@@ -53,15 +54,15 @@ end
 # Percussion section 2 — more complex, builds intensity
 2.times do
   4.times do
-    sample :bd_haus, amp: 0.6
-    sample :hat_zild, amp: 0.2
+    sample :bd_tek, amp: 0.5
+    sample :hat_zild, amp: 0.4
     sleep 0.25
-    sample :hat_zild, amp: 0.15
+    sample :hat_zild, amp: 0.3
     sleep 0.25
-    sample :elec_snare, amp: 0.5
-    sample :hat_zild, amp: 0.2
+    sample :elec_snare, amp: 1.0
+    sample :hat_zild, amp: 0.4
     sleep 0.25
-    sample :hat_zild, amp: 0.15
+    sample :hat_zild, amp: 0.3
     sleep 0.25
   end
 end
@@ -69,8 +70,8 @@ end
 
 Idiomatic patterns for percussion:
 - `spread(3, 8)` for euclidean rhythms: distributes 3 hits across 8 steps.
-- `one_in(n)` for probabilistic fills: `sample :elec_blip, amp: 0.3 if one_in(4)`.
-- `ring()` for cycling through variations: `sample (ring :bd_haus, :bd_fat, :bd_tek).tick`.
+- `one_in(n)` for probabilistic fills: `sample :elec_blip, amp: 0.6 if one_in(4)`.
+- `ring()` for cycling through variations: `sample (ring :bd_pure, :bd_fat, :bd_tek).tick`.
 
 Script structure rules:
 - NEVER use `live_loop`. Structure the percussion as 2-3 sequential `N.times do` sections.

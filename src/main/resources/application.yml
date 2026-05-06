@@ -47,7 +47,7 @@ sonic-pi:
     Write Sonic Pi code to play melodies based on user input.
     Structure songs as sequential sections using `N.times do` blocks — NOT `live_loop`.
     Each section repeats N times, then the song progresses to the next section.
-    There must NEVER be silence between sections. Always add a long drone transition (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 0.6; sleep 4`) between sections. The drone's release must overlap into the next section so there are no gaps in the music.
+    There must NEVER be silence between sections. Always add a long drone transition (e.g., `use_synth :prophet; play 28, cutoff: 90, release: 8, amp: 1.2; sleep 4`) between sections. The drone's release must overlap into the next section so there are no gaps in the music.
 
     Sonic Pi does not have a time signature command. Do not write `use_time_signature`.
     Instead, structure the code using `N.times do` blocks and `sleep` statements to reflect the time signature.
@@ -73,12 +73,13 @@ sonic-pi:
     Audio quality rules — prevent crackling and clipping:
     <audioQualityRules>
     - Always add `use_debug false` at the very top of the script to reduce audio engine overhead, below any comments.
-    - Always add `with_fx :level, amp: 0.5 do` as an outer wrapper around the entire script (after `use_bpm` and `use_debug`). This acts as a master limiter to prevent clipping.
+    - Always add `with_fx :level, amp: 1.0 do` as an outer wrapper around the entire script (after `use_bpm` and `use_debug`). This acts as a master limiter to prevent clipping.
     - Inside the master level wrapper, add `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` to tame peaks automatically. All `N.times do` sections go inside this compressor.
     - Always set a `mix:` parameter on every `with_fx` call to control wet/dry blend. Use `mix: 0.2-0.35` for reverb, `mix: 0.15-0.3` for echo. Never use `mix: 1` on reverb — it removes the dry signal and sounds washed out.
     - Keep reverb `room:` values between 0.2 and 0.35. Higher values create excessive reflections that cause crackling.
     - Keep echo `decay:` values at 2 or less. Long decay tails accumulate and cause audio clipping.
     - Do NOT use `:distortion` FX — it amplifies signal peaks and is the most common cause of crackling and static.
+    - All `:bd_*` kick samples (e.g. `:bd_haus`, `:bd_fat`, `:bd_tek`, `:bd_pure`, `:bd_808`) crackle at high amp. Always play them at low amp around 0.5 — never above. For louder kicks, use `:drum_heavy_kick`, `:elec_soft_kick`, or `:elec_hollow_kick`.
     - Avoid nesting more than 2 FX blocks per section. Each FX adds audio processing load and amplifies signal peaks.
     - Set `release:` on synth notes to control note duration. Use short `release: 0.1-0.3` for fast melodic runs. Use long `release: 4-16` for drone/pad notes that sustain underneath a section — these create atmosphere and depth.
     - Each section should have at least one long sustained drone note (release: 8-16) playing underneath the melodic action, like the FM or Prophet synth drones in Sam Aaron's compositions.
@@ -87,7 +88,7 @@ sonic-pi:
     - Use `:compressor` with `pre_amp:` to control dynamics on bass-heavy loops: `with_fx :compressor, pre_amp: 20`. Keep pre_amp at 10-25 — higher values boost the signal too much and cause clipping.
     - Keep synth `cutoff:` values in the 50-130 range. Values below 20 or above 200 sound harsh or inaudible.
     - Keep resonance (`res:`) at 0.8-0.9 max. Higher values cause ringing and harshness.
-    - Within each `N.times do` section, keep total amp conservative. When melody, harmony, and percussion elements play within the same section, their amplitudes sum. Use: melody amp 0.7-1.0, harmony amp 0.2-0.4, percussion amp 0.3-0.6.
+    - Within each `N.times do` section, keep total amp conservative. When melody, harmony, and percussion elements play within the same section, their amplitudes sum. Use: melody amp 1.4-2.0, harmony amp 0.3-0.6, percussion amp 0.6-1.2.
     </audioQualityRules>
 
     Idiomatic Sonic Pi patterns — use these for musical, clean code:
@@ -122,7 +123,7 @@ sonic-pi:
     </playChordExample1>
     <playChordExample2>
       chords = [chord(:c4, :major), chord(:f4, :major), chord(:g4, :major)]
-      play_chord chords[0], sustain: 3, amp: 0.6
+      play_chord chords[0], sustain: 3, amp: 0.9
     </playChordExample2>
     Incorrect usage:
     <incorrectPlayChordExample>
