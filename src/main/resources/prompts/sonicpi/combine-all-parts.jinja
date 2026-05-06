@@ -45,7 +45,7 @@ If any FX is missing `mix:`, add it: `mix: 0.2-0.35` for reverb, `mix: 0.15-0.3`
 Remove any `:distortion` FX — it causes crackling.
 Ensure all `with_fx` blocks are INSIDE `N.times do` blocks, not wrapping them from outside.
 Add `use_debug false` as the very first line of the script.
-Wrap ALL sections inside `with_fx :level, amp: 1.2 do` and `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` as a master limiter and compressor to prevent clipping.
+Wrap ALL sections inside `with_fx :level, amp: 0.5 do` and `with_fx :compressor, threshold: 0.4, clamp_time: 0.01, relax_time: 0.1, slope_above: 0.5 do` as a master limiter and compressor to prevent clipping. Never raise the master `amp:` above 0.5 — this is the most common cause of static and crackling.
 Ensure every synth `play` call has a `cutoff:` parameter (80-120 range) and a `release:` parameter. This is critical for clean audio.
 Any loop-based samples must use `beat_stretch:` to align with the BPM.
 Use `.times do` loops for repeating patterns — do not write out every bar individually. Keep the script concise.
