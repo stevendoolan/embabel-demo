@@ -37,7 +37,7 @@ spring:
 sonic-pi:
   examples:
     store-directory: sonic-pi-examples
-    max-examples: 3
+    max-examples: 5
 
   instructions: |
     You are an expert Sonic Pi programmer, familiar with music theory and composition.
