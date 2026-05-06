@@ -7,6 +7,7 @@ import com.embabel.demo.model.sonicpi.SonicPiExampleStoreEntry;
 import com.embabel.demo.model.sonicpi.SonicPiMetadata;
 import com.embabel.demo.service.SonicPiExampleIndexer;
 import jakarta.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
     private static final Logger LOG = LoggerFactory.getLogger(SonicPiExamplesContributor.class);
 
+    private static final String FAVOURITE_PATH_SEGMENT = "/favourite/";
+
     private final SonicPiExampleStore store;
     private final SonicPiExampleIndexer indexer;
     private final SonicPiExamplesProperties properties;
@@ -42,12 +45,27 @@ public class SonicPiExamplesContributor implements PromptContributor {
     }
 
     /**
-     * Fallback contribution that includes all allowed examples (used by actions without metadata).
+     * Fallback contribution used by actions without metadata. Always includes all favourites and
+     * fills the remaining {@code maxExamples} slots with other allowed examples.
      */
     @Override
     public @Nonnull String contribution() {
         List<SonicPiExampleStoreEntry> allowed = getAllowedEntries();
-        return formatExamples(allowed);
+        if (allowed.isEmpty()) {
+            return "";
+        }
+
+        List<SonicPiExampleStoreEntry> favourites = allowed.stream()
+                .filter(SonicPiExamplesContributor::isFavourite)
+                .toList();
+        List<SonicPiExampleStoreEntry> nonFavourites = allowed.stream()
+                .filter(entry -> !isFavourite(entry))
+                .toList();
+
+        int remainingSlots = Math.max(0, properties.maxExamples() - favourites.size());
+        List<SonicPiExampleStoreEntry> combined = new ArrayList<>(favourites);
+        combined.addAll(nonFavourites.stream().limit(remainingSlots).toList());
+        return formatExamples(combined);
     }
 
     /**
@@ -62,16 +80,31 @@ public class SonicPiExamplesContributor implements PromptContributor {
             return "";
         }
 
+        List<SonicPiExampleStoreEntry> favourites = allowed.stream()
+                .filter(SonicPiExamplesContributor::isFavourite)
+                .toList();
+        List<SonicPiExampleStoreEntry> nonFavourites = allowed.stream()
+                .filter(entry -> !isFavourite(entry))
+                .toList();
+
+        int remainingSlots = Math.max(0, properties.maxExamples() - favourites.size());
+
         try {
-            List<String> matchingPaths = selectMatchingExamples(targetMetadata, allowed);
-            List<SonicPiExampleStoreEntry> matched = allowed.stream()
-                    .filter(entry -> matchingPaths.contains(entry.relativePath()))
-                    .toList();
+            List<SonicPiExampleStoreEntry> matched;
+            if (nonFavourites.isEmpty() || remainingSlots == 0) {
+                matched = List.of();
+            } else {
+                List<String> matchingPaths = selectMatchingExamples(targetMetadata, nonFavourites, remainingSlots);
+                matched = nonFavourites.stream()
+                        .filter(entry -> matchingPaths.contains(entry.relativePath()))
+                        .limit(remainingSlots)
+                        .toList();
+            }
 
             if (matched.isEmpty()) {
                 LOG.info(
-                        "LLM found no matching examples out of {} allowed. To improve future generations, add examples with: style='{}', mood='{}', tempo~{} BPM, key='{}', melody instruments=[{}], harmony instruments=[{}], percussion samples=[{}]",
-                        allowed.size(),
+                        "LLM found no matching examples out of {} non-favourite allowed entries. To improve future generations, add examples with: style='{}', mood='{}', tempo~{} BPM, key='{}', melody instruments=[{}], harmony instruments=[{}], percussion samples=[{}]",
+                        nonFavourites.size(),
                         targetMetadata.style(),
                         targetMetadata.mood(),
                         targetMetadata.tempoBpm(),
@@ -81,14 +114,28 @@ public class SonicPiExamplesContributor implements PromptContributor {
                         String.join(", ", targetMetadata.percussionSamples()));
             } else {
                 List<String> matchedPaths = matched.stream().map(SonicPiExampleStoreEntry::relativePath).toList();
-                LOG.info("LLM selected {} matching examples out of {} allowed: {}",
-                        matched.size(), allowed.size(), matchedPaths);
+                LOG.info("LLM selected {} matching examples out of {} non-favourite allowed: {}",
+                        matched.size(), nonFavourites.size(), matchedPaths);
             }
-            return formatExamples(matched);
+
+            List<SonicPiExampleStoreEntry> combined = new ArrayList<>(favourites);
+            combined.addAll(matched);
+            if (!favourites.isEmpty()) {
+                List<String> favouritePaths = favourites.stream().map(SonicPiExampleStoreEntry::relativePath).toList();
+                LOG.info("Always including {} favourite example(s): {}", favourites.size(), favouritePaths);
+            }
+            return formatExamples(combined);
         } catch (Exception e) {
-            LOG.warn("LLM example selection failed — falling back to all allowed examples", e);
-            return formatExamples(allowed);
+            LOG.warn("LLM example selection failed — falling back to favourites plus all allowed examples", e);
+            List<SonicPiExampleStoreEntry> fallback = new ArrayList<>(favourites);
+            fallback.addAll(nonFavourites.stream().limit(remainingSlots).toList());
+            return formatExamples(fallback);
         }
+    }
+
+    private static boolean isFavourite(@Nonnull SonicPiExampleStoreEntry entry) {
+        String normalised = "/" + entry.relativePath().replace('\\', '/') + "/";
+        return normalised.contains(FAVOURITE_PATH_SEGMENT);
     }
 
     private @Nonnull List<SonicPiExampleStoreEntry> getAllowedEntries() {
@@ -99,7 +146,8 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
     private @Nonnull List<String> selectMatchingExamples(
             @Nonnull SonicPiMetadata targetMetadata,
-            @Nonnull List<SonicPiExampleStoreEntry> candidates) {
+            @Nonnull List<SonicPiExampleStoreEntry> candidates,
+            int maxToSelect) {
 
         List<Map<String, Object>> candidatePayload = candidates.stream()
                 .map(entry -> Map.<String, Object>of(
@@ -122,7 +170,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
                         "targetHarmonyInstruments", String.join(", ", targetMetadata.harmonyInstruments()),
                         "targetPercussionSamples", String.join(", ", targetMetadata.percussionSamples()),
                         "examples", candidatePayload,
-                        "maxExamples", String.valueOf(properties.maxExamples())));
+                        "maxExamples", String.valueOf(maxToSelect)));
 
         return selection.matchingPaths() == null ? List.of() : selection.matchingPaths();
     }
@@ -141,26 +189,19 @@ public class SonicPiExamplesContributor implements PromptContributor {
 
                 """);
 
-        int count = 0;
         for (var entry : entries) {
-            if (count >= properties.maxExamples()) {
-                break;
-            }
-
             String content = contentMap.get("./" + entry.relativePath());
             if (content == null) {
                 LOG.debug("No file content found for {}", entry.relativePath());
-                continue;
+            } else {
+                sb.append("<example name=\"%s\" style=\"%s\" mood=\"%s\" tempo=\"%d\">\n".formatted(
+                        entry.relativePath(),
+                        entry.sonicPiMetadata().style(),
+                        entry.sonicPiMetadata().mood(),
+                        entry.sonicPiMetadata().tempoBpm()));
+                sb.append(content);
+                sb.append("\n</example>\n\n");
             }
-
-            sb.append("<example name=\"%s\" style=\"%s\" mood=\"%s\" tempo=\"%d\">\n".formatted(
-                    entry.relativePath(),
-                    entry.sonicPiMetadata().style(),
-                    entry.sonicPiMetadata().mood(),
-                    entry.sonicPiMetadata().tempoBpm()));
-            sb.append(content);
-            sb.append("\n</example>\n\n");
-            count++;
         }
 
         return sb.toString();
