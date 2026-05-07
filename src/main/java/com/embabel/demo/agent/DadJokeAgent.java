@@ -36,14 +36,14 @@ public class DadJokeAgent {
     @Action
     public Jokes writeJokes(UserInput userInput, OperationContext context) {
         return context.ai()
-                .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
+                .withLlm(LlmOptions.withLlmForRole("best"))
                 .createObject("Write %s Dad Jokes based on: %s".formatted(jokeCount, userInput.getContent()), Jokes.class);
     }
 
     @Action
     public JokesAndRatings rateJokes(Jokes jokes, OperationContext context) {
         List<JokeAndRating> list = jokes.jokes().stream().parallel().map(joke -> context.ai()
-                .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
+                .withLlm(LlmOptions.withLlmForRole("cheapest"))
                 .createObject("On a scale from 1 to %s, rate this joke: %s".formatted(jokeCount, joke), JokeAndRating.class)).toList();
         return new JokesAndRatings(list);
     }

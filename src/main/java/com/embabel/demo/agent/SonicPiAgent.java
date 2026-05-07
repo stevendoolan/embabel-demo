@@ -58,7 +58,7 @@ public class SonicPiAgent {
     public SonicPiMetadata toSonicPiMetadata(UserInput userInput, OperationContext context) {
         LOG.info("Converting user input to {}", userInput);
         return context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withLlm(LlmOptions.withAutoLlm())
                 .withPromptContributor(sonicPiPromptContributor)
                 .withTemplate("sonicpi/to-meta-data.jinja")
                 .createObject(SonicPiMetadata.class, Map.of(
@@ -70,7 +70,7 @@ public class SonicPiAgent {
     public SonicPiScriptWithMelody createMelody(SonicPiMetadata sonicPiMetadata, OperationContext context) {
         LOG.info("Creating melody for {}", sonicPiMetadata);
         return context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withLlm(LlmOptions.withAutoLlm())
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/create-melody.jinja")
@@ -92,7 +92,7 @@ public class SonicPiAgent {
             SonicPiScriptWithMelody sonicPiScriptWithMelody, SonicPiMetadata sonicPiMetadata, OperationContext context) {
         LOG.info("Adding harmony track to {}", sonicPiScriptWithMelody);
         return context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withLlm(LlmOptions.withAutoLlm())
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/add-harmony.jinja")
@@ -107,7 +107,7 @@ public class SonicPiAgent {
             SonicPiScriptWithMelody sonicPiScriptWithMelody, SonicPiMetadata sonicPiMetadata, OperationContext context) {
         LOG.info("Adding percussion track to {}", sonicPiScriptWithMelody);
         return context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withLlm(LlmOptions.withAutoLlm())
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/add-percussion.jinja")
@@ -122,7 +122,7 @@ public class SonicPiAgent {
             SonicPiScriptWithMelody sonicPiScriptWithMelody, SonicPiMetadata sonicPiMetadata, OperationContext context) {
         LOG.info("Adding bass track to {}", sonicPiScriptWithMelody);
         return context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0))
+                .withLlm(LlmOptions.withAutoLlm())
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/add-bass.jinja")
@@ -151,7 +151,7 @@ public class SonicPiAgent {
         LOG.info("{}", sonicPiScriptWithBass.scriptContent());
 
         var rawScriptContent = context.ai()
-                .withLlm(LlmOptions.withAutoLlm().withTemperature(1.0).withTimeout(Duration.ofSeconds(120)))
+                .withLlm(LlmOptions.withAutoLlm().withTimeout(Duration.ofSeconds(120)))
                 .withPromptContributor(sonicPiPromptContributor)
                 .withPromptContributor(() -> sonicPiExamplesContributor.contributionFor(sonicPiMetadata))
                 .withTemplate("sonicpi/combine-all-parts.jinja")

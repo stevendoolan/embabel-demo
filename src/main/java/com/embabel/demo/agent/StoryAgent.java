@@ -70,7 +70,7 @@ public class StoryAgent {
         List<String> storyTexts = IntStream.range(0, storyCount).parallel().mapToObj(i ->
                 retry("writeStory", () ->
                         context.ai()
-                                .withLlm(LlmOptions.withLlmForRole("best").withTemperature(0.8))
+                                .withLlm(LlmOptions.withLlmForRole("best"))
                                 .withPromptContributor(StoryPersonas.WRITER)
                                 .withTemplate("story/write-story-template.jinja")
                                 .createObject(String.class,
@@ -89,7 +89,7 @@ public class StoryAgent {
         List<ReviewedStory> reviewed = stories.stories().stream().parallel().map(story ->
                 retry("reviewStory", () -> {
                     var review = context.ai()
-                            .withLlm(LlmOptions.withLlmForRole("cheapest").withTemperature(0.1))
+                            .withLlm(LlmOptions.withLlmForRole("cheapest"))
                             .withPromptContributor(StoryPersonas.REVIEWER)
                             .withTemplate("story/review-story-template.jinja")
                             .createObject(StoryReview.class,
