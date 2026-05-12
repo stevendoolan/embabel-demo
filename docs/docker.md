@@ -163,27 +163,19 @@ docker rm -f embabel-demo
 
 ## Overriding the default models
 
-The Docker image defaults to `claude-sonnet-4-5` as the default LLM.
-You can override the models using environment variables:
-
-```bash
-docker run -d -p 48080:48080 \
-  -e EMBABEL_MODELS_DEFAULT_LLM=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_BEST=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_CHEAPEST=gpt-4.1-mini \
-  -e OPENAI_BASE_URL \
-  -e OPENAI_API_KEY \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest
-```
+To change the default LLM mappings, swap the per-provider config —
+see the [Manual fallback commands](#manual-fallback-commands) above,
+which append `--spring.config.additional-location=file:/app/config/<provider>/`
+to load that provider's config (and its LLM mappings) on top of
+`config/all/`.
 
 Available models include:
 
 | Provider  | Models                                 |
 |-----------|----------------------------------------|
 | Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`             |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`             |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`              |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`              |
 
 ## MCP Server via Docker Hub
 
