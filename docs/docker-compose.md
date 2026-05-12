@@ -90,15 +90,25 @@ docker compose down
 ### Overriding the default models
 
 The default LLM is `claude-sonnet-4-5`. You can override the models
-by passing `-e` flags to `docker compose run`:
+by passing `-e` flags to `docker compose run`, plus appending
+`--spring.config.additional-location` so the container loads the
+matching provider's config on top of `config/all/`. Without the
+appended config, the unused providers' autoconfigs still run and
+demand their API keys at startup:
 
 ```bash
 docker compose run \
   -e EMBABEL_MODELS_DEFAULT_LLM=gpt-4.1 \
   -e EMBABEL_MODELS_LLMS_BEST=gpt-4.1 \
   -e EMBABEL_MODELS_LLMS_CHEAPEST=gpt-4.1-mini \
-  embabel-demo
+  embabel-demo \
+  --spring.config.additional-location=file:/app/config/openai/
 ```
+
+Swap `openai/` for `anthropic/` or `ollama/` as needed. Configs are
+checked in at [`config/anthropic/`](../config/anthropic/application.yml),
+[`config/openai/`](../config/openai/application.yml), and
+[`config/ollama/`](../config/ollama/application.yml).
 
 Available models include:
 
