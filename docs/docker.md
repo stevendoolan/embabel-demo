@@ -47,12 +47,20 @@ starts the container on port 48080 (4 looks like **e** for Embabel),
 and follows the logs. It automatically passes through any provider
 environment variables that are set.
 
-| Command                      | Short | Description                   |
-|------------------------------|-------|-------------------------------|
-| `./docker-run.sh`            |       | Pull the latest image and run |
-| `./docker-run.sh --run-only` | `-r`  | Run without pulling           |
-| `./docker-run.sh --logs`     | `-l`  | Follow the container logs     |
-| `./docker-run.sh --stop`     | `-s`  | Stop and remove the container |
+| Command                       | Short | Description                              |
+|-------------------------------|-------|------------------------------------------|
+| `./docker-run.sh`             |       | Pull the latest image and run            |
+| `./docker-run.sh --run-only`  | `-r`  | Run without pulling                      |
+| `./docker-run.sh --logs`      | `-l`  | Follow the container logs                |
+| `./docker-run.sh --stop`      | `-s`  | Stop and remove the container            |
+| `./docker-run.sh --anthropic` |       | Pin `config/anthropic/` (Anthropic only) |
+| `./docker-run.sh --openai`    |       | Pin `config/openai/` (OpenAI only)       |
+| `./docker-run.sh --ollama`    |       | Pin `config/ollama/` (Ollama only)       |
+
+The provider flags are combinable with `--run-only` and append
+`--spring.config.additional-location=file:/app/config/<provider>/` to
+the container command — they switch off the other providers' autoconfig
+so the container starts with only that provider's keys.
 
 The script detects which provider variables (`ANTHROPIC_BASE_URL`,
 `ANTHROPIC_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_API_KEY`) are set in
@@ -80,7 +88,10 @@ The image's entrypoint bakes
 Anthropic, OpenAI, and Ollama side-by-side. To run a single provider with
 its own LLM mappings instead, append a second
 `--spring.config.additional-location` after the image name — Spring Boot
-loads locations in order, so the appended one wins.
+loads locations in order, so the appended one wins. The per-provider
+configs also list the other providers' autoconfig classes in
+`spring.autoconfigure.exclude`, so the container starts without the
+unused providers' API keys.
 
 **All providers (Anthropic + OpenAI):**
 
