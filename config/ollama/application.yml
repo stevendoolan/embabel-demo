@@ -5,6 +5,16 @@
 #
 #     ollama run gpt-oss
 
+spring:
+  # Skip the Anthropic and OpenAI autoconfigs so the app starts without
+  # ANTHROPIC_API_KEY / OPENAI_API_KEY. They unconditionally instantiate
+  # a provider client at startup and would otherwise fail the bean
+  # creation before the agent platform comes up.
+  autoconfigure:
+    exclude:
+      - com.embabel.agent.autoconfigure.models.anthropic.AgentAnthropicAutoConfiguration
+      - com.embabel.agent.autoconfigure.models.openai.AgentOpenAiAutoConfiguration
+
 # An excellent general-use model.  How to install:
 #
 # ollama run gpt-oss:20b
