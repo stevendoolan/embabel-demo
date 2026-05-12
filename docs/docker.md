@@ -134,6 +134,39 @@ docker rm -f embabel-demo
 > Passing an unset variable with `-e` sends an empty string to the
 > container, which may cause the provider client to fail.
 
+## Using a provider-specific config
+
+The image's entrypoint bakes
+`--spring.config.additional-location=file:/app/config/all/`, which loads
+`config/all/application.yml` and enables Anthropic, OpenAI, and Ollama
+side-by-side. The image also ships the per-provider config dirs
+(`/app/config/anthropic/`, `/app/config/openai/`, `/app/config/ollama/`)
+— append a second `--spring.config.additional-location` after the image
+name to layer one of them on top. Spring Boot loads locations in order,
+so the appended one wins.
+
+**Anthropic only** (loads
+[`config/anthropic/application.yml`](../config/anthropic/application.yml)
+on top of `config/all/application.yml`):
+
+```bash
+docker run -d -p 48080:48080 \
+  -e ANTHROPIC_BASE_URL \
+  -e ANTHROPIC_API_KEY \
+  --name embabel-demo \
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/anthropic/
+```
+
+This pins `claude-sonnet-4-5` as the default and `cheapest` LLM and
+`claude-opus-4-1` as the `best` LLM, regardless of the values baked into
+`config/all/`. The same pattern works for `openai/` and `ollama/`.
+
+Equivalently, you can set the env var
+`SPRING_CONFIG_ADDITIONAL_LOCATION=file:/app/config/anthropic/`. The
+command-line argument from the entrypoint still applies, so both
+locations are merged — the env-var value comes last and wins.
+
 ## Overriding the default models
 
 The Docker image defaults to `claude-sonnet-4-5` as the default LLM.
