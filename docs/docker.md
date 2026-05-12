@@ -163,11 +163,24 @@ docker rm -f embabel-demo
 
 ## Overriding the default models
 
-To change the default LLM mappings, swap the per-provider config —
-see the [Manual fallback commands](#manual-fallback-commands) above,
-which append `--spring.config.additional-location=file:/app/config/<provider>/`
-to load that provider's config (and its LLM mappings) on top of
-`config/all/`.
+**Per-provider config swap.** To switch to a different provider's full
+LLM mappings, append `--spring.config.additional-location=file:/app/config/<provider>/`
+on top of the entrypoint's `config/all/` — see the
+[Manual fallback commands](#manual-fallback-commands) above.
+
+**Individual model override.** Pass `EMBABEL_MODELS_*` env vars to
+pin specific roles to specific models. For example, to run Ollama
+with `qwen3:4b` instead of `config/ollama/`'s default `gpt-oss:20b`:
+
+```bash
+docker run -d -p 48080:48080 \
+  -e EMBABEL_MODELS_DEFAULT_LLM=qwen3:4b \
+  -e EMBABEL_MODELS_LLMS_BEST=qwen3:4b \
+  -e EMBABEL_MODELS_LLMS_CHEAPEST=qwen3:4b \
+  --name embabel-demo \
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/ollama/
+```
 
 Available models include:
 
