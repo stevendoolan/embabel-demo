@@ -75,6 +75,13 @@ Pull the latest image:
 docker pull stevendoolan/embabel-demo:latest
 ```
 
+The image's entrypoint bakes
+`--spring.config.additional-location=file:/app/config/all/`, which enables
+Anthropic, OpenAI, and Ollama side-by-side. To run a single provider with
+its own LLM mappings instead, append a second
+`--spring.config.additional-location` after the image name — Spring Boot
+loads locations in order, so the appended one wins.
+
 **All providers (Anthropic + OpenAI):**
 
 ```bash
@@ -87,24 +94,9 @@ docker run -d -p 48080:48080 \
   stevendoolan/embabel-demo:latest
 ```
 
-**Anthropic:**
-
-```bash
-docker run -d -p 48080:48080 \
-  -e ANTHROPIC_BASE_URL \
-  -e ANTHROPIC_API_KEY \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest
-```
-
-The image's entrypoint bakes
-`--spring.config.additional-location=file:/app/config/all/`, which loads
-`config/all/application.yml` and enables Anthropic, OpenAI, and Ollama
-side-by-side. To pin the Anthropic-specific LLM mappings from
+**Anthropic** — pins
 [`config/anthropic/application.yml`](../config/anthropic/application.yml)
-(`claude-sonnet-4-5` as default/cheapest, `claude-opus-4-1` as best),
-append a second `--spring.config.additional-location` after the image
-name:
+(`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
 docker run -d -p 48080:48080 \
@@ -115,27 +107,28 @@ docker run -d -p 48080:48080 \
   --spring.config.additional-location=file:/app/config/anthropic/
 ```
 
-Spring Boot loads locations in order, so the appended one wins. The
-same pattern works for `openai/` and `ollama/`. Equivalently, set
-`SPRING_CONFIG_ADDITIONAL_LOCATION=file:/app/config/anthropic/` as an
-env var — both locations are merged and the env-var value wins.
-
-**OpenAI:**
+**OpenAI** — pins
+[`config/openai/application.yml`](../config/openai/application.yml)
+(`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
 
 ```bash
 docker run -d -p 48080:48080 \
   -e OPENAI_BASE_URL \
   -e OPENAI_API_KEY \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/openai/
 ```
 
-**Ollama:**
+**Ollama** — pins
+[`config/ollama/application.yml`](../config/ollama/application.yml)
+(`gpt-oss:20b` for all three roles):
 
 ```bash
 docker run -d -p 48080:48080 \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/ollama/
 ```
 
 On Linux (without Docker Desktop), add `--add-host=host.docker.internal:host-gateway`
