@@ -120,7 +120,7 @@ docker run -d -p 48080:48080 \
 
 **OpenAI** — pins
 [`config/openai/application.yml`](../config/openai/application.yml)
-(`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
+(`gpt-5.4-mini` default, `gpt-5.4` best, `gpt-5.4-nano` cheapest):
 
 ```bash
 docker run -d -p 48080:48080 \
@@ -184,11 +184,11 @@ docker run -d -p 48080:48080 \
 
 Available models include:
 
-| Provider  | Models                                 |
-|-----------|----------------------------------------|
-| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`              |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`              |
+| Provider  | Models                                            |
+|-----------|---------------------------------------------------|
+| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5`            |
+| OpenAI    | `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`         |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`                         |
 
 ## MCP Server via Docker Hub
 
