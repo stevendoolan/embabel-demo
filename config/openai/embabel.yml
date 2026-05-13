@@ -1,4 +1,14 @@
 # Use these OpenAI models
+spring:
+  # Skip the Anthropic and Ollama autoconfigs so the app starts without
+  # ANTHROPIC_API_KEY / an Ollama host. They unconditionally instantiate
+  # a provider client at startup and would otherwise fail the bean
+  # creation before the agent platform comes up.
+  autoconfigure:
+    exclude:
+      - com.embabel.agent.autoconfigure.models.anthropic.AgentAnthropicAutoConfiguration
+      - com.embabel.agent.autoconfigure.models.ollama.AgentOllamaAutoConfiguration
+
 embabel:
   models:
     default-llm: gpt-4.1

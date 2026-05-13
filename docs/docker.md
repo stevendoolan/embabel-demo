@@ -47,12 +47,20 @@ starts the container on port 48080 (4 looks like **e** for Embabel),
 and follows the logs. It automatically passes through any provider
 environment variables that are set.
 
-| Command                      | Short | Description                   |
-|------------------------------|-------|-------------------------------|
-| `./docker-run.sh`            |       | Pull the latest image and run |
-| `./docker-run.sh --run-only` | `-r`  | Run without pulling           |
-| `./docker-run.sh --logs`     | `-l`  | Follow the container logs     |
-| `./docker-run.sh --stop`     | `-s`  | Stop and remove the container |
+| Command                       | Short | Description                              |
+|-------------------------------|-------|------------------------------------------|
+| `./docker-run.sh`             |       | Pull the latest image and run            |
+| `./docker-run.sh --run-only`  | `-r`  | Run without pulling                      |
+| `./docker-run.sh --logs`      | `-l`  | Follow the container logs                |
+| `./docker-run.sh --stop`      | `-s`  | Stop and remove the container            |
+| `./docker-run.sh --anthropic` |       | Pin `config/anthropic/embabel.yml` (Anthropic only) |
+| `./docker-run.sh --openai`    |       | Pin `config/openai/embabel.yml` (OpenAI only)       |
+| `./docker-run.sh --ollama`    |       | Pin `config/ollama/embabel.yml` (Ollama only)       |
+
+The provider flags are combinable with `--run-only` and append
+`--spring.config.additional-location=file:/app/config/<provider>/` to
+the container command — they switch off the other providers' autoconfig
+so the container starts with only that provider's keys.
 
 The script detects which provider variables (`ANTHROPIC_BASE_URL`,
 `ANTHROPIC_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_API_KEY`) are set in
@@ -75,6 +83,16 @@ Pull the latest image:
 docker pull stevendoolan/embabel-demo:latest
 ```
 
+The image's entrypoint bakes
+`--spring.config.additional-location=file:/app/config/all/`, which enables
+Anthropic, OpenAI, and Ollama side-by-side. To run a single provider with
+its own LLM mappings instead, append a second
+`--spring.config.additional-location` after the image name — Spring Boot
+loads locations in order, so the appended one wins. The per-provider
+configs also list the other providers' autoconfig classes in
+`spring.autoconfigure.exclude`, so the container starts without the
+unused providers' API keys.
+
 **All providers (Anthropic + OpenAI):**
 
 ```bash
@@ -87,32 +105,41 @@ docker run -d -p 48080:48080 \
   stevendoolan/embabel-demo:latest
 ```
 
-**Anthropic:**
+**Anthropic** — pins
+[`config/anthropic/embabel.yml`](../config/anthropic/embabel.yml)
+(`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
 docker run -d -p 48080:48080 \
   -e ANTHROPIC_BASE_URL \
   -e ANTHROPIC_API_KEY \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
 ```
 
-**OpenAI:**
+**OpenAI** — pins
+[`config/openai/embabel.yml`](../config/openai/embabel.yml)
+(`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
 
 ```bash
 docker run -d -p 48080:48080 \
   -e OPENAI_BASE_URL \
   -e OPENAI_API_KEY \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/openai/embabel.yml
 ```
 
-**Ollama:**
+**Ollama** — pins
+[`config/ollama/embabel.yml`](../config/ollama/embabel.yml)
+(`gpt-oss:20b` for all three roles):
 
 ```bash
 docker run -d -p 48080:48080 \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 On Linux (without Docker Desktop), add `--add-host=host.docker.internal:host-gateway`
@@ -136,27 +163,32 @@ docker rm -f embabel-demo
 
 ## Overriding the default models
 
-The Docker image defaults to `claude-sonnet-4-5` as the default LLM.
-You can override the models using environment variables:
+**Per-provider config swap.** To switch to a different provider's full
+LLM mappings, append `--spring.config.additional-location=file:/app/config/<provider>/`
+on top of the entrypoint's `config/all/` — see the
+[Manual fallback commands](#manual-fallback-commands) above.
+
+**Individual model override.** Pass `EMBABEL_MODELS_*` env vars to
+pin specific roles to specific models. For example, to run Ollama
+with `qwen3:4b` instead of `config/ollama/embabel.yml`'s default `gpt-oss:20b`:
 
 ```bash
 docker run -d -p 48080:48080 \
-  -e EMBABEL_MODELS_DEFAULT_LLM=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_BEST=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_CHEAPEST=gpt-4.1-mini \
-  -e OPENAI_BASE_URL \
-  -e OPENAI_API_KEY \
+  -e EMBABEL_MODELS_DEFAULT_LLM=qwen3:4b \
+  -e EMBABEL_MODELS_LLMS_BEST=qwen3:4b \
+  -e EMBABEL_MODELS_LLMS_CHEAPEST=qwen3:4b \
   --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  stevendoolan/embabel-demo:latest \
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 Available models include:
 
-| Provider  | Models                                 |
-|-----------|----------------------------------------|
-| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`             |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`             |
+| Provider  | Models                                            |
+|-----------|---------------------------------------------------|
+| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5`            |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`                         |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`                         |
 
 ## MCP Server via Docker Hub
 

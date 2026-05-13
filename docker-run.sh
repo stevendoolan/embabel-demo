@@ -5,24 +5,42 @@ IMAGE="stevendoolan/embabel-demo:latest"
 PORT="48080"
 CONTAINER_NAME="embabel-demo"
 
-# Stop and remove the container
-if [ "${1:-}" = "--stop" ] || [ "${1:-}" = "-s" ]; then
-  echo "Stopping ${CONTAINER_NAME}..."
-  docker rm -f "${CONTAINER_NAME}" 2>/dev/null || echo "Container not running."
-  exit 0
-fi
+PULL=true
+CONFIG_PROFILE=""
 
-# Follow logs for an already-running container
-if [ "${1:-}" = "--logs" ] || [ "${1:-}" = "-l" ]; then
-  echo "Following logs for ${CONTAINER_NAME}... Press Control+C to exit."
-  docker logs -f "${CONTAINER_NAME}"
-  exit 0
-fi
-
-# Pull the latest image unless --run-only is specified
-if [ "${1:-}" = "--run-only" ] || [ "${1:-}" = "-r" ]; then
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --stop|-s)
+      echo "Stopping ${CONTAINER_NAME}..."
+      docker rm -f "${CONTAINER_NAME}" 2>/dev/null || echo "Container not running."
+      exit 0
+      ;;
+    --logs|-l)
+      echo "Following logs for ${CONTAINER_NAME}... Press Control+C to exit."
+      docker logs -f "${CONTAINER_NAME}"
+      exit 0
+      ;;
+    --run-only|-r)
+      PULL=false
+      ;;
+    --anthropic)
+      CONFIG_PROFILE="anthropic"
+      ;;
+    --openai)
+      CONFIG_PROFILE="openai"
+      ;;
+    --ollama)
+      CONFIG_PROFILE="ollama"
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      exit 2
+      ;;
+  esac
   shift
-else
+done
+
+if [ "$PULL" = true ]; then
   echo "Pulling ${IMAGE}..."
   docker pull "${IMAGE}"
 fi
@@ -51,7 +69,13 @@ done
 docker rm -f "${CONTAINER_NAME}" 2>/dev/null || true
 
 echo "Starting ${IMAGE} on port ${PORT}..."
-docker run -d "${ARGS[@]}" "${IMAGE}"
+if [ -n "$CONFIG_PROFILE" ]; then
+  echo "Using config profile: ${CONFIG_PROFILE}"
+  docker run -d "${ARGS[@]}" "${IMAGE}" \
+    "--spring.config.additional-location=file:/app/config/${CONFIG_PROFILE}/embabel.yml"
+else
+  docker run -d "${ARGS[@]}" "${IMAGE}"
+fi
 
 echo "Following logs... Press Control+C to exit (container will keep running)."
 echo "To stop: ./docker-run.sh --stop"

@@ -89,24 +89,47 @@ docker compose down
 
 ### Overriding the default models
 
-The default LLM is `claude-sonnet-4-5`. You can override the models
-by passing `-e` flags to `docker compose run`:
+The default LLM is `claude-sonnet-4-5`. To switch to a different
+provider's LLM mappings, append `--spring.config.additional-location`
+to `docker compose run` so the container loads that provider's config
+on top of `config/all/`. The per-provider configs also exclude the
+other providers' autoconfigs, so the container starts with only that
+provider's keys.
+
+**Anthropic** — pins
+[`config/anthropic/embabel.yml`](../config/anthropic/embabel.yml)
+(`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
-docker compose run \
-  -e EMBABEL_MODELS_DEFAULT_LLM=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_BEST=gpt-4.1 \
-  -e EMBABEL_MODELS_LLMS_CHEAPEST=gpt-4.1-mini \
-  embabel-demo
+docker compose run embabel-demo \
+  --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
+```
+
+**OpenAI** — pins
+[`config/openai/embabel.yml`](../config/openai/embabel.yml)
+(`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
+
+```bash
+docker compose run embabel-demo \
+  --spring.config.additional-location=file:/app/config/openai/embabel.yml
+```
+
+**Ollama** — pins
+[`config/ollama/embabel.yml`](../config/ollama/embabel.yml)
+(`gpt-oss:20b` for all three roles):
+
+```bash
+docker compose run embabel-demo \
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 Available models include:
 
-| Provider  | Models                                 |
-|-----------|----------------------------------------|
-| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5` |
-| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`              |
-| Ollama    | `gpt-oss:20b`, `qwen3:4b`              |
+| Provider  | Models                                            |
+|-----------|---------------------------------------------------|
+| Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5`            |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`                         |
+| Ollama    | `gpt-oss:20b`, `qwen3:4b`                         |
 
 ## MCP Server
 
