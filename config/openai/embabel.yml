@@ -11,10 +11,10 @@ spring:
 
 embabel:
   models:
-    default-llm: gpt-5.4-mini
+    default-llm: gpt-4.1
     llms:
-      best: gpt-5.4
-      cheapest: gpt-5.4-nano
+      best: gpt-4.1
+      cheapest: gpt-4.1-mini
 
 # Private OpenAI
 # -----------------------------

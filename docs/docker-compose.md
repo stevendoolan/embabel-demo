@@ -107,7 +107,7 @@ docker compose run embabel-demo \
 
 **OpenAI** — pins
 [`config/openai/embabel.yml`](../config/openai/embabel.yml)
-(`gpt-5.4-mini` default, `gpt-5.4` best, `gpt-5.4-nano` cheapest):
+(`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
 
 ```bash
 docker compose run embabel-demo \
@@ -128,7 +128,7 @@ Available models include:
 | Provider  | Models                                            |
 |-----------|---------------------------------------------------|
 | Anthropic | `claude-opus-4-1`, `claude-sonnet-4-5`            |
-| OpenAI    | `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`         |
+| OpenAI    | `gpt-4.1`, `gpt-4.1-mini`                         |
 | Ollama    | `gpt-oss:20b`, `qwen3:4b`                         |
 
 ## MCP Server
