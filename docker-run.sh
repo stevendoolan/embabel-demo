@@ -72,7 +72,7 @@ echo "Starting ${IMAGE} on port ${PORT}..."
 if [ -n "$CONFIG_PROFILE" ]; then
   echo "Using config profile: ${CONFIG_PROFILE}"
   docker run -d "${ARGS[@]}" "${IMAGE}" \
-    "--spring.config.additional-location=file:/app/config/${CONFIG_PROFILE}/"
+    "--spring.config.additional-location=file:/app/config/${CONFIG_PROFILE}/embabel.yml"
 else
   docker run -d "${ARGS[@]}" "${IMAGE}"
 fi

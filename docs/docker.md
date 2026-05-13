@@ -53,9 +53,9 @@ environment variables that are set.
 | `./docker-run.sh --run-only`  | `-r`  | Run without pulling                      |
 | `./docker-run.sh --logs`      | `-l`  | Follow the container logs                |
 | `./docker-run.sh --stop`      | `-s`  | Stop and remove the container            |
-| `./docker-run.sh --anthropic` |       | Pin `config/anthropic/` (Anthropic only) |
-| `./docker-run.sh --openai`    |       | Pin `config/openai/` (OpenAI only)       |
-| `./docker-run.sh --ollama`    |       | Pin `config/ollama/` (Ollama only)       |
+| `./docker-run.sh --anthropic` |       | Pin `config/anthropic/embabel.yml` (Anthropic only) |
+| `./docker-run.sh --openai`    |       | Pin `config/openai/embabel.yml` (OpenAI only)       |
+| `./docker-run.sh --ollama`    |       | Pin `config/ollama/embabel.yml` (Ollama only)       |
 
 The provider flags are combinable with `--run-only` and append
 `--spring.config.additional-location=file:/app/config/<provider>/` to
@@ -106,7 +106,7 @@ docker run -d -p 48080:48080 \
 ```
 
 **Anthropic** — pins
-[`config/anthropic/application.yml`](../config/anthropic/application.yml)
+[`config/anthropic/embabel.yml`](../config/anthropic/embabel.yml)
 (`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
@@ -115,11 +115,11 @@ docker run -d -p 48080:48080 \
   -e ANTHROPIC_API_KEY \
   --name embabel-demo \
   stevendoolan/embabel-demo:latest \
-  --spring.config.additional-location=file:/app/config/anthropic/
+  --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
 ```
 
 **OpenAI** — pins
-[`config/openai/application.yml`](../config/openai/application.yml)
+[`config/openai/embabel.yml`](../config/openai/embabel.yml)
 (`gpt-5.4-mini` default, `gpt-5.4` best, `gpt-5.4-nano` cheapest):
 
 ```bash
@@ -128,18 +128,18 @@ docker run -d -p 48080:48080 \
   -e OPENAI_API_KEY \
   --name embabel-demo \
   stevendoolan/embabel-demo:latest \
-  --spring.config.additional-location=file:/app/config/openai/
+  --spring.config.additional-location=file:/app/config/openai/embabel.yml
 ```
 
 **Ollama** — pins
-[`config/ollama/application.yml`](../config/ollama/application.yml)
+[`config/ollama/embabel.yml`](../config/ollama/embabel.yml)
 (`gpt-oss:20b` for all three roles):
 
 ```bash
 docker run -d -p 48080:48080 \
   --name embabel-demo \
   stevendoolan/embabel-demo:latest \
-  --spring.config.additional-location=file:/app/config/ollama/
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 On Linux (without Docker Desktop), add `--add-host=host.docker.internal:host-gateway`
@@ -170,7 +170,7 @@ on top of the entrypoint's `config/all/` — see the
 
 **Individual model override.** Pass `EMBABEL_MODELS_*` env vars to
 pin specific roles to specific models. For example, to run Ollama
-with `qwen3:4b` instead of `config/ollama/`'s default `gpt-oss:20b`:
+with `qwen3:4b` instead of `config/ollama/embabel.yml`'s default `gpt-oss:20b`:
 
 ```bash
 docker run -d -p 48080:48080 \
@@ -179,7 +179,7 @@ docker run -d -p 48080:48080 \
   -e EMBABEL_MODELS_LLMS_CHEAPEST=qwen3:4b \
   --name embabel-demo \
   stevendoolan/embabel-demo:latest \
-  --spring.config.additional-location=file:/app/config/ollama/
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 Available models include:

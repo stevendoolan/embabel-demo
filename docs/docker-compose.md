@@ -97,30 +97,30 @@ other providers' autoconfigs, so the container starts with only that
 provider's keys.
 
 **Anthropic** — pins
-[`config/anthropic/application.yml`](../config/anthropic/application.yml)
+[`config/anthropic/embabel.yml`](../config/anthropic/embabel.yml)
 (`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
 docker compose run embabel-demo \
-  --spring.config.additional-location=file:/app/config/anthropic/
+  --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
 ```
 
 **OpenAI** — pins
-[`config/openai/application.yml`](../config/openai/application.yml)
+[`config/openai/embabel.yml`](../config/openai/embabel.yml)
 (`gpt-5.4-mini` default, `gpt-5.4` best, `gpt-5.4-nano` cheapest):
 
 ```bash
 docker compose run embabel-demo \
-  --spring.config.additional-location=file:/app/config/openai/
+  --spring.config.additional-location=file:/app/config/openai/embabel.yml
 ```
 
 **Ollama** — pins
-[`config/ollama/application.yml`](../config/ollama/application.yml)
+[`config/ollama/embabel.yml`](../config/ollama/embabel.yml)
 (`gpt-oss:20b` for all three roles):
 
 ```bash
 docker compose run embabel-demo \
-  --spring.config.additional-location=file:/app/config/ollama/
+  --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
 Available models include:
