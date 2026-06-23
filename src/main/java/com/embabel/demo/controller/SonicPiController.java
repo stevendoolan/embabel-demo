@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class SonicPiController {
         this.indexer = indexer;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/sonic-pi")
     public ResponseEntity<Map<String, String>> generateSonicPi(@RequestParam("prompt") String prompt) {
         if (!indexer.isReady()) {
@@ -68,6 +70,7 @@ public class SonicPiController {
                 .body(Map.of("jobId", jobId));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/sonic-pi/{jobId}")
     public ResponseEntity<String> getJobStatus(@PathVariable String jobId) {
         if (!indexer.isReady()) {
