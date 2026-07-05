@@ -10,10 +10,10 @@
         <relativePath/> <!-- Lookup parent from repository -->
     </parent>
     <groupId>com.github.stevendoolan</groupId>
-    <artifactId>Demo</artifactId>
+    <artifactId>embabel-demo</artifactId>
     <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>My Demo Agent</name>
+    <name>A demonstration of Agentic AI with Embabel</name>
     <description>To be used as a template for creating new projects.</description>
 
     <!--
