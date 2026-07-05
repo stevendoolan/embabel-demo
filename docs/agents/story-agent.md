@@ -4,7 +4,7 @@
 
 ---
 
-**Source:** [`StoryAgent.java`](../../src/main/java/com/embabel/demo/agent/StoryAgent.java)
+**Source:** [`StoryAgent.java`](../../src/main/java/com/github/stevendoolan/embabeldemo/agent/StoryAgent.java)
 
 **Description:** Generate stories based on user input, review them, and return the best one.
 

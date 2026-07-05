@@ -4,7 +4,7 @@
 
 ---
 
-**Source:** [`FibonacciAgent.java`](../../src/main/java/com/embabel/demo/agent/FibonacciAgent.java)
+**Source:** [`FibonacciAgent.java`](../../src/main/java/com/github/stevendoolan/embabeldemo/agent/FibonacciAgent.java)
 
 **Description:** Compute Fibonacci numbers using LLM and tools, then verify the result.
 
@@ -14,7 +14,7 @@ An example of how to combine tools and LLMs in an agent to achieve a goal. The a
 
 ## Dependencies
 
-- [`FibonacciCalculator`](../../src/main/java/com/embabel/demo/tool/FibonacciCalculator.java) — tool used for verified computation
+- [`FibonacciCalculator`](../../src/main/java/com/github/stevendoolan/embabeldemo/tool/FibonacciCalculator.java) — tool used for verified computation
 
 ## Action Flow
 

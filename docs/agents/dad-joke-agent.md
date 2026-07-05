@@ -4,7 +4,7 @@
 
 ---
 
-**Source:** [`DadJokeAgent.java`](../../src/main/java/com/embabel/demo/agent/DadJokeAgent.java)
+**Source:** [`DadJokeAgent.java`](../../src/main/java/com/github/stevendoolan/embabeldemo/agent/DadJokeAgent.java)
 
 **Description:** Create a dad joke.
 
