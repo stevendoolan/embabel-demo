@@ -49,7 +49,7 @@ export NO_PROXY=localhost,*.example.com
 
 On Windows, open Windows Settings from the Start Menu, search for "Environment Variables", and add the above variables to your User variables.
 
-The [ProxyConfigurer](../src/main/java/com/embabel/demo/config/ProxyConfigurer.java) class will read these environment variables
+The [ProxyConfigurer](../src/main/java/com/github/stevendoolan/embabeldemo/config/ProxyConfigurer.java) class will read these environment variables
 and set the system properties for Java and Spring Boot.
 
 ### Ollama

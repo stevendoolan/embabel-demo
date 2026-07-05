@@ -10,14 +10,14 @@ spring:
   ai:
     mcp:
       server:
-        name: embabel-demo
+        name: embabeldemo
         version: 1.0.0
         request-timeout: 600s
         type: ASYNC
 
       client:
         enabled: true
-        name: embabel-demo
+        name: embabeldemo
         version: 1.0.0
         request-timeout: 600s
         type: ASYNC

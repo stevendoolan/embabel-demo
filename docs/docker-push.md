@@ -43,14 +43,14 @@ export DOCKER_USER=stevendoolan
 TAG=$(date +%Y%m%d-%H%M%S)
 
 # Build the image with both tags
-docker build -t ${DOCKER_USER}/embabel-demo:${TAG} -t ${DOCKER_USER}/embabel-demo:latest .
+docker build -t ${DOCKER_USER}/embabeldemo:${TAG} -t ${DOCKER_USER}/embabeldemo:latest .
 
 # Log in to Docker Hub (if not already logged in)
 docker login
 
 # Push both tags
-docker push ${DOCKER_USER}/embabel-demo:${TAG}
-docker push ${DOCKER_USER}/embabel-demo:latest
+docker push ${DOCKER_USER}/embabeldemo:${TAG}
+docker push ${DOCKER_USER}/embabeldemo:latest
 ```
 
 ---

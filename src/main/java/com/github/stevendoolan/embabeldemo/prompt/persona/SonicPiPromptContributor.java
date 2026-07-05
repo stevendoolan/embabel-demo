@@ -1,0 +1,42 @@
+package com.github.stevendoolan.embabeldemo.prompt.persona;
+
+import com.embabel.common.ai.prompt.PromptContributor;
+import jakarta.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * Contributes Sonic Pi programming instructions, available instruments, and available samples to
+ * every LLM prompt in the Sonic Pi agent pipeline. Bound from the {@code sonic-pi} configuration
+ * block in {@code application.yml} so the lists can be maintained without code changes.
+ */
+@ConfigurationProperties("sonic-pi")
+public record SonicPiPromptContributor(
+        @Nonnull String instructions,
+        @Nonnull List<String> instruments,
+        @Nonnull List<String> samples
+) implements PromptContributor {
+
+    @Override
+    public @Nonnull String contribution() {
+        return """
+                %s
+                
+                Only these instruments are available in Sonic Pi. Do NOT use any instrument name not in this list:
+                {"instruments":[%s]}
+
+                Only these samples are available in Sonic Pi. Do NOT use any sample name not in this list — inventing a sample name (e.g. `:elec_snap`) will cause the script to fail at runtime:
+                {"samples":[%s]}
+                """.formatted(
+                instructions,
+                toJSONList(instruments),
+                toJSONList(samples));
+    }
+
+    private static @Nonnull String toJSONList(@Nonnull List<String> items) {
+        return items.stream()
+                .map("\"%s\""::formatted)
+                .collect(Collectors.joining(", "));
+    }
+}

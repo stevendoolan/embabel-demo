@@ -4,7 +4,7 @@
 
 ---
 
-**Source:** [`SonicPiAgent.java`](../../src/main/java/com/embabel/demo/agent/SonicPiAgent.java)
+**Source:** [`SonicPiAgent.java`](../../src/main/java/com/github/stevendoolan/embabeldemo/agent/SonicPiAgent.java)
 
 **Description:** Write Sonic Pi code to play a melody based on user input.
 
@@ -14,7 +14,7 @@ Generates a complete Sonic Pi Ruby script by composing melody, harmony, and perc
 
 ## Dependencies
 
-- [`SonicPiPromptContributor`](../../src/main/java/com/embabel/demo/prompt/persona/SonicPiPromptContributor.java) — provides specialized Sonic Pi knowledge to prompts
+- [`SonicPiPromptContributor`](../../src/main/java/com/github/stevendoolan/embabeldemo/prompt/persona/SonicPiPromptContributor.java) — provides specialized Sonic Pi knowledge to prompts
 
 ## Templates
 

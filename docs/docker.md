@@ -80,7 +80,7 @@ under the hood.
 Pull the latest image:
 
 ```bash
-docker pull stevendoolan/embabel-demo:latest
+docker pull stevendoolan/embabeldemo:latest
 ```
 
 The image's entrypoint bakes
@@ -101,8 +101,8 @@ docker run -d -p 48080:48080 \
   -e ANTHROPIC_API_KEY \
   -e OPENAI_BASE_URL \
   -e OPENAI_API_KEY \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest
+  --name embabeldemo \
+  stevendoolan/embabeldemo:latest
 ```
 
 **Anthropic** — pins
@@ -113,8 +113,8 @@ docker run -d -p 48080:48080 \
 docker run -d -p 48080:48080 \
   -e ANTHROPIC_BASE_URL \
   -e ANTHROPIC_API_KEY \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest \
+  --name embabeldemo \
+  stevendoolan/embabeldemo:latest \
   --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
 ```
 
@@ -126,8 +126,8 @@ docker run -d -p 48080:48080 \
 docker run -d -p 48080:48080 \
   -e OPENAI_BASE_URL \
   -e OPENAI_API_KEY \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest \
+  --name embabeldemo \
+  stevendoolan/embabeldemo:latest \
   --spring.config.additional-location=file:/app/config/openai/embabel.yml
 ```
 
@@ -137,8 +137,8 @@ docker run -d -p 48080:48080 \
 
 ```bash
 docker run -d -p 48080:48080 \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest \
+  --name embabeldemo \
+  stevendoolan/embabeldemo:latest \
   --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
@@ -148,13 +148,13 @@ so the container can reach Ollama on the host.
 Follow the logs:
 
 ```bash
-docker logs -f embabel-demo
+docker logs -f embabeldemo
 ```
 
 Stop and remove:
 
 ```bash
-docker rm -f embabel-demo
+docker rm -f embabeldemo
 ```
 
 > **Note:** Only pass the `-e` flags for providers you have configured.
@@ -177,8 +177,8 @@ docker run -d -p 48080:48080 \
   -e EMBABEL_MODELS_DEFAULT_LLM=qwen3:4b \
   -e EMBABEL_MODELS_LLMS_BEST=qwen3:4b \
   -e EMBABEL_MODELS_LLMS_CHEAPEST=qwen3:4b \
-  --name embabel-demo \
-  stevendoolan/embabel-demo:latest \
+  --name embabeldemo \
+  stevendoolan/embabeldemo:latest \
   --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
@@ -230,7 +230,7 @@ Alternatively, add via the CLI (note: this does not set the timeout,
 so you will need to edit `~/.claude.json` afterwards to add it):
 
 ```bash
-claude mcp add embabel-demo --transport sse http://localhost:48080/sse
+claude mcp add embabeldemo --transport sse http://localhost:48080/sse
 ```
 
 ### GitHub Copilot

@@ -10,7 +10,7 @@ embabel-demo is now available on Docker Hub as
 
 Run it with Docker Compose or pull directly:
 ```bash
-docker pull stevendoolan/embabel-demo:latest
+docker pull stevendoolan/embabeldemo:latest
 ```
 
 See [Docker](docker.md) for full instructions.
@@ -19,7 +19,7 @@ See [Docker](docker.md) for full instructions.
 Combined Embabel with Sonic Pi by Sam Aaron to create music using AI!
 
 See the new Agent:
-- [SonicPiAgent.java](../src/main/java/com/embabel/demo/agent/SonicPiAgent.java)
+- [SonicPiAgent.java](../src/main/java/com/github/stevendoolan/embabeldemo/agent/SonicPiAgent.java)
 
 How to use:
 1. Install Sonic Pi from https://sonic-pi.net/ - on macOS: `brew install --cask sonic-pi`
@@ -48,8 +48,8 @@ Legacy OpenAI Models have been removed as I don't need them anymore (gpt-4o, gpt
 
 ### Fibonacci Agent
 Added a Fibonacci Agent as an example of Tool Use:
-- [FibonacciAgent.java](../src/main/java/com/embabel/demo/agent/FibonacciAgent.java)
-- [FibonacciCalculator.java](../src/main/java/com/embabel/demo/tool/FibonacciCalculator.java)
+- [FibonacciAgent.java](../src/main/java/com/github/stevendoolan/embabeldemo/agent/FibonacciAgent.java)
+- [FibonacciCalculator.java](../src/main/java/com/github/stevendoolan/embabeldemo/tool/FibonacciCalculator.java)
 
 How to use the Fibonacci Agent using the REST endpoint:
 1. Start the service with OpenAI:
@@ -86,7 +86,7 @@ export OPENAI_API_KEY=<your-api-key>
 
 My API Key only has access to gpt-4o and gpt-4o-lite.
 These aren't provided out-of-the-box by Embabel, so I had to implement them myself in
-[LegacyOpenAiModels.java](../src/main/java/com/embabel/demo/LegacyOpenAiModels.java).
+[LegacyOpenAiModels.java](../src/main/java/com/github/stevendoolan/embabeldemo/LegacyOpenAiModels.java).
 Is there a better way of doing this?
 
 Start the service with OpenAI:

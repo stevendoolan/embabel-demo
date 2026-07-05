@@ -17,7 +17,7 @@ Get from zero to running AI agents in under 5 minutes.
 
 ```bash
 git clone https://github.com/stevendoolan/embabel-demo.git
-cd embabel-demo
+cd embabeldemo
 ```
 
 Set your API key (pick one):

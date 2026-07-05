@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.embabel.demo" level="DEBUG" additivity="false">
+    <logger name="com.github.stevendoolan.embabeldemo" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
