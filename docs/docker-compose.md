@@ -101,7 +101,7 @@ provider's keys.
 (`claude-sonnet-4-5` default/cheapest, `claude-opus-4-1` best):
 
 ```bash
-docker compose run embabeldemo \
+docker compose run embabel-demo \
   --spring.config.additional-location=file:/app/config/anthropic/embabel.yml
 ```
 
@@ -110,7 +110,7 @@ docker compose run embabeldemo \
 (`gpt-4.1` default/best, `gpt-4.1-mini` cheapest):
 
 ```bash
-docker compose run embabeldemo \
+docker compose run embabel-demo \
   --spring.config.additional-location=file:/app/config/openai/embabel.yml
 ```
 
@@ -119,7 +119,7 @@ docker compose run embabeldemo \
 (`gpt-oss:20b` for all three roles):
 
 ```bash
-docker compose run embabeldemo \
+docker compose run embabel-demo \
   --spring.config.additional-location=file:/app/config/ollama/embabel.yml
 ```
 
@@ -171,7 +171,7 @@ The 10-minute timeout (600000ms) is recommended because some agents
 Alternatively, add via the CLI (note: this does not set the timeout,
 so you will need to edit `~/.claude.json` afterwards to add it):
 ```bash
-claude mcp add embabeldemo --transport sse http://localhost:48080/sse
+claude mcp add embabel-demo --transport sse http://localhost:48080/sse
 ```
 
 ### Reconnecting After MCP Server Restart

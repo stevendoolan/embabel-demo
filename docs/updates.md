@@ -10,7 +10,7 @@ embabel-demo is now available on Docker Hub as
 
 Run it with Docker Compose or pull directly:
 ```bash
-docker pull stevendoolan/embabeldemo:latest
+docker pull stevendoolan/embabel-demo:latest
 ```
 
 See [Docker](docker.md) for full instructions.
