@@ -72,7 +72,7 @@ public class StoryAgent {
                         context.ai()
                                 .withLlm(LlmOptions.withLlmForRole("best"))
                                 .withPromptContributor(StoryPersonas.WRITER)
-                                .withTemplate("story/write-story-template.jinja")
+                                .rendering("story/write-story-template.jinja")
                                 .createObject(String.class,
                                         Map.of(
                                                 "storyWordCount", storyWordCount,
@@ -91,7 +91,7 @@ public class StoryAgent {
                     var review = context.ai()
                             .withLlm(LlmOptions.withLlmForRole("cheapest"))
                             .withPromptContributor(StoryPersonas.REVIEWER)
-                            .withTemplate("story/review-story-template.jinja")
+                            .rendering("story/review-story-template.jinja")
                             .createObject(StoryReview.class,
                                     Map.of(
                                             "reviewWordCount", reviewWordCount,

@@ -59,7 +59,7 @@ The `sonic-pi-examples/` directory is **gitignored** (copyrighted Sonic Pi sampl
 
 ### Prompt templates
 
-Jinja templates under `src/main/resources/prompts/{sonicpi,story}/` are referenced by `withTemplate("sonicpi/foo.jinja")`. To change agent behaviour, edit prompts and the `sonic-pi.instructions` block in `application.yml` rather than the Java action code.
+Jinja templates under `src/main/resources/prompts/{sonicpi,story}/` are referenced by `rendering("sonicpi/foo.jinja")`. To change agent behaviour, edit prompts and the `sonic-pi.instructions` block in `application.yml` rather than the Java action code.
 
 ## Gotchas
 

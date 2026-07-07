@@ -193,7 +193,7 @@ public class SonicPiExampleIndexer {
     private @Nullable SonicPiMetadata extractMetadata(@Nonnull String relativePath, @Nonnull String content) {
         try {
             return ai.withDefaultLlm()
-                    .withTemplate("sonicpi/extract-example-metadata.jinja")
+                    .rendering("sonicpi/extract-example-metadata.jinja")
                     .createObject(SonicPiMetadata.class, Map.of(
                             "scriptContent", content,
                             "relativePath", relativePath));

@@ -27,7 +27,7 @@
         <spring.boot.mainClass>com.github.stevendoolan.embabeldemo.Application</spring.boot.mainClass>
 
         <!-- https://mvnrepository.com/artifact/com.embabel.agent/embabel-agent-starter -->
-        <embabel-agent.version>0.5.0</embabel-agent.version>
+        <embabel-agent.version>1.0.0-RC1-SNAPSHOT</embabel-agent.version>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.shell/spring-shell-standard -->
         <spring-shell.version>3.4.3</spring-shell.version>
