@@ -160,7 +160,7 @@ public class SonicPiExamplesContributor implements PromptContributor {
                 .toList();
 
         MatchingExamples selection = ai.withDefaultLlm()
-                .withTemplate("sonicpi/select-matching-examples.jinja")
+                .rendering("sonicpi/select-matching-examples.jinja")
                 .createObject(MatchingExamples.class, Map.of(
                         "targetStyle", targetMetadata.style(),
                         "targetMood", targetMetadata.mood(),
